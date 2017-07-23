@@ -1,9 +1,19 @@
 <template>
+	<div>
+		<div v-for="res in resource">
+			{{ res.api_value }}
+		</div>
+	</div>
 </template>
 
 <script>
 export default {
-	name: 'overview'
+	name: 'overview',
+	computed: {
+		resource() {
+			return this.$store.state.api.resource
+		}
+	}
 }
 </script>
 

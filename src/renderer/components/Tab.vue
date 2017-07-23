@@ -1,6 +1,7 @@
 <template>
 	<div class='column'>
 		<div class="tabs is-centered is-fullwidth is-boxed">
+				<p>LV.{{basic.api_level}} {{ basic.api_nickname }} {{ chara }}/{{ basic.api_max_chara }} ?/{{ basic.api_max_slotitem }}</p>
 			<ul>
 				<router-link tag='li' class='nav-item is-tab' to='/' exact>
 					<a>{{ $t('Overview') }}</a>
@@ -20,6 +21,14 @@
 
 <script charset="utf-8">
 export default {
-	name: 'tab'
+	name: 'tab',
+	computed: {
+		basic() {
+			return this.$store.state.api.basic
+		},
+		chara(){
+			return this.$store.state.api.ship.length
+		}
+	}
 }
 </script>
