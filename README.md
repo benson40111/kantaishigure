@@ -1,0 +1,2 @@
+# kantaishigure
+A kancolle browser
