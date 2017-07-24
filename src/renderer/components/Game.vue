@@ -1,5 +1,5 @@
 <template>
-	<div id="game" style="height:auto">
+	<div id="game" style="height:auto;width:70%;float:left">
 		<webview id="main" src="about:blank()" ondrop="event.preventDefault();" plugins disablewebsecurity></webview>
 	</div>
 </template>
