@@ -26,5 +26,5 @@ let routes = [
 
 export default new Router({
 	routes,
-	linkActiveClass: 'is-active'
+	linkActiveClass: 'active'
 })
