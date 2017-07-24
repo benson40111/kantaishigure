@@ -1,16 +1,16 @@
 <template>
-	<div class='column'>
-		<div class="tabs is-centered is-fullwidth is-boxed">
+	<div class='shigure-tab' style="">
+		<div class="tabs is-centered is-fullwidth is-boxed" style="width:30%;float:right">
 				<p>LV.{{basic.api_level}} {{ basic.api_nickname }} {{ chara }}/{{ basic.api_max_chara }} ?/{{ basic.api_max_slotitem }}</p>
-			<ul class="nav nav-tabs">
-				<router-link tag='li' class="active" to='/' exact>
-					<a data-toggle="tab" id="overview">{{ $t('Overview') }}</a>
+			<ul class="nav nav-tabs navbar-inverse">
+				<router-link tag='li' class="nav-item" to='/' exact>
+					<a class="nav-link active">{{ $t('Overview') }}</a>
 				</router-link>
-				<router-link tag='li' class='nav-item is-tab' to='/fleets' exact>
-					<a data-toggle="tab" id="fleets">{{ $t('Fleets') }}</a>
+				<router-link tag='li' class="nav-item" to='/fleets' exact>
+					<a class="nav-link">{{ $t('Fleets') }}</a>
 				</router-link>
-				<router-link tag='li' class='nav-item is-tab' to='/setting' exact>
-					<a data-toggle="tab"><router-link tag='i' to='/setting' class="fa fa-cog" active-class='fa-spin' aria-hidden="true" exact></router-link></a>
+				<router-link tag='li' class="nav-item" to='/setting' exact>
+					<a class="nav-link"><router-link tag='i' to='/setting' class="fa fa-cog" active-class='fa-spin' aria-hidden="true" exact></router-link></a>
 				</router-link>
 			</ul>
 		</div>
@@ -32,3 +32,13 @@ export default {
 	}
 }
 </script>
+
+<style>
+	.shigure-tab {
+		background-color: #333;
+		color: #FFF;
+	}
+	.nav-link {
+		color: #FFF
+	}
+</style>
