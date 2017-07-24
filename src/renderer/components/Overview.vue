@@ -1,8 +1,10 @@
 <template>
-	<div>
+	<div class="tab-content">
+	<div class="tab-pane active" id="overview">
 		<div v-for="res in resource" :key="res.id">
 			{{ res.api_value }}
 		</div>
+	</div>
 	</div>
 </template>
 

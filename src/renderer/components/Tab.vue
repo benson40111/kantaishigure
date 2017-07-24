@@ -1,6 +1,6 @@
 <template>
-	<div class='shigure-tab' style="">
-		<div class="tabs is-centered is-fullwidth is-boxed" style="width:30%;float:right">
+	<div class='shigure-tab'>
+		<div class="tabs is-centered is-fullwidth is-boxed">
 				<p>LV.{{basic.api_level}} {{ basic.api_nickname }} {{ chara }}/{{ basic.api_max_chara }} ?/{{ basic.api_max_slotitem }}</p>
 			<ul class="nav nav-tabs nav-fill">
 				<li class="nav-item">

@@ -1,5 +1,5 @@
 <template>
-	<div id="game" style="height:auto;width:70%;float:left">
+	<div id="game" style="height:auto;">
 		<webview id="main" src="about:blank()" ondrop="event.preventDefault();" plugins disablewebsecurity :preload="preload_js"></webview>
 	</div>
 </template>
@@ -19,6 +19,6 @@ export default {
 
 <style>
 	webview {
-		height: 600px 
+		height: 480px;
 	}
 </style>
