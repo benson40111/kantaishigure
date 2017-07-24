@@ -1,5 +1,6 @@
 <template>
-	<div>
+	<div class="tab-cotent">
+	<div class="tab-pane" id="fleets">
 		<ul>
 			<div v-for="fleet in fleets" :key="fleet.id">
 			<li>
@@ -10,6 +11,7 @@
 				</div>
 			</div>
 		</ul>
+	</div>
 	</div>
 </template>
 /*
