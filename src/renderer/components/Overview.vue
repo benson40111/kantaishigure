@@ -1,6 +1,6 @@
 <template>
 	<div>
-		<div v-for="res in resource">
+		<div v-for="res in resource" :key="res.id">
 			{{ res.api_value }}
 		</div>
 	</div>

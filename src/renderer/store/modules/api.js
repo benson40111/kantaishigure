@@ -2,7 +2,11 @@ const state = {
 	resource: {},
 	basic: {},
 	ship: {},
-	fleet: {}
+	fleet: {},
+	mst_ship: {},
+	mst_mission: {},
+	mst_slotitem: {},
+	mst_slotitemtype: {}
 }
 
 const mutations = {
@@ -39,6 +43,21 @@ const mutations = {
 	},
 	UPDATE_INFO(state, res){
 		state.basic = res
+	},
+	STORE_MST_SHIP(state, res){
+		state.mst_ship = res
+	},
+	STORE_MST_MISSION(state, res){
+		state.mst_mission = res
+	},
+	STORE_MST_MAPINFO(state, res){
+		state.mst_mapinfo = res
+	},
+	STORE_MST_SLOTITEM(state, res){
+		state.mst_slotitem = res
+	},
+	STORE_MST_SLOTITEM_EQUIPTYPE(state, res){
+		state.mst_slotitemtype = res
 	}
 }
 
