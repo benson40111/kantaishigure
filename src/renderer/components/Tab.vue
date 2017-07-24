@@ -2,16 +2,23 @@
 	<div class='shigure-tab' style="">
 		<div class="tabs is-centered is-fullwidth is-boxed" style="width:30%;float:right">
 				<p>LV.{{basic.api_level}} {{ basic.api_nickname }} {{ chara }}/{{ basic.api_max_chara }} ?/{{ basic.api_max_slotitem }}</p>
-			<ul class="nav nav-tabs navbar-inverse">
-				<router-link tag='li' class="nav-item" to='/' exact>
-					<a class="nav-link active">{{ $t('Overview') }}</a>
-				</router-link>
-				<router-link tag='li' class="nav-item" to='/fleets' exact>
-					<a class="nav-link">{{ $t('Fleets') }}</a>
-				</router-link>
-				<router-link tag='li' class="nav-item" to='/setting' exact>
-					<a class="nav-link"><router-link tag='i' to='/setting' class="fa fa-cog" active-class='fa-spin' aria-hidden="true" exact></router-link></a>
-				</router-link>
+			<ul class="nav nav-tabs nav-fill">
+				<li class="nav-item">
+					<router-link to="/" class="nav-link" exact>
+						{{ $t('Overview') }}
+					</router-link>
+				</li>
+				<li class="nav-item">
+					<router-link to="/fleets" class="nav-link" exact>
+						{{ $t('Fleets') }}
+					</router-link>
+				</li>
+				<li class="nav-item">
+					<router-link to="/setting" class="nav-link" exact>
+						<router-link tag='i' to='/setting' class="fa fa-cog" active-class='fa-spin' aria-hidden="true" exact>
+						</router-link>
+					</router-link>
+				</li>
 			</ul>
 		</div>
 		<router-view></router-view>
@@ -39,6 +46,15 @@ export default {
 		color: #FFF;
 	}
 	.nav-link {
-		color: #FFF
+		color: #FFF;
+	}
+	.nav-link:hover{
+		color: aqua;
+	}
+	.nav-link.active {
+		background-color: #333 !important;
+		color:aqua !important;
+		border-color: #333 !important;
+		border-bottom-color: aqua !important;
 	}
 </style>
