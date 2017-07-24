@@ -1,10 +1,10 @@
 <template>
 	<div class="row">
 		<div class="col-md-9 col-sm-9 col-xs-8">
-		<game></game>
+			<game></game>
 		</div>
 		<div class="col-md-3 col-sm-2 col-xs-4">
-		<tab></tab>
+			<tab></tab>
 		</div>
 	</div>
 </template>
