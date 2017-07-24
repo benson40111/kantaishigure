@@ -1,6 +1,6 @@
 <template>
 	<div id="game" style="height:auto;width:70%;float:left">
-		<webview id="main" src="about:blank()" ondrop="event.preventDefault();" plugins disablewebsecurity></webview>
+		<webview id="main" src="about:blank()" ondrop="event.preventDefault();" plugins disablewebsecurity preload="C:\Users\madne\Downloads\kantaishigure\src\renderer\assets\js\webview-preload.js"></webview>
 	</div>
 </template>
 
@@ -14,6 +14,6 @@ export default {
 
 <style>
 	webview {
-		height: 480px 
+		height: 600px 
 	}
 </style>
