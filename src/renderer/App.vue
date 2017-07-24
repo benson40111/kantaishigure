@@ -16,4 +16,7 @@
 
 <style lang='css'>
   @import '../../node_modules/bootstrap/dist/css/bootstrap.min.css';
+  html body {
+	  background-color: #222222;
+  }
 </style>
