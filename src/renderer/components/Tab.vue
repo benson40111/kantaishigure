@@ -50,6 +50,8 @@ export default {
 	}
 	.nav-link:hover{
 		color: aqua;
+		border-color: #333 !important;
+		border-bottom-color: aqua !important;
 	}
 	.nav-link.active {
 		background-color: #333 !important;

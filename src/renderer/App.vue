@@ -1,9 +1,9 @@
 <template>
-	<div class="row">
-		<div class="col-9 no-padding">
+	<div class="main">
+		<div class="main-game">
 			<game></game>
 		</div>
-		<div class="col-3 no-padding">
+		<div class="main-tab">
 			<tab></tab>
 		</div>
 	</div>
@@ -23,10 +23,16 @@ export default {
 html body {
 	background-color: #222222;
 }
-
-.no-padding{
-	padding-right: 0px;
-	padding-left: 0px;
+.main {
+	display: flex;
+	flex-flow: row nowrap;
 }
+.main-game {
+	flex: 5 0px;
+}
+.main-tab {
+	flex: 2 0px;
+}
+
 
 </style>

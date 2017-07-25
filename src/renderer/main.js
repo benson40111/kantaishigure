@@ -28,3 +28,4 @@ new Vue({
 
 import '../lib/services.es'
 import '../lib/api_resolver.es'
+import '../lib/layout.js'
