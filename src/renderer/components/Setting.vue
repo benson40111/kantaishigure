@@ -3,7 +3,7 @@
 		<form action="#" @submit.prevent="onSubmit()">
 			<input type="text" v-model="webviewURL"></input>
 			<button type="submit">
-			<i class="fa fa-chevron-left fa-lg" aria-hidden="true"></i>
+				<i class="fa fa-chevron-left fa-lg" aria-hidden="true"></i>
 			</button>
 		</form>
 		{{ $t('gamesize') }}

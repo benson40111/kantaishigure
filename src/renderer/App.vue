@@ -27,12 +27,5 @@ html body {
 	display: flex;
 	flex-flow: row nowrap;
 }
-.main-game {
-	flex: 5 0px;
-}
-.main-tab {
-	flex: 2 0px;
-}
-
 
 </style>
