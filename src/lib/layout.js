@@ -76,10 +76,4 @@ remote.getCurrentWindow().on('resize', () => {
 })
 
 store.watch( (state) => state.config.webviewWidth, () => { adjustSize() })
-<<<<<<< HEAD
-<<<<<<< HEAD
 store.watch( (state) => state.config.zoomLevel, () => { adjustSize() })
-=======
->>>>>>> 918b076b06e04dc774612bcb153e8159bf8eaa78
-=======
->>>>>>> 918b076b06e04dc774612bcb153e8159bf8eaa78
