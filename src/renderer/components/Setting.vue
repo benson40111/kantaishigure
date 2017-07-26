@@ -14,6 +14,14 @@
 			<option value="1400">175%</option>
   			<option value="1600">200%</option>
 		</select>
+		zoomLevel
+		<select class="custom-select" v-model="zoomLevel" :change="onChangeZoom(zoomLevel)">
+  			<option value="0.5">50%</option>
+  			<option value="1">100%</option>
+  			<option value="1.5">150%</option>
+			<option value="1.75">175%</option>
+  			<option value="2">200%</option>
+		</select>
 
 	</div>
 </template>
@@ -24,7 +32,8 @@ export default {
 	data() {
 		return {
 		webviewURL: null,
-		webviewWidth: this.$store.state.config.webviewWidth
+		webviewWidth: this.$store.state.config.webviewWidth,
+		zoomLevel: this.$store.state.config.zoomLevel
 		}
 	},
 	methods: {
@@ -33,6 +42,9 @@ export default {
 		},
 		onChange(width) {
 			this.$store.commit('UPDATE_WIDTH', width)
+		},
+		onChangeZoom(zoom){
+			this.$store.commit('UPDATE_ZOOMLEVEL', zoom)
 		}
 	}
 }

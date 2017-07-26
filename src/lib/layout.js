@@ -76,3 +76,4 @@ remote.getCurrentWindow().on('resize', () => {
 })
 
 store.watch( (state) => state.config.webviewWidth, () => { adjustSize() })
+store.watch( (state) => state.config.zoomLevel, () => { adjustSize() })
