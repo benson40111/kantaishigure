@@ -33,7 +33,7 @@ api_soukou 装甲（そうこう）。
 api_kaihi 回避（かいひ）。
 api_taisen 対潜（たいせん）。
 api_sakuteki 索敵（さくてき）。
-api_lucky 運（lucky），靠杯為什麼運氣就是用英文 XD
+api_lucky 運（lucky），靠杯為什麼運氣就是用英文 XD (他爽啦 不然日文很長誒)
 */
 
 <script charset="utf-8">
