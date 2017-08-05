@@ -16,10 +16,12 @@ const resolve_start = (body) => {
 		store.commit('STORE_MST_SLOTITEM_EQUIPTYPE', body.api_data.api_mst_slotitem_equiptype)
 }
 
-ipcRenderer.on('network.on.api', (event, path, body) => {
+ipcRenderer.on('network.on.api', (event, path, body, reqBody) => {
 	let res
 	body = JSON.parse(body)
-	console.log(path,body)
+	reqBody = JSON.parse(reqBody)
+	delete reqBody.api_token
+	console.log(path, body, reqBody)
 	switch(path){
 		case '/kcsapi/api_port/port':
 			resolve_port(body)

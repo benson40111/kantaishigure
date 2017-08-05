@@ -2,7 +2,7 @@
 	<div class='shigure-tab'>
 		<div class="tabs is-centered is-fullwidth is-boxed">
 			<div class="per_status">
-				LV.{{basic.api_level}} {{ basic.api_nickname }} 艦娘：{{ chara }}/{{ basic.api_max_chara }} 裝備：{{ basic.api_max_slotitem }}
+				LV.{{basic.api_level}} {{ basic.api_nickname }} {{ $t('Ship') }}：{{ chara }}/{{ basic.api_max_chara }} {{ $t('Equip') }}：{{ basic.api_max_slotitem }}
 			</div>
 			<ul class="nav nav-tabs nav-fill">
 				<li class="nav-item">
