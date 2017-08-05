@@ -1,17 +1,17 @@
 <template>
 	<div class="tab-cotent">
-	<div class="tab-pane" id="fleets">
-		<ul>
-			<div v-for="fleet in fleets" :key="fleet.id">
-			<li>
-				{{ fleet.api_name }}
-			</li>
-				<div v-for="ship in find_ship(ships,fleet,mst_ships)" :key="ship.id">
-					{{ ship.api_name }} {{ ship.api_nowhp }}/{{ ship.api_maxhp }}  {{ ship.api_cond }}
+		<div class="tab-pane" id="fleets">
+			<ul>
+				<div v-for="fleet in fleets" :key="fleet.id">
+					<li>
+						{{ fleet.api_name }}
+					</li>
+					<div v-for="ship in find_ship(ships,fleet,mst_ships)" :key="ship.id">
+						{{ ship.api_name }} {{ ship.api_nowhp }}/{{ ship.api_maxhp }}  {{ ship.api_cond }}
+					</div>
 				</div>
-			</div>
-		</ul>
-	</div>
+			</ul>
+		</div>
 	</div>
 </template>
 /*
