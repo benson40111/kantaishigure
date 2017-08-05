@@ -4,7 +4,7 @@
 			<div class="resource_board">
 				<div class="resource_inside">
 					<table style="width:100%">
-						<tr v-for="row in (1, 5)">
+						<tr v-for="row in (0, 4)">
 							<td v-for="col in (1, 2)">
 								<img :src="img_url">
 								123547

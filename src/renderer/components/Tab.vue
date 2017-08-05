@@ -1,7 +1,9 @@
 <template>
 	<div class='shigure-tab'>
 		<div class="tabs is-centered is-fullwidth is-boxed">
-				<p>LV.{{basic.api_level}} {{ basic.api_nickname }} {{ chara }}/{{ basic.api_max_chara }} ?/{{ basic.api_max_slotitem }}</p>
+			<div class="per_status">
+				LV.{{basic.api_level}} {{ basic.api_nickname }} 艦娘：{{ chara }}/{{ basic.api_max_chara }} 裝備：{{ basic.api_max_slotitem }}
+			</div>
 			<ul class="nav nav-tabs nav-fill">
 				<li class="nav-item">
 					<router-link to="/" class="nav-link" exact>
@@ -58,5 +60,14 @@ export default {
 		color:aqua !important;
 		border-color: #333 !important;
 		border-bottom-color: aqua !important;
+	}
+	.per_status{
+		text-align: center;
+		width: 100%;
+		padding: 5px 5px 5px 5px;
+		height: auto;
+		border: 2px solid #3d3d3d;
+		border-radius: 5px;
+		font-size: 13px;
 	}
 </style>
