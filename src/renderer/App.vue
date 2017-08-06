@@ -8,7 +8,6 @@
 		</div>
 	</div>
 </template>
-
 <script>
 import game from './components/Game.vue'
 import tab from './components/Tab.vue'
@@ -22,10 +21,14 @@ export default {
 @import '../../node_modules/bootstrap/dist/css/bootstrap.min.css';
 html body {
 	background-color: #222222;
+	height: 100%;
 }
 .main {
 	display: flex;
 	flex-flow: row nowrap;
+}
+.main-tab{
+	height:100%;
 }
 
 </style>

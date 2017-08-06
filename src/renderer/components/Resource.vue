@@ -4,16 +4,16 @@
 			<div class="resource_board">
 				<div class="resource_inside">
 					<table style="width:100%">
-			        <tr v-for="(res, index) in resource" v-if="index%2 === 0" :key="res.id">
-                        <td>
-                            <img :src="img_urls[index]">
-                                {{ res.api_value }}
-                        </td>
-                        <td>
-                            <img :src="img_urls[index+1]">
-                                {{ resource[index+1].api_value }}
-                        </td>
-			        </tr>
+			        	<tr v-for="(res, index) in resource" v-if="index%2 === 0" :key="res.id">
+                        	<td>
+                            	<img :src="img_urls[index]">
+                                	{{ res.api_value }}
+                        	</td>
+                        	<td>
+                            	<img :src="img_urls[index+1]">
+                                	{{ resource[index+1].api_value }}
+                        	</td>
+			        	</tr>
 					</table>
 				</div>
 			</div>
@@ -50,7 +50,6 @@ export default {
 
 <style>
 .resource_board{
-	height: auto;
 	border: 2px solid #3d3d3d;
 	border-radius: 5px;
 	margin: 30px 10px 30px 10px;
