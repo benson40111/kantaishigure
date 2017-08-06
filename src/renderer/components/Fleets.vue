@@ -1,16 +1,13 @@
 <template>
 	<div class="tab-cotent">
 		<div class="tab-pane" id="fleets">
-			<ul>
-				<div v-for="fleet in fleets" :key="fleet.id">
-					<li>
-						{{ fleet.api_name }}
-					</li>
-					<div v-for="ship in find_ship(ships,fleet,mst_ships)" :key="ship.id">
-						{{ ship.api_name }} {{ ship.api_nowhp }}/{{ ship.api_maxhp }}  {{ ship.api_cond }}
-					</div>
-				</div>
-			</ul>
+			<tabs>
+					<tab v-for="fleet in fleets" :key="fleet.id" :name="fleet[0].fleet_name" :selected="fleet === fleets[0] ? true : false">
+						<div v-for="ship in fleet" :key="ship.id">
+							{{ ship.api_name }} {{ ship.api_nowhp }}/{{ ship.api_maxhp }}  {{ ship.api_cond }}
+						</div>
+					</tab>
+			</tabS>
 		</div>
 	</div>
 </template>
@@ -37,41 +34,14 @@ api_lucky 運（lucky），靠杯為什麼運氣就是用英文 XD (他爽啦 �
 */
 
 <script charset="utf-8">
+import tab from './models/Tab.vue'
+import tabs from './models/Tabs.vue'
 export default {
 	name: 'Fleets',
+	components: { tab , tabs },
 	computed: {
 		fleets() {
 			return this.$store.state.api.fleet
-		},
-		ships() {
-			return this.$store.state.api.ship
-		},
-		mst_ships() {
-			return this.$store.state.api.mst_ship
-		},
-		mst_slots() {
-			return this.$store.state.api.mst_slotitem
-		}
-	},
-	methods: {
-		find_ship( ship , { api_ship } , mst_ship){
-			let fleet = []
-			let arr_mst_ship = Object.values(mst_ship).map(x => x['api_sortno'])
-			let arr_ship = Object.values(ship).map(x => x['api_id'])
-			let deep_mst_ship = JSON.parse(JSON.stringify(mst_ship))
-			for(let i = 0; i < api_ship.length; i++){
-				let temp = arr_ship.indexOf(api_ship[i])
-				if(temp != -1){
-					fleet.push(JSON.parse(JSON.stringify(ship[temp])))
-				}
-			}
-			for(let i = 0; i < fleet.length; i++){
-				let temp = arr_mst_ship.indexOf(fleet[i].api_sortno)
-				if (temp != -1){
-					Object.assign(fleet[i], deep_mst_ship[temp])
-				}
-			}
-			return fleet
 		}
 	}
 }

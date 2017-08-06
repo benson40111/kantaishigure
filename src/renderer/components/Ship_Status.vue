@@ -1,36 +1,31 @@
 <template>
 	<div class="ship_status">
 		<div class="ship_inside">
-			<ul class="nav nav-tabs nav-fill" role="tablist">
-				<li class="nav-item">
-					<a class="nav-link active"  href="#ship1" role="tab">I</a>
-				</li>
-				<li class="nav-item">
-					<a class="nav-link" data-toggle="tab" href="#ship2" role="tab">II</a>
-				</li>
-				<li class="nav-item">
-					<a class="nav-link" data-toggle="tab" href="#ship3" role="tab">III</a>
-				</li>
-				<li class="nav-item">
-					<a class="nav-link" data-toggle="tab" href="#ship4" role="tab">IV</a>
-				</li>
-			</ul>
-			<div class="tab-content">
-				<div class="tab-pane active" id="ship1" role="tabpanel">...</div>
-				<div class="tab-pane" id="ship2" role="tabpanel">...</div>
-				<div class="tab-pane" id="ship3" role="tabpanel">...</div>
-				<div class="tab-pane" id="ship4" role="tabpanel">...</div>
-			</div>
+			<tabs>
+				<tab v-for="(fleet,i) in fleets" :key="fleet.id" :name="INDEX[i]" :selected="fleet === fleets[0] ? true : false">
+					<div v-for="ship in fleet" :key="ship.id">
+						{{ ship.api_name }} {{ ship.api_nowhp }}/{{ ship.api_maxhp }}  {{ ship.api_cond }}
+					</div>
+				</tab>
+			</tabS>
 		</div>
 	</div>
 </template>
 
 <script>
+import tab from './models/Tab.vue'
+import tabs from './models/Tabs.vue'
 export default {
 	name: 'ship_status',
+	components: { tab , tabs },
+	data() {
+		return {
+			INDEX: ['I', 'II', 'III', 'IV']
+		}
+	},
 	computed: {
-		ship_status(){
-
+		fleets() {
+			return this.$store.state.api.fleet
 		}
 	}
 }

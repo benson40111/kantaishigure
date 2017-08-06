@@ -1,6 +1,29 @@
 import store from '../renderer/store/index.js'
 import { ipcRenderer } from 'electron'
 
+const resolve_fleet = (ship , { api_deck_port } , mst_ship) => {
+	let fleets = []
+	let arr_mst_ship = Object.values(mst_ship).map(x => x['api_sortno'])
+	let arr_ship = Object.values(ship).map(x => x['api_id'])
+	for(let x in api_deck_port){
+		let fleet = []
+		for(let i = 0; i < api_deck_port[x].api_ship.length; i++){
+		let temp = arr_ship.indexOf(api_deck_port[x].api_ship[i])
+		if(temp != -1){
+			fleet.push(JSON.parse(JSON.stringify(ship[temp])))
+			}
+		}
+		for(let i = 0; i < fleet.length; i++){
+			let temp = arr_mst_ship.indexOf(fleet[i].api_sortno)
+			if (temp != -1){
+				Object.assign(fleet[i], mst_ship[temp], { fleet_name : api_deck_port[x].api_name })
+			}
+		}
+		fleets.push(fleet)
+	}
+	store.commit('UPDATE_FLEET', fleets)
+}
+
 const resolve_port = (body) => {
 	store.commit('UPDATE_MATERIAL', body.api_data.api_material)
 	store.commit('UPDATE_INFO', body.api_data.api_basic)
@@ -25,6 +48,7 @@ ipcRenderer.on('network.on.api', (event, path, body, reqBody) => {
 	switch(path){
 		case '/kcsapi/api_port/port':
 			resolve_port(body)
+			resolve_fleet(store.state.api.ship, body.api_data, store.state.api.mst_ship)
 			break
 		case '/kcsapi/api_get_member/material':
 			res = compareUpdate(store.state.api.resource, body.api_data)

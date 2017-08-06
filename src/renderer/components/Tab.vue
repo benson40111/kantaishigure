@@ -30,7 +30,7 @@
 
 <script charset="utf-8">
 export default {
-	name: 'tab',
+	name: 'main_tab',
 	computed: {
 		basic() {
 			return this.$store.state.api.basic
@@ -51,7 +51,7 @@ export default {
 		color: #FFF;
 	}
 	.nav-link:hover{
-		color: aqua;
+		color: aqua !important;
 		border-color: #333 !important;
 		border-bottom-color: aqua !important;
 	}
