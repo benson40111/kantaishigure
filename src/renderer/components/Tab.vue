@@ -7,15 +7,17 @@
 			<ul class="nav nav-tabs nav-fill">
 				<li class="nav-item">
 					<router-link to="/" class="nav-link" exact>
+						<i class="fa fa-home" aria-hidden="true"></i>
 						{{ $t('Overview') }}
 					</router-link>
 				</li>
 				<li class="nav-item">
-					<router-link to="/fleets" class="nav-link" exact>
-						{{ $t('Fleets') }}
-					</router-link>
-				</li>
-				<li class="nav-item">
+				<router-link to="/fleets" class="nav-link" exact>
+					<i class="fa fa-ship" aria-hidden="true"></i>
+					{{ $t('Fleets') }}
+				</router-link>
+			</li>
+			<li class="nav-item">
 					<router-link to="/setting" class="nav-link" exact>
 						<router-link tag='i' to='/setting' class="fa fa-cog" active-class='fa-spin' aria-hidden="true" exact>
 						</router-link>
