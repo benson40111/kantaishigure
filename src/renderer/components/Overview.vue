@@ -1,6 +1,10 @@
 <template>
-		<resource style="height:150px;"></resource>
-		<ship_status></ship_status>
+	<div class="tab-content">
+		<div class="tab-pane active" id="overview">
+			<resource></resource>
+			<ship_status></ship_status>
+		</div>
+	</div>
 </template>
 
 <script>
