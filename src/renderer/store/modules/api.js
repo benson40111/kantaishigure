@@ -3,6 +3,7 @@ const state = {
 	basic: {},
 	ship: {},
 	fleet: {},
+	mession: {},
 	mst_ship: {},
 	mst_mission: {},
 	mst_slotitem: {},
@@ -10,6 +11,9 @@ const state = {
 }
 
 const mutations = {
+	UPDATE_MISSION(state, res){
+		state.mission = res
+	},
 	UPDATE_FLEET(state, res){
 		state.fleet = res
 	},

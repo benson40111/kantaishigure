@@ -24,11 +24,22 @@ const resolve_fleet = (ship , { api_deck_port } , mst_ship) => {
 	store.commit('UPDATE_FLEET', fleets)
 }
 
+const resolve_mission = ( deck ) => {
+	let mission = []
+	for(let i = 1 ; i < 4 ; i++){
+		if(deck[i] != undefined){
+			mission.push(deck[i].api_mission)
+		} else{
+			mission.push(undefined)
+		}
+	}
+	store.commit('UPDATE_MISSION', mission)
+}
+
 const resolve_port = (body) => {
 	store.commit('UPDATE_MATERIAL', body.api_data.api_material)
 	store.commit('UPDATE_INFO', body.api_data.api_basic)
 	store.commit('UPDATE_SHIP', body.api_data.api_ship)
-	store.commit('UPDATE_FLEET', body.api_data.api_deck_port)
 }
 
 const resolve_start = (body) => {
@@ -49,10 +60,10 @@ ipcRenderer.on('network.on.api', (event, path, body, reqBody) => {
 		case '/kcsapi/api_port/port':
 			resolve_port(body)
 			resolve_fleet(store.state.api.ship, body.api_data, store.state.api.mst_ship)
+			resolve_mission(body.api_data.api_deck_port)
 			break
 		case '/kcsapi/api_get_member/material':
-			res = compareUpdate(store.state.api.resource, body.api_data)
-			store.commit('UPDATE_MATERIAL', res)
+			store.commit('UPDATE_MATERIAL', body.api_data.api_material)
 			break
 		case '/kcsapi/api_req_kousyou/destroyship':
 			store.commit('UPDATE_FOUR_MATERIAL', body.api_data.api_material)	
@@ -62,6 +73,12 @@ ipcRenderer.on('network.on.api', (event, path, body, reqBody) => {
 			break
 		case '/kcsapi/api_req_kousyou/createitem':
 			store.commit('UPDATE_ALL_MATERIAL', body.api_data.api_material)	
+			break
+		case '/kcsapi/api_req_mission/result':
+			store.commit('PLUSE_MATERIAL', body.api_data.api_get_material)
+			break
+		case '/kcsapi/api_get_member/deck':
+			resolve_mission(body.api_data)
 			break
 		case '/kcsapi/api_start2':
 			resolve_start(body)
