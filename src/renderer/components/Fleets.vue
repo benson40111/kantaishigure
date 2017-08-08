@@ -2,7 +2,7 @@
 	<div class="tab-cotent">
 		<div class="tab-pane" id="fleets">
 			<tabs>
-					<tab v-for="fleet in fleets" :key="fleet.id" :name="fleet[0].fleet_name" :selected="fleet === fleets[0] ? true : false">
+					<tab v-for="(fleet,index) in fleets" :id="index" :key="fleet.id" :name="fleet[0].fleet_name" :selected="fleet === fleets[0] ? true : false">
 						<div v-for="ship in fleet" :key="ship.id">
 							{{ ship.api_name }} {{ ship.api_nowhp }}/{{ ship.api_maxhp }}  {{ ship.api_cond }}
 						</div>

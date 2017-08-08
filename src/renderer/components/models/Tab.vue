@@ -9,6 +9,7 @@ export default {
     name: 'model-tab',
     props: {
         name: { required: true },
+        id: { required: true },
         selected: { default: false }
     },
 
