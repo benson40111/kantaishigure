@@ -22,6 +22,7 @@ export default {
 html body {
 	background-color: #222222;
 	height: 100%;
+	font-family:sans-serif;
 }
 .main {
 	display: flex;
@@ -30,5 +31,18 @@ html body {
 .main-tab{
 	height:100%;
 }
-
+.flex-content {
+	display: flex;
+	flex-flow: row nowrap;
+}
+.flex-column {
+	display: flex;
+	flex-flow: column;
+}
+.left-flex {
+	flex: 1
+}
+.right-flex {
+	flex: 1
+}
 </style>

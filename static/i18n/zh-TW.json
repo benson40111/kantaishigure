@@ -5,5 +5,9 @@
 	"gamesize": "遊戲解析度",
 	"Ship": "艦娘",
 	"Equip": "裝備",
-	"Unopened": "未開啟"
+	"Unopened": "未開啟",
+	"Ready": "準備完成",
+	"Done": "完成",
+	"None-Use": "未使用",
+	"Browser": "瀏覽器"
 }

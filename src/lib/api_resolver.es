@@ -1,22 +1,23 @@
 import store from '../renderer/store/index.js'
 import { ipcRenderer } from 'electron'
 
-const resolve_fleet = (ship , { api_deck_port } , mst_ship) => {
+const resolve_fleet = ( { api_ship } , { api_deck_port } , mst_ship) => {
 	let fleets = []
 	let arr_mst_ship = Object.values(mst_ship).map(x => x['api_sortno'])
-	let arr_ship = Object.values(ship).map(x => x['api_id'])
+	let arr_ship = Object.values(api_ship).map(x => x['api_id'])
+	for(let i = 0; i < api_ship.length; i++){
+			let temp = arr_mst_ship.indexOf(api_ship[i].api_sortno)
+			if (temp != -1){
+				api_ship[i] = Object.assign({}, mst_ship[temp] ,api_ship[i])
+			}
+	}
+	store.commit('UPDATE_SHIP', api_ship)
 	for(let x in api_deck_port){
 		let fleet = []
 		for(let i = 0; i < api_deck_port[x].api_ship.length; i++){
 		let temp = arr_ship.indexOf(api_deck_port[x].api_ship[i])
 		if(temp != -1){
-			fleet.push(JSON.parse(JSON.stringify(ship[temp])))
-			}
-		}
-		for(let i = 0; i < fleet.length; i++){
-			let temp = arr_mst_ship.indexOf(fleet[i].api_sortno)
-			if (temp != -1){
-				Object.assign(fleet[i], mst_ship[temp], { fleet_name : api_deck_port[x].api_name })
+			fleet.push(Object.assign({}, api_ship[temp], { fleet_name : api_deck_port[x].api_name }))
 			}
 		}
 		fleets.push(fleet)
@@ -39,7 +40,7 @@ const resolve_mission = ( deck ) => {
 const resolve_port = (body) => {
 	store.commit('UPDATE_MATERIAL', body.api_data.api_material)
 	store.commit('UPDATE_INFO', body.api_data.api_basic)
-	store.commit('UPDATE_SHIP', body.api_data.api_ship)
+	store.commit('UPDATE_NDOCK', body.api_data.api_ndock)
 }
 
 const resolve_start = (body) => {
@@ -59,7 +60,7 @@ ipcRenderer.on('network.on.api', (event, path, body, reqBody) => {
 	switch(path){
 		case '/kcsapi/api_port/port':
 			resolve_port(body)
-			resolve_fleet(store.state.api.ship, body.api_data, store.state.api.mst_ship)
+			resolve_fleet(body.api_data, body.api_data, store.state.api.mst_ship)
 			resolve_mission(body.api_data.api_deck_port)
 			break
 		case '/kcsapi/api_get_member/material':
@@ -79,6 +80,9 @@ ipcRenderer.on('network.on.api', (event, path, body, reqBody) => {
 			break
 		case '/kcsapi/api_get_member/deck':
 			resolve_mission(body.api_data)
+			break
+		case '/kcsapi/api_get_member/ndock':
+			store.commit('UPDATE_NDOCK', body.api_data)
 			break
 		case '/kcsapi/api_start2':
 			resolve_start(body)

@@ -48,7 +48,7 @@ export default {
 .resource_board{
 	border: 2px solid #3d3d3d;
 	border-radius: 5px;
-	margin: 30px 10px 30px 10px;
+	margin: 10px;
 	font-size: 13px;
 }
 .resource_inside{

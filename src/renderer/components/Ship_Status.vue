@@ -2,7 +2,7 @@
 	<div class="ship_status">
 		<div class="ship_inside">
 			<tabs>
-				<tab v-for="(fleet,i) in fleets" :id="i" :key="fleet.id" :name="INDEX[i]" :selected="fleet === fleets[0] ? true : false">
+				<tab v-for="(fleet,i) in fleets" :id="i" :key="fleet.id" :name="INDEX[i]" :selected="i === 0 ? true : false">
 					<div v-for="ship in fleet" :key="ship.id">
 						{{ ship.api_name }} {{ ship.api_nowhp }}/{{ ship.api_maxhp }}  {{ ship.api_cond }}
 					</div>
@@ -35,7 +35,7 @@ export default {
 .ship_status{
 	border: 2px solid #3d3d3d;
 	border-radius: 5px;
-	margin: 30px 10px 30px 10px;
+	margin: 10px;
 	font-size: 13px;
 }
 </style>

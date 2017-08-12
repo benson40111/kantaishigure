@@ -1,7 +1,12 @@
 <template>
-    <span v-if="endtime != 0">
-        {{ hours | non_negtive | two_digits }}:{{ minutes | non_negtive | two_digits }}:{{ seconds | non_negtive | two_digits }}
-    </span>
+    <div>
+        <span class="external-return-time" v-show="active">
+            {{ $t('Done')}}: {{ (new Date(endtime)).toString().substr(16,8)}}
+        </span>
+        <span :style="color" v-if="endtime != 0" @mouseover="active = true" @mouseout="active=false">
+            {{ hours | non_negtive | two_digits }}:{{ minutes | non_negtive | two_digits }}:{{ seconds | non_negtive | two_digits }}
+        </span>
+    </div>
 </template>
 
 <script>
@@ -10,7 +15,8 @@ export default {
     props: [ 'endtime' ],
     data() {
         return {
-            now: Math.trunc((new Date()).getTime() / 1000)
+            now: Math.trunc((new Date()).getTime() / 1000),
+            active: false
         }
     },
     mounted: function() {
@@ -44,7 +50,23 @@ export default {
         },
         hours() {
         return Math.trunc((this.normalizedDate - this.now) / 60 / 60)
+        },
+        color() {
+            if((this.hours == 0 && this.minutes > 0 && this.minutes < 10) || (this.hours == 0 && this.minutes == 0 && this.seconds > 0)){
+                return "color:#ff5286"
+            }
+            return "color:aqua"
         }
     }
 }
 </script>
+
+<style>
+    .external-return-time{
+	    border: 2px solid #3d3d3d;
+	    border-radius: 5px;
+	    margin: 10px;
+	    font-size: 16px;
+        background: #3d3d3d;
+    }
+</style>
