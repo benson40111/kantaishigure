@@ -29,14 +29,14 @@ export default {
 	data(){
 		return {
 			img_urls: [
-				require('../assets/img/01.png'),
-				require('../assets/img/03.png'), //鋼
-				require('../assets/img/02.png'), //彈
-				require('../assets/img/04.png'),
-				require('../assets/img/05.png'),
-				require('../assets/img/06.png'),
-				require('../assets/img/07.png'),
-				require('../assets/img/08.png')
+				require('../../assets/img/01.png'),
+				require('../../assets/img/03.png'), //鋼
+				require('../../assets/img/02.png'), //彈
+				require('../../assets/img/04.png'),
+				require('../../assets/img/05.png'),
+				require('../../assets/img/06.png'),
+				require('../../assets/img/07.png'),
+				require('../../assets/img/08.png')
 			]
 		}
 	}

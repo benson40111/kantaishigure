@@ -1,6 +1,7 @@
 const state = {
     webviewWidth: 800,
-    zoomLevel: 1
+    zoomLevel: 1,
+    language: 'en-US'
 }
 
 const mutations = {
@@ -9,6 +10,9 @@ const mutations = {
     },
     UPDATE_ZOOMLEVEL(state, zoom){
         state.zoomLevel = zoom
+    },
+    UPDATE_LANGUAGE(state, lan){
+        state.language = lan
     }
 }
 

@@ -13,8 +13,8 @@
 </template>
 
 <script>
-import tab from './models/Tab.vue'
-import tabs from './models/Tabs.vue'
+import tab from '../models/Tab.vue'
+import tabs from '../models/Tabs.vue'
 export default {
 	name: 'ship_status',
 	components: { tab , tabs },

@@ -11,7 +11,7 @@
 		</div>
 		<div class="gamesize">
 			<h3>{{ $t('gamesize') }}</h3>
-			<select class="custom-select" v-model="webviewWidth" :change="onChange(webviewWidth)">
+			<select class="custom-select" v-model="webviewWidth" @change="onChange(webviewWidth)">
   				<option value="400">50%</option>
   				<option value="800">100%</option>
   				<option value="1200">150%</option>
@@ -21,12 +21,19 @@
 		</div>
 		<div class="zoomLevel">
 			<h3>zoomLevel</h3>
-			<select class="custom-select" v-model="zoomLevel" :change="onChangeZoom(zoomLevel)">
+			<select class="custom-select" v-model="zoomLevel" @change="onChangeZoom(zoomLevel)">
   				<option value="0.5">50%</option>
   				<option value="1">100%</option>
   				<option value="1.5">150%</option>
 				<option value="1.75">175%</option>
   				<option value="2">200%</option>
+			</select>
+		</div>
+		<div class="language">
+			<h3>{{ $t('Language') }}</h3>
+			<select class="custom-select" v-model="language" @change="onChangeLan(language)">
+  				<option value="en-US">English</option>
+  				<option value="zh-TW">Chinese(traditional)</option>
 			</select>
 		</div>
 	</div>
@@ -39,7 +46,8 @@ export default {
 		return {
 		webviewURL: null,
 		webviewWidth: this.$store.state.config.webviewWidth,
-		zoomLevel: this.$store.state.config.zoomLevel
+		zoomLevel: this.$store.state.config.zoomLevel,
+		language: this.$store.state.config.language
 		}
 	},
 	methods: {
@@ -51,6 +59,13 @@ export default {
 		},
 		onChangeZoom(zoom){
 			this.$store.commit('UPDATE_ZOOMLEVEL', zoom)
+		},
+		onChangeLan(lan){
+			this.$store.commit('UPDATE_LANGUAGE', lan)
+			this.$http.get(`static/i18n/${lan}.json`)
+				.then( (res) => this.$i18n.add(lan, res.data) )
+				.catch( (err) => console.log(err) )
+			this.$i18n.set(lan)
 		}
 	}
 }

@@ -15,7 +15,7 @@
 </template>
 
 <script>
-import timer from './models/Timer.vue'
+import timer from '../models/Timer.vue'
 export default {
     name: 'ndock',
     components: { timer },

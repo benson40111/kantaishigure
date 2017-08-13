@@ -13,7 +13,13 @@ import game from './components/Game.vue'
 import tab from './components/Tab.vue'
 export default {
 	name: 'kantaishigure',
-	components: { game , tab }
+	components: { game , tab },
+	mounted() {
+		this.$http.get(`static/i18n/${this.$store.state.config.language}.json`)
+		.then( (res) => this.$i18n.add(this.$store.state.config.language, res.data) )
+		.catch( (err) => console.log(err) )
+		this.$i18n.set(this.$store.state.config.language)
+	}
 }
 </script>
 

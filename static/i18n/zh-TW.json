@@ -1,7 +1,8 @@
 {
 	"Overview": "概覽",
 	"Fleets": "艦隊",
-	"docking": "入渠",
+	"Docking": "入渠",
+	"Construction": "建造",
 	"gamesize": "遊戲解析度",
 	"Ship": "艦娘",
 	"Equip": "裝備",

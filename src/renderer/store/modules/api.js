@@ -5,6 +5,7 @@ const state = {
 	fleet: {},
 	mession: {},
 	ndock: {},
+	kdock: {},
 	mst_ship: {},
 	mst_mission: {},
 	mst_slotitem: {},
@@ -14,6 +15,9 @@ const state = {
 const mutations = {
 	UPDATE_NDOCK(state, res){
 		state.ndock = res
+	},
+	UPDATE_KDOCK(state, res){
+		state.kdock = res
 	},
 	UPDATE_MISSION(state, res){
 		state.mission = res

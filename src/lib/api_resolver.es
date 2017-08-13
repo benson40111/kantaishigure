@@ -64,7 +64,7 @@ ipcRenderer.on('network.on.api', (event, path, body, reqBody) => {
 			resolve_mission(body.api_data.api_deck_port)
 			break
 		case '/kcsapi/api_get_member/material':
-			store.commit('UPDATE_MATERIAL', body.api_data.api_material)
+			store.commit('UPDATE_MATERIAL', body.api_data)
 			break
 		case '/kcsapi/api_req_kousyou/destroyship':
 			store.commit('UPDATE_FOUR_MATERIAL', body.api_data.api_material)	
@@ -83,6 +83,12 @@ ipcRenderer.on('network.on.api', (event, path, body, reqBody) => {
 			break
 		case '/kcsapi/api_get_member/ndock':
 			store.commit('UPDATE_NDOCK', body.api_data)
+			break
+		case '/kcsapi/api_req_kousyou/getship':
+			store.commit('UPDATE_KDOCK', body.api_data.api_kdock)
+			break
+		case '/kcsapi/api_get_member/kdock':
+			store.commit('UPDATE_KDOCK', body.api_data)
 			break
 		case '/kcsapi/api_start2':
 			resolve_start(body)
