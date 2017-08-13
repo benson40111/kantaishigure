@@ -5,7 +5,7 @@
                 {{ $t('None-Use') }}
             </div>
             <div v-else>
-                {{ ship_name(kdock.api_created_ship_id) }} <timer style="float:right" :endtime="kdock.api_complete_time"></timer>
+                {{ ship_mst_name(kdock.api_created_ship_id) }} <timer style="float:right" :endtime="kdock.api_complete_time"></timer>
             </div>
         </div>
         <div class="kdock-inside" v-else>
@@ -28,14 +28,8 @@ export default {
         }
     },
     methods: {
-        ship_name(id) {
-            for(let i = 0 ; i < this.ships.length ; i++)
-            {
-                if(id === this.ships[i].api_id){
-                    return this.ships[i].api_name
-                }
-            }
-            return "Error"
+        ship_mst_name(id) {
+            return this.$store.getters.find_mst_ship(id).api_name
         }
     }
 }

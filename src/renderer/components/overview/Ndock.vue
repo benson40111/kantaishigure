@@ -29,13 +29,7 @@ export default {
     },
     methods: {
         ship_name(id) {
-            for(let i = 0 ; i < this.ships.length ; i++)
-            {
-                if(id === this.ships[i].api_id){
-                    return this.ships[i].api_name
-                }
-            }
-            return "Error"
+            return this.$store.getters.find_ship(id).api_name
         }
     }
 }

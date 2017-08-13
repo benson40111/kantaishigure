@@ -1,27 +1,14 @@
 import store from '../renderer/store/index.js'
 import { ipcRenderer } from 'electron'
 
-const resolve_fleet = ( { api_ship } , { api_deck_port } , mst_ship) => {
-	let fleets = []
-	let arr_mst_ship = Object.values(mst_ship).map(x => x['api_sortno'])
-	let arr_ship = Object.values(api_ship).map(x => x['api_id'])
-	for(let i = 0; i < api_ship.length; i++){
-			let temp = arr_mst_ship.indexOf(api_ship[i].api_sortno)
-			if (temp != -1){
-				api_ship[i] = Object.assign({}, mst_ship[temp] ,api_ship[i])
-			}
-	}
-	store.commit('UPDATE_SHIP', api_ship)
-	for(let x in api_deck_port){
-		let fleet = []
-		for(let i = 0; i < api_deck_port[x].api_ship.length; i++){
-		let temp = arr_ship.indexOf(api_deck_port[x].api_ship[i])
-		if(temp != -1){
-			fleet.push(Object.assign({}, api_ship[temp], { fleet_name : api_deck_port[x].api_name }))
-			}
-		}
-		fleets.push(fleet)
-	}
+const resolve_ship = ( { api_ship } , { api_deck_port } , mst_ship) => {
+	let ships = api_ship.map(ship => Object.assign({}, mst_ship.find(mst => mst.api_sortno == ship.api_sortno), ship))
+	store.commit('UPDATE_SHIP', ships)
+	let fleets = api_deck_port.map( fleet => 
+		fleet.api_ship.map( id => 
+		Object.assign({}, store.getters.find_ship(id), { fleet_name : fleet.api_name })
+		)
+	)
 	store.commit('UPDATE_FLEET', fleets)
 }
 
@@ -60,7 +47,7 @@ ipcRenderer.on('network.on.api', (event, path, body, reqBody) => {
 	switch(path){
 		case '/kcsapi/api_port/port':
 			resolve_port(body)
-			resolve_fleet(body.api_data, body.api_data, store.state.api.mst_ship)
+			resolve_ship(body.api_data, body.api_data, store.state.api.mst_ship)
 			resolve_mission(body.api_data.api_deck_port)
 			break
 		case '/kcsapi/api_get_member/material':

@@ -76,8 +76,18 @@ const mutations = {
 const actions = {
 }
 
+const getters = {
+	find_mst_ship: (state) => (id) => {
+		return state.mst_ship.find(ship => ship.api_id == id)
+	},
+	find_ship: (state) => (id) => {
+		return state.ship.find(ship => ship.api_id == id)
+	}
+}
+
 export default {
 	state,
 	mutations,
-	actions
+	actions,
+	getters
 }
