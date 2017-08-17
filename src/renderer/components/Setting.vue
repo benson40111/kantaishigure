@@ -70,12 +70,3 @@ export default {
 	}
 }
 </script>
-
-<style>
-	.setting h3{
-		color: aqua;
-	}
-	.setting {
-		margin: 10px;
-	}
-</style>

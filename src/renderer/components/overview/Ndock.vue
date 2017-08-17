@@ -35,15 +35,3 @@ export default {
 }
 
 </script>
-
-<style>
-.ndock{
-	border: 2px solid #3d3d3d;
-	border-radius: 5px;
-	margin: 10px;
-	font-size: 16px;
-}
-.ndock-inside{
-    margin: 5px 10px 5px 5px;
-}
-</style>

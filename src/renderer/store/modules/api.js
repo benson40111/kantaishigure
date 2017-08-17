@@ -1,18 +1,22 @@
 const state = {
-	resource: {},
-	basic: {},
-	ship: {},
-	fleet: {},
-	mession: {},
-	ndock: {},
-	kdock: {},
-	mst_ship: {},
-	mst_mission: {},
-	mst_slotitem: {},
-	mst_slotitemtype: {}
+	resource: [],
+	basic: [],
+	ship: [],
+	fleet: [],
+	mission: [],
+	ndock: [],
+	kdock: [],
+	slotitem: [],
+	mst_ship: [],
+	mst_mission: [],
+	mst_slotitem: [],
+	mst_slotitemtype: []
 }
 
 const mutations = {
+	UPDATE_SLOTITEM(state, res){
+		state.slotitem = res
+	},
 	UPDATE_NDOCK(state, res){
 		state.ndock = res
 	},
@@ -82,6 +86,9 @@ const getters = {
 	},
 	find_ship: (state) => (id) => {
 		return state.ship.find(ship => ship.api_id == id)
+	},
+	find_slot: (state) => (id) => {
+		return state.slotitem.find(ship => ship.api_id == id)
 	}
 }
 

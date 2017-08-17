@@ -6,7 +6,7 @@ const resolve_ship = ( { api_ship } , { api_deck_port } , mst_ship) => {
 	store.commit('UPDATE_SHIP', ships)
 	let fleets = api_deck_port.map( fleet => 
 		fleet.api_ship.map( id => 
-		Object.assign({}, store.getters.find_ship(id), { fleet_name : fleet.api_name })
+		id != -1 ? Object.assign({}, store.getters.find_ship(id), { fleet_name : fleet.api_name }) : undefined
 		)
 	)
 	store.commit('UPDATE_FLEET', fleets)
@@ -30,6 +30,11 @@ const resolve_port = (body) => {
 	store.commit('UPDATE_NDOCK', body.api_data.api_ndock)
 }
 
+const resolve_slot = ( { api_data } , mst_slot) => {
+	let slot = api_data.map( slotitem => Object.assign({}, mst_slot.find( mst => mst.api_id == slotitem.api_slotitem_id), slotitem) )
+	store.commit('UPDATE_SLOTITEM', slot)
+}
+
 const resolve_start = (body) => {
 		store.commit('STORE_MST_SHIP', body.api_data.api_mst_ship)
 		store.commit('STORE_MST_MISSION', body.api_data.api_mst_mission)
@@ -37,6 +42,7 @@ const resolve_start = (body) => {
 		store.commit('STORE_MST_SLOTITEM', body.api_data.api_mst_slotitem)
 		store.commit('STORE_MST_SLOTITEM_EQUIPTYPE', body.api_data.api_mst_slotitem_equiptype)
 }
+
 
 ipcRenderer.on('network.on.api', (event, path, body, reqBody) => {
 	let res
@@ -50,20 +56,22 @@ ipcRenderer.on('network.on.api', (event, path, body, reqBody) => {
 			resolve_ship(body.api_data, body.api_data, store.state.api.mst_ship)
 			resolve_mission(body.api_data.api_deck_port)
 			break
+		case '/kcsapi/api_get_member/slot_item':
+			resolve_slot(body, store.state.api.mst_slotitem)
+			break
 		case '/kcsapi/api_get_member/material':
 			store.commit('UPDATE_MATERIAL', body.api_data)
 			break
+		case '/kcsapi/api_req_hokyu/charge':
 		case '/kcsapi/api_req_kousyou/destroyship':
 			store.commit('UPDATE_FOUR_MATERIAL', body.api_data.api_material)	
 			break
+		case '/kcsapi/api_req_mission/result':
 		case '/kcsapi/api_req_kousyou/destroyitem2':
 			store.commit('PLUSE_MATERIAL', body.api_data.api_get_material)	
 			break
 		case '/kcsapi/api_req_kousyou/createitem':
 			store.commit('UPDATE_ALL_MATERIAL', body.api_data.api_material)	
-			break
-		case '/kcsapi/api_req_mission/result':
-			store.commit('PLUSE_MATERIAL', body.api_data.api_get_material)
 			break
 		case '/kcsapi/api_get_member/deck':
 			resolve_mission(body.api_data)

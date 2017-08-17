@@ -1,0 +1,81 @@
+html body {
+	background-color: #222222;
+	height: 100%;
+	font-family:sans-serif;
+}
+.main {
+	display: flex;
+	flex-flow: row nowrap;
+}
+.main-tab{
+	height:100%;
+}
+.flex-content {
+	display: flex;
+	flex-flow: row nowrap;
+}
+.flex-column {
+	display: flex;
+	flex-flow: column;
+}
+.left-flex {
+	flex: 1
+}
+.right-flex {
+	flex: 1
+}
+.ship_status{
+	border: 2px solid #3d3d3d;
+	border-radius: 5px;
+	margin: 10px;
+	font-size: 14px;
+}
+.ship-item {
+	display: flex;
+	margin: 5px 10px 0px 10px;
+}
+.ship-info {
+	flex: 1;
+	display: flex;
+	flex-flow: column nowrap
+}
+.ship-stat {
+	flex: 2;
+	display: flex;
+	flex-flow: column nowrap
+}
+.ship-hp {
+	flex: 1;
+	font-size: 14px
+}
+.progress-hp {
+	margin-top: 7px
+}
+.ndock{
+	border: 2px solid #3d3d3d;
+	border-radius: 5px;
+	margin: 10px;
+	font-size: 16px;
+}
+.ndock-inside{
+    margin: 5px 10px 5px 5px;
+}
+.ship-title {
+	flex: 4;
+	display: flex;
+}
+.ship-fb {
+	flex: 1;
+	display: flex;
+	flex-flow: column nowrap;
+	margin: 5px 5px 10px 5px;
+}
+.ship-slot {
+	width: 130px;
+}
+.setting h3{
+    color: aqua;
+}
+.setting {
+    margin: 10px;
+}

@@ -2,7 +2,7 @@
 	<div class='shigure-tab'>
 		<div class="tabs is-centered is-fullwidth is-boxed">
 			<div class="per_status">
-				LV.{{basic.api_level}} {{ basic.api_nickname }} {{ $t('Ship') }}：{{ chara }}/{{ basic.api_max_chara }} {{ $t('Equip') }}：{{ basic.api_max_slotitem }}
+				LV.{{basic.api_level}} {{ basic.api_nickname }} {{ $t('Ship') }}：{{ chara }}/{{ basic.api_max_chara }} {{ $t('Equip') }}：{{ slot }}/{{ basic.api_max_slotitem }}
 			</div>
 			<ul class="nav nav-tabs nav-fill">
 				<li class="nav-item">
@@ -39,6 +39,9 @@ export default {
 		},
 		chara(){
 			return this.$store.state.api.ship.length
+		},
+		slot() {
+			return this.$store.state.api.slotitem.length
 		}
 	}
 }

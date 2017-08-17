@@ -1,11 +1,51 @@
 <template>
-	<div class="tab-cotent">
-		<div class="tab-pane" id="fleets">
+	<div class="fleet-outer">
+		<div class="fleet-inside">
 			<tabs>
-					<tab v-for="(fleet,i) in fleets" :id="i" :key="fleet.id" :name="fleet[0].fleet_name" :selected="i === 0 ? true : false">
-						<div v-for="ship in fleet" :key="ship.id">
-							{{ ship.api_name }} {{ ship.api_nowhp }}/{{ ship.api_maxhp }}  {{ ship.api_cond }}
+				<tab v-for="(fleet,i) in fleets" :id="i" :key="fleet.id" :name="fleet[0].fleet_name" :selected="i === 0 ? true : false">
+					<div class="ship-item" v-for="ship in fleet" :key="ship.id" v-if="ship != undefined">
+						<div class="ship-title">
+							<div class="ship-info">
+								<span class="ship-name">
+									{{ ship.api_name }}
+								</span>
+								<span class="ship-lv">
+									Lv. {{ ship.api_lv }}
+								</span>
+							</div>
+							<div class="ship-stat"> 
+								<div class="flex-content"> 
+									<span class="ship-hp"> 
+										{{ ship.api_nowhp }}/{{ ship.api_maxhp }} 
+									</span>
+									<div>
+										<span class="ship-cond fa fa-star" :style="{ 'color' : ship.api_cond > 49 ? '#FFFF40' : ship.api_cond < 40 ? (ship.api_cond < 20 ? '#d7211f' : '#e37b3c') : '#FFF' }">
+											{{ ship.api_cond }}
+										</span>
+									</div>
+								</div>
+								<div class="progress-hp">
+									<progressbar height="10px" :max="ship.api_maxhp" :now="ship.api_nowhp"></progressbar>
+								</div>
+							</div>
 						</div>
+						<span class="ship-fb">
+							<div style="flex:1">
+								<progressbar height="8px" style="margin-top:10px" :max="ship.api_fuel_max" :now="ship.api_fuel"></progressbar>
+							</div>
+							<div style="flex:1">
+								<progressbar height="8px" style="margin-top:10px" :max="ship.api_bull_max" :now="ship.api_bull"></progressbar>
+							</div>
+						</span>
+						<div class="ship-slot">
+							<div v-for="slot in ship.api_slot" :key="slot.api_id" v-if="slot != -1 && slotitemDone">
+								{{ find_slot(slot).api_name }}
+							</div>
+						</div>
+					</div>
+					<div v-else>
+						<br>
+					</div>
 					</tab>
 			</tabS>
 		</div>
@@ -36,12 +76,21 @@ api_lucky 運（lucky），靠杯為什麼運氣就是用英文 XD (他爽啦 �
 <script charset="utf-8">
 import tab from './models/Tab.vue'
 import tabs from './models/Tabs.vue'
+import progressbar from './models/Progressbar.vue'
 export default {
 	name: 'Fleets',
-	components: { tab , tabs },
+	components: { tab , tabs , progressbar },
 	computed: {
+		slotitemDone() {
+			return this.$store.state.api.slotitem.length > 0 ? true : false
+		},
 		fleets() {
 			return this.$store.state.api.fleet
+		}
+	},
+	methods: {
+		find_slot(id) {
+			return this.$store.getters.find_slot(id)
 		}
 	}
 }
