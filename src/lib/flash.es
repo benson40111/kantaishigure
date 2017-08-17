@@ -24,7 +24,7 @@ case 'linux':
   break
 }
 const flashPaths = [
-  path.join(__static, 'PepperFlash', folderName, pluginName),
+  path.join(process.env.NODE_ENV === 'development' ? __static : __resources , 'PepperFlash', folderName, pluginName).replace(/\\/g, '\\\\'),
 ]
 
 try {

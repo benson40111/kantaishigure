@@ -30,7 +30,14 @@
     "files": [
       "dist/electron",
       "node_modules/",
-      "package.json"
+      "package.json",
+      "!dist/electron/static/PepperFlash"
+    ],
+    "extraResources": [
+      {
+        "from": "dist/electron/static/PepperFlash",
+        "to": "PepperFlash"
+      }
     ],
     "dmg": {
       "contents": [
@@ -59,11 +66,11 @@
   },
   "dependencies": {
     "axios": "^0.16.1",
-    "vuex-i18n": "^1.4.3",
     "vue": "^2.3.3",
     "vue-electron": "^1.0.6",
     "vue-router": "^2.5.3",
     "vuex": "^2.3.1",
+    "vuex-i18n": "^1.4.3",
     "vuex-persistedstate": "^1.4.1"
   },
   "devDependencies": {

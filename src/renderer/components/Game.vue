@@ -10,7 +10,7 @@ export default {
 	name: 'game',
 	computed: {
 		preload_js() {
-			return `file:${require('path').resolve(__dirname, '../assets/js/webview-preload.js')}`
+			return `file:${require('path').resolve(__static, 'js', 'webview-preload.js')}`
 		}
 	}
 }

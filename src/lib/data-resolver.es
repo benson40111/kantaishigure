@@ -1,5 +1,3 @@
-const { ipcRenderer } = require('electron')
-
 const { proxy, mainWindow } = global
 
 const handleResponse = (method,[domain,path,url], body, reqBody, time) => {
