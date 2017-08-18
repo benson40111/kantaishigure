@@ -4,8 +4,13 @@
             <div v-if="ndock.api_complete_time==0">
                 {{ $t('None-Use') }}
             </div>
-            <div v-else>
-                {{ ship_name(ndock.api_ship_id) }} <timer style="float:right" :endtime="ndock.api_complete_time"></timer>
+            <div class="ndock-item" v-else>
+                <div class="ndock-name">
+                    {{ ship_name(ndock.api_ship_id) }} 
+                </div>
+                <div class="ndock-timer">
+                    <timer :endtime="ndock.api_complete_time"></timer>
+                </div>
             </div>
         </div>
         <div class="ndock-inside" v-else>
@@ -35,3 +40,13 @@ export default {
 }
 
 </script>
+
+<style>
+.ndock-item {
+    display: flex;
+    flex-flow: row nowrap;
+}
+.ndock-name {
+    flex: 1;
+}
+</style>

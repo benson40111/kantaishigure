@@ -2,8 +2,12 @@
 	<div class="mission">
         <div v-for="mission in missions" v-if="mission != undefined" :key="mission.id">
             <div v-if="mission[0] !== 0" class="mission-inside">
-                {{ mission[1] | mission_format(mst_mission) }} 
-                <timer style="float:right;" :endtime="mission[2]"></timer>
+                <div class="mission-name">
+                    {{ mission[1] | mission_format(mst_mission) }} 
+                </div>
+                <div class="mission-timer">
+                    <timer :endtime="mission[2]"></timer>
+                </div>
             </div>
             <div v-else class="mission-inside">
                 {{ $t('Ready')}}
@@ -49,6 +53,14 @@ export default {
 	font-size: 16px;
 }
 .mission-inside{
+    display: flex;
+    flex-flow: row;
     margin: 5px 10px 5px 5px;
+}
+.mission-name {
+    flex: 1
+}
+.mission-timer {
+
 }
 </style>

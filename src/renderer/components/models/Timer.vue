@@ -1,9 +1,9 @@
 <template>
     <div>
-        <span class="external-return-time" v-show="active">
+        <div class="external-return-time" v-show="active" :style="position">
             {{ $t('Done')}}: {{ (new Date(endtime)).toString().substr(16,8)}}
-        </span>
-        <span :style="color" v-if="endtime != 0" @mouseover="active = true" @mouseout="active=false">
+        </div>
+        <span :style="color" v-if="endtime != 0" @mouseover="(active = true) && getPosition()" @mouseout="active=false">
             {{ hours | non_negtive | two_digits }}:{{ minutes | non_negtive | two_digits }}:{{ seconds | non_negtive | two_digits }}
         </span>
     </div>
@@ -16,7 +16,8 @@ export default {
     data() {
         return {
             now: Math.trunc((new Date()).getTime() / 1000),
-            active: false
+            active: false,
+            position: ""
         }
     },
     mounted: function() {
@@ -57,6 +58,11 @@ export default {
             }
             return "color:aqua"
         }
+    },
+    methods: {
+        getPosition() {
+            this.position = `top:${this.$el.offsetTop-12}px;left:${this.$el.offsetLeft-140}px;`
+        }
     }
 }
 </script>
@@ -67,6 +73,8 @@ export default {
 	    border-radius: 5px;
 	    margin: 10px;
 	    font-size: 16px;
+        width: 120px;
         background: #3d3d3d;
+        position: absolute;
     }
 </style>

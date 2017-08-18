@@ -14,6 +14,9 @@ const state = {
 }
 
 const mutations = {
+	UPDATE_SHIP_ARRAY(state, res){
+		res.map( x => Object.assign(state.ship.find( ship => ship.api_id == x.api_id ), x))
+	},
 	UPDATE_SLOTITEM(state, res){
 		state.slotitem = res
 	},

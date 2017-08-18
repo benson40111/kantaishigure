@@ -4,8 +4,13 @@
             <div v-if="kdock.api_created_ship_id==0">
                 {{ $t('None-Use') }}
             </div>
-            <div v-else>
-                {{ ship_mst_name(kdock.api_created_ship_id) }} <timer style="float:right" :endtime="kdock.api_complete_time"></timer>
+            <div class="kdock-item" v-else>
+                <div class="kdock-name">
+                    {{ ship_mst_name(kdock.api_created_ship_id) }}
+                </div>
+                <div class="kdock-timer">
+                    <timer :endtime="kdock.api_complete_time"></timer>
+                </div>
             </div>
         </div>
         <div class="kdock-inside" v-else>
@@ -45,5 +50,12 @@ export default {
 }
 .kdock-inside{
     margin: 5px 10px 5px 5px;
+}
+.kdock-item {
+    display: flex;
+    flex-flow: row nowrap;
+}
+.kdock-name {
+    flex: 1;
 }
 </style>
