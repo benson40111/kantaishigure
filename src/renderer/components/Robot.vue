@@ -1,19 +1,19 @@
 <template>
 	<div class="tab-content">
 		<div class="flex-column">
-            <div class="robot-enable">
+            <div class="robot-enable margin-content">
                 <input type="checkbox" v-model="isEnabled">
                     {{ $t('Robot_enable') }}
             </div>
-            <div class="robot-sortie">
+            <div class="robot-sortie margin-content">
                 <input type="checkbox" v-model="Sortie">
                     {{ $t('Auto_sortie') }}
             </div>
-            <div class="click-delayms">
+            <div class="click-delayms margin-content">
                 <input type="number" v-model.number="Delayms">
                     {{ $t('Click_delayms') }}
             </div>
-            <div class="Expedition-delay-time">
+            <div class="Expedition-delay-time margin-content">
                 <select class="custom-select" v-model="EnseiDelayMin">
                         <option disabled value="">{{$t('min-mintus')}}</option>
   				        <option v-for="index in enseiIndex" :key="index" :value="index+1">{{ `${index+1} ${$t('minutes')}` }}</option>
@@ -26,19 +26,19 @@
                     {{$t('Expedition_delay_minutes')}}
                 </span>
             </div>
-            <div class="sleep-time">
+            <div class="sleep-time margin-content">
                 <timepicker format="HH:mm:ss" v-model="sleepTime" :second-interval="15" @change="onChangeSleepTime" hide-clear-button></timepicker>
                 <span>
                     {{ $t('Sleep_start') }} <span style="color:#ff5286">{{$t('Sleep_info')}}</span>
                 </span>
             </div>
-            <div class="sleep-end">
+            <div class="sleep-end margin-content margin-bottom">
                     <timepicker format="HH:mm:ss" v-model="sleepEnd" :second-interval="15" @change="onChangeSleepEnd" hide-clear-button></timepicker>
                     <span>
                         {{ $t('Sleep_end') }}
                     </span>
             </div>
-            <div class="robot-expedition">
+            <div class="robot-expedition margin-content">
                 <tabs>
                     <tab v-for="(mission,i) in Mission" :id="i" :name="index[i]" :key="i" v-if="mission != undefined" :selected="i === 0 ? true : false">
                             <div class="expedition-inside flex-content">
@@ -84,7 +84,7 @@ export default {
         },
         Delayms: {
             get () { return this.$store.state.robot_cf.Delayms },
-            set (value) { this.$store.commit('UPDATE_DELAYMS', value) }
+            set (value) { this.$store.commit('UPDATE_DELAYMS', value); if(value) this.$robot.checkMission();}
         },
         isEnabled: {
             get () { return this.$store.state.robot_cf.isEnabled },

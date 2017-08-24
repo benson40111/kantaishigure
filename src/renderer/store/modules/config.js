@@ -2,7 +2,8 @@ const state = {
     webviewWidth: 800,
     zoomLevel: 1,
     language: 'en-US',
-    gameAudioMuted: false
+    gameAudioMuted: false,
+    webviewURL: "http://www.dmm.com/netgame/social/-/gadgets/=/app_id=854854/"
 }
 
 const mutations = {
@@ -17,7 +18,10 @@ const mutations = {
     },
     UPDATE_GAMEAUDIOMUTED(state, res){
         state.gameAudioMuted = res
-    }        
+    },
+    UPDATE_WEBVIEWURL(state, res){
+        state.webviewURL = res
+    }
 }
 
 const actions = {

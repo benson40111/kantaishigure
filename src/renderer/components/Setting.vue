@@ -1,14 +1,15 @@
 <template>
-	<div class="flex-content">
-		<div class="flex-column setting setting-left">
+	<div class="flex-content setting">
+		<div class="flex-column setting-left">
 			<div class="browser">
 				<h3>{{ $t('Browser') }}</h3>
-				<form action="#" @submit.prevent="onSubmit()">
-					<input type="text" v-model="webviewURL"></input>
-					<button type="submit">
-						<i class="fa fa-chevron-left fa-lg" aria-hidden="true"></i>
-					</button>
-				</form>
+				<input type="url" v-model="webviewURL" @keyup.enter="onSearch">
+				<button type="submit" class="btn btn-outline-primary" @click="onSearch">
+						<i class="fa fa-search fa-lg"></i>
+				</button>
+				<button type="submit" class="btn btn-outline-primary" @click="onRefresh">
+					<i class="fa fa-refresh fa-lg" aria-hidden="true"></i>
+				</button>
 			</div>
 			<div class="flashsize">
 				<h3>{{ $t('flashsize') }}</h3>
@@ -43,12 +44,12 @@
 				<button class="btn btn-primary" @click="clearCookies">{{$t('ClearCookies')}}</button>
 			</div>
 		</div>
-		<div class="flex-column setting setting-right">
-			<div class="setting">
+		<div class="flex-column setting-right">
+			<div class="devTool">
 				<h3>{{$t('OpenDevTool')}}</h3>
 					<button class="btn btn-primary" @click="toggleDevTools">{{$t('Toggle')}}</button>
 			</div>
-			<div class="game-AudioMuted setting">
+			<div class="game-AudioMuted">
 				<h3>{{ $t('Game_Audio_Muted')}}</h3>
 					<button type="checkbox" class="btn btn-primary" @click="toggleGameAudio">{{ gameAudioMuted ? $t('Unmuted') : $t('Muted') }}</button>
 			</div>
@@ -61,7 +62,7 @@ export default {
 	name: 'Setting',
 	data() {
 		return {
-		webviewURL: null,
+		webviewURL: this.$store.state.config.webviewURL,
 		language: this.$store.state.config.language
 		}
 	},
@@ -79,8 +80,11 @@ export default {
 		}
 	},
 	methods: {
-		onSubmit() {
-			document.querySelector('webview').src = this.$data.webviewURL
+		onSearch() {
+			document.querySelector('webview').loadURL(this.$data.webviewURL)
+		},
+		onRefresh() {
+			document.querySelector('webview').reload()
 		},
 		onChangeLan(lan){
 			this.$store.commit('UPDATE_LANGUAGE', lan)

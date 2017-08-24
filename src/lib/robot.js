@@ -3,7 +3,13 @@ import EventEmitter from 'events'
 import store from '../renderer/store/index.js'
 import position from './position.js'
 import { remote } from 'electron'
-// Robot Class for auto click
+
+const delay = (time = 3000) => {
+    return new Promise( resolve => {
+        setTimeout( () => { resolve()} , time)
+    })
+}
+
 class Robot extends EventEmitter {
     constructor(){
         super()
@@ -21,6 +27,7 @@ class Robot extends EventEmitter {
         this.Expedition = store.state.robot_cf.Expedition
         this.Sortie = store.state.robot_cf.Sortie
         this.webview = () => document.querySelector('webview')
+        this.EnseiTimer = []
         this.Delayms = (time = store.state.robot_cf.Delayms) => Math.floor(Math.random()*(-time*0.1,time*0.1)+time)
         this.ExpeditionDelayTime = (max = store.state.robot_cf.EnseiDelayMax, min = store.state.robot_cf.EnseiDelayMin) => Math.floor(Math.random()*(Math.abs(max-min)) + min)*60000
         this.sleepTIme = ({HH,mm,ss} = store.state.robot_cf.sleepTime, end = store.state.robot_cf.sleepEnd ) => {
@@ -55,8 +62,12 @@ class Robot extends EventEmitter {
         }
         this.wait = async (time = 10) => {
             if(time == 0) {
-                remote.app.relaunch()
-                remote.app.exit(0)
+                if (process.env.NODE_ENV !== 'development'){
+                    remote.app.relaunch()
+                    remote.app.exit(0)
+                } else {
+                    remote.getCurrentWindow().reload()
+                }
                 return
             }
             if(!this.isWait) return
@@ -117,16 +128,18 @@ class Robot extends EventEmitter {
                     if(this.Expedition[ensei][0])
                     {
                         await this.StartExpedition(ensei)
+                        await delay(8000)
                     }
                 }
                 this.isEnsei = false
-                await this.PromiseMoveClick(position.Port(),10000)
+                await this.PromiseMoveClick(position.Port(),2000)
             }
         }
         this.checkMission = () => {
+            this.EnseiTimer.map(x => clearTimeout(x))
             store.state.api.mission.map( (ep,i) => {
                 if(ep !=undefined && ep[2] != 0){
-                    this.emit('network.on.missionStart', ep[2])
+                    this.emit('network.on.missionStart', ep[2], i)
                 } else if(ep !=undefined && ep[2] == 0){
                     this.ensei.push(i)
                 }
@@ -160,16 +173,16 @@ class Robot extends EventEmitter {
                 await this.MissionReturn()
             }
         })
-        this.on('network.on.missionStart', (time) => {
+        this.on('network.on.missionStart', (time,i) => {
             if(this.isEnable){
-                setTimeout( async () => {
+                this.EnseiTimer[i] = setTimeout( async () => {
                     await this.sleep()
                     await this.check()
                     await this.refreshPort()
                 }, (Number(time) -(new Date()).getTime() + this.ExpeditionDelayTime()))
             }
         })
-        window.setInterval( () => { this.sleepTIme() }, 60000)
+        window.setInterval( () => { this.sleepTIme();}, 60000)
     }
 }
 

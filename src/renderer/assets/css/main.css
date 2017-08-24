@@ -79,32 +79,14 @@ html body {
 .setting-right {
 	flex: 1;
 }
-.setting div{
-	margin-bottom: 10px;
-}
 .setting h3{
     color: aqua;
 }
-.setting {
-    margin: 10px;
-}
-.robot-enable{
+.margin-content{
     margin: 10px 10px 0px 10px;
 }
-.robot-sortie {
-    margin: 10px 10px 0px 10px;
-}
-.click-delayms{
-    margin: 10px 10px 0px 10px;
-}
-.Expedition-delay-time{
-    margin: 10px 10px 0px 10px;
-}
-.sleep-time {
-    margin: 10px 10px 0px 10px;
-}
-.sleep-end {
-    margin: 10px;
+.margin-bottom{
+    margin-bottom: 10px;
 }
 .expedition-inside{
     margin: 10px;

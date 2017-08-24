@@ -19,5 +19,5 @@ remote.getCurrentWebContents().on('dom-ready', () => {
 		document.querySelector('webview').executeJavaScript('DMM.netgame.reloadDialog=function(){}')
 		document.querySelector('webview').setAudioMuted(store.state.config.gameAudioMuted)
 	})
-	document.querySelector('webview').src = 'http://www.dmm.com/netgame/social/-/gadgets/=/app_id=854854/'
+	document.querySelector('webview').loadURL(store.state.config.webviewURL)
 })
