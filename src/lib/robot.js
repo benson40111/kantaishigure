@@ -46,10 +46,12 @@ class Robot extends EventEmitter {
             }
         })}
         this.check = async () => {
-            if(!this.isSleep){
-                if(!this.isActive) return
-            }
+            if(!this.isActive) return
             await new Promise ( resolve => setTimeout( async () => { await this.check(); resolve()}, 5000))
+        }
+        this.sleep = async () => {
+            if(!this.isSleep) return
+            await new Promise ( resolve => setTimeout( async () => { await this.sleep(); resolve()}, 120000))
         }
         this.wait = async (time = 10) => {
             if(time == 0) {
@@ -107,7 +109,6 @@ class Robot extends EventEmitter {
                 this.isEnsei = true
                 while(store.getters.needSupplys().includes(true)){
                     await this.Supply()
-                    await this.wait(1000)
                     await this.check()
                 }
                 await this.mainExpedition()
@@ -162,6 +163,7 @@ class Robot extends EventEmitter {
         this.on('network.on.missionStart', (time) => {
             if(this.isEnable){
                 setTimeout( async () => {
+                    await this.sleep()
                     await this.check()
                     await this.refreshPort()
                 }, (Number(time) -(new Date()).getTime() + this.ExpeditionDelayTime()))
