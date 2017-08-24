@@ -95,6 +95,9 @@ const getters = {
 	},
 	needSupply: (state) => (id) => {
 		return state.fleet[id].fleet.filter(x => x !=undefined).find(x => x.api_buil != x.api_buil_max || x.api_fuel != x.api_fuel_max) != undefined
+	},
+	needSupplys: (state) => () =>  {
+		return state.fleet.map( x => x.fleet).map( fleet => fleet.filter( x => x != undefined).find(x => x.api_buil != x.api_buil_max || x.api_fuel != x.api_fuel_max) != undefined)
 	}
 }
 

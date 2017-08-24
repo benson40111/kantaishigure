@@ -2,7 +2,7 @@
 import EventEmitter from 'events'
 import store from '../renderer/store/index.js'
 import position from './position.js'
-
+import { remote } from 'electron'
 // Robot Class for auto click
 class Robot extends EventEmitter {
     constructor(){
@@ -15,8 +15,11 @@ class Robot extends EventEmitter {
         this.tryTimes = 10
         this.isSleep = false
         this.isActive = false
+        this.isEnsei = false
         this.isWait = false
+        this.ensei = []
         this.Expedition = store.state.robot_cf.Expedition
+        this.Sortie = store.state.robot_cf.Sortie
         this.webview = () => document.querySelector('webview')
         this.Delayms = (time = store.state.robot_cf.Delayms) => Math.floor(Math.random()*(-time*0.1,time*0.1)+time)
         this.ExpeditionDelayTime = (max = store.state.robot_cf.EnseiDelayMax, min = store.state.robot_cf.EnseiDelayMin) => Math.floor(Math.random()*(Math.abs(max-min)) + min)*60000
@@ -30,7 +33,6 @@ class Robot extends EventEmitter {
                 this.isSleep = false
             }
         }
-        this.ensei = []
         this.PromiseMoveClick = ([x,y], time = this.Delayms()) => {
             return new Promise ( resolve => {
             if(this.isEnable){
@@ -43,80 +45,82 @@ class Robot extends EventEmitter {
                 resolve()
             }
         })}
-        this.Sortie = store.state.robot_cf.Sortie
-        this.refreshPort = async () => {
-            this.once('network.on.port', async () => await this.PromiseMoveClick(position.mainExpedition()))
-            await this.PromiseMoveClick(position.Sortie())
-            await this.PromiseMoveClick(position.Port())
-        }
-        this.StartExpedition = async (fleet) => {
-            let done = false, count = 0
-            this.once('network.on.missionStart', () => done = true)
-            this.once('network.on.mission', () => {
-                this.isWait = false
-            })
-            while(!done)
-            {
-                if(count){
-                    if(count > this.tryTimes) break
-                    await this.check()
-                    await this.refreshPort()
-                }
-                await this.PromiseMoveClick(position.Sortie())
-                await this.PromiseMoveClick(position.mainExpedition())
-                this.isWait = true
-                await this.wait()
-                await this.PromiseMoveClick(position.RowExpedition[Math.floor(this.Expedition[fleet][1]/8)](), 1000)
-                await this.PromiseMoveClick(position.ColumnExpedition[this.Expedition[fleet][1]%8](), 1000)
-                await this.PromiseMoveClick(position.ConfirmExpedition[0](), 1000)
-                await this.PromiseMoveClick(position.fleetExpedition[fleet](), 1000)
-                await this.PromiseMoveClick(position.ConfirmExpedition[1](), 1000)
-                await this.PromiseMoveClick(position.Port(),10000)
-                count += 1
-            }
-        }
-
-        this.Supply = async (fleet) => {
-            let done = false, count = 0
-            if(store.getters.needSupply(fleet)) 
-            {
-                this.once('network.on.charge', () => done = true )
-                while(!done){
-                    if(count){
-                        if(count > this.tryTimes) break                            
-                        await this.check()
-                        await this.refreshPort()
-                    }
-                    await this.PromiseMoveClick(position.Supply());
-                    await this.PromiseMoveClick(position.FleetSupply[fleet]());
-                    await this.PromiseMoveClick(position.FullSupply()); 
-                    await this.PromiseMoveClick(position.Port())
-                    count += 1
-                }
-            }
-        }
-        this.wait = async () => {
-            if(!this.isWait) return
-            await new Promise ( resolve => setTimeout( async () => { await this.check(); resolve()}, 5000))
-        }
         this.check = async () => {
             if(!this.isSleep){
                 if(!this.isActive) return
             }
             await new Promise ( resolve => setTimeout( async () => { await this.check(); resolve()}, 5000))
         }
-        this.MissionReturn = async () => {
-            let hasNext = false
-            this.isActive = true
-            this.once('network.on.missionReturn', () => hasNext = true)
-            await this.PromiseMoveClick(position.mainExpedition(),10000)
-            for(let i = 0 ; i < 5 ; i++){
-                await this.PromiseMoveClick(position.mainExpedition(),1000)
+        this.wait = async (time = 10) => {
+            if(time == 0) {
+                remote.app.relaunch()
+                remote.app.exit(0)
+                return
             }
-            if(!hasNext) this.isActive = false
+            if(!this.isWait) return
+            await new Promise ( resolve => setTimeout( async () => { await this.wait(time-1); resolve()}, 2000))
         }
-        this.Start = async () => {
-            await this.PromiseMoveClick(position.Start() , 1000)
+        this.refreshPort = async () => {
+            this.once('network.on.port', async () => await this.PromiseMoveClick(position.mainExpedition()))
+            await this.PromiseMoveClick(position.Sortie())
+            await this.PromiseMoveClick(position.Port())
+        }
+        this.mainExpedition = async () => {
+            this.isWait = true
+            this.once('network.on.mission', () => { this.isWait = false })
+            await this.PromiseMoveClick(position.Sortie())
+            await this.PromiseMoveClick(position.mainExpedition())
+            await this.wait()
+        }
+        this.StartExpedition = async (fleet) => {
+            this.isWait = true            
+            this.once('network.on.missionStart', () => { this.isWait = false })
+            await this.PromiseMoveClick(position.RowExpedition[Math.floor(this.Expedition[fleet][1]/8)](), 1000)
+            await this.PromiseMoveClick(position.ColumnExpedition[this.Expedition[fleet][1]%8](), 1000)
+            await this.PromiseMoveClick(position.ConfirmExpedition[0](), 1000)
+            await this.PromiseMoveClick(position.fleetExpedition[fleet](), 1000)
+            await this.PromiseMoveClick(position.ConfirmExpedition[1]())
+            await this.wait()
+        }
+        this.Supply = async (needSupply = store.getters.needSupplys()) => {
+            if(needSupply.includes(true)){
+                await this.PromiseMoveClick(position.Supply())
+                for(let i = 0; i < needSupply.length ; i++){
+                    if(needSupply[i]) {
+                        this.isWait = true                        
+                        this.once('network.on.charge', () => { this.isWait = false } )
+                        await this.PromiseMoveClick(position.FleetSupply[i]())
+                        await this.PromiseMoveClick(position.FullSupply())
+                        await this.wait()
+                    }
+                }
+            }
+            this.isWait = true            
+            this.once('network.on.port', () => { this.isWait = false })
+            await this.PromiseMoveClick(position.Port())
+            await this.wait()
+            await this.PromiseMoveClick(position.mainExpedition(), 1000)
+        }
+        this.registerExpedition =  async () => {
+            if(this.isEnsei) return
+            if(this.ensei.length) {
+                this.isEnsei = true
+                while(store.getters.needSupplys().includes(true)){
+                    await this.Supply()
+                    await this.wait(1000)
+                    await this.check()
+                }
+                await this.mainExpedition()
+                let ensei
+                while((ensei = this.ensei.shift()) != undefined ){
+                    if(this.Expedition[ensei][0])
+                    {
+                        await this.StartExpedition(ensei)
+                    }
+                }
+                this.isEnsei = false
+                await this.PromiseMoveClick(position.Port(),10000)
+            }
         }
         this.checkMission = () => {
             store.state.api.mission.map( (ep,i) => {
@@ -128,31 +132,31 @@ class Robot extends EventEmitter {
             })
             this.registerExpedition()
         }
-        this.registerExpedition =  async () => {
-            let ensei
-            while((ensei = this.ensei.shift()) != undefined ){
-                if(this.Expedition[ensei][0])
-                {
-                    await this.check()
-                    await this.Supply(ensei+1)
-                    await this.check()
-                    await this.StartExpedition(ensei)
-                }
+        this.MissionReturn = async () => {
+            let hasNext = false
+            this.isActive = true
+            this.once('network.on.missionReturn', () => { hasNext = true })
+            await this.PromiseMoveClick(position.mainExpedition(),10000)
+            for(let i = 0 ; i < 5 ; i++){
+                await this.PromiseMoveClick(position.mainExpedition(),1000)
+            }
+            if(!hasNext) {
+                this.isActive = false
+                this.registerExpedition()
             }
         }
     }
     init = () => {
         this.on('network.on.start', async () => {
             if(this.isEnable){ 
-                await this.Start()
-                this.once('network.on.port', () => {this.checkMission()})
+                await await this.PromiseMoveClick(position.Start() , 1000)
+                this.once('network.on.port', () => { this.checkMission() })
             }
         })
         this.on('network.on.missionReturn', async (data) => {
             if(this.isEnable){
                 this.ensei.push(Number(data-2))
                 await this.MissionReturn()
-                this.registerExpedition()
             }
         })
         this.on('network.on.missionStart', (time) => {
