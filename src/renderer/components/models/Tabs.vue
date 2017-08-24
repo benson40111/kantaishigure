@@ -1,7 +1,7 @@
 <template>
 <div>
     <ul class="nav nav-tabs nav-fill">
-        <li class="nav-item" v-for="tab in tabs" :key="tab.id">
+        <li class="nav-item" style="flex:1" v-for="tab in tabs" :key="tab.id">
             <a class="nav-link" :class="{ 'active' : tab.isActive }" @click="selectTab(tab)">{{ tab.name }}</a>
         </li>
     </ul>

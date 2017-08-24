@@ -19,6 +19,11 @@ let routes = [
 		path: '/setting',
 		name: 'setting',
 		component: require('@/components/Setting')
+	},
+	{
+		path: '/robot',
+		name: 'robot',
+		component: require('@/components/Robot')
 	}
 ] 
 

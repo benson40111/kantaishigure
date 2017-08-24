@@ -2,11 +2,11 @@
 	<div class="ndock">
         <div class="ndock-inside" v-for="ndock in ndocks" :key="ndock.api_id" v-if="ndock.api_state != -1">
             <div v-if="ndock.api_complete_time==0">
-                {{ $t('None-Use') }}
+                {{ $t('Unused') }}
             </div>
             <div class="ndock-item" v-else>
                 <div class="ndock-name">
-                    {{ ship_name(ndock.api_ship_id) }} 
+                    {{ ship_name(ndock.api_ship_id) }}
                 </div>
                 <div class="ndock-timer">
                     <timer :endtime="ndock.api_complete_time"></timer>

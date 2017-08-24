@@ -92,6 +92,9 @@ const getters = {
 	},
 	find_slot: (state) => (id) => {
 		return state.slotitem.find(ship => ship.api_id == id)
+	},
+	needSupply: (state) => (id) => {
+		return state.fleet[id].fleet.filter(x => x !=undefined).find(x => x.api_buil != x.api_buil_max || x.api_fuel != x.api_fuel_max) != undefined
 	}
 }
 

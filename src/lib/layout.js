@@ -2,11 +2,11 @@ import store from '../renderer/store/index.js'
 import { remote } from 'electron'
 
 const getWebviewWidth = () => {
-    return JSON.parse(JSON.stringify(store.state.config.webviewWidth))
+    return store.state.config.webviewWidth
 }
 
 const getZoomLevel = () => {
-    return JSON.parse(JSON.stringify(store.state.config.zoomLevel))
+    return store.state.config.zoomLevel
 }
 
 const additionalStyle = document.createElement('style')

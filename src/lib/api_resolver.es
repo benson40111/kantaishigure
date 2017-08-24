@@ -59,6 +59,7 @@ ipcRenderer.on('network.on.api', (event, path, body, reqBody) => {
 			resolve_port(body)
 			resolve_ship(body.api_data, body.api_data, store.state.api.mst_ship)
 			resolve_mission(body.api_data.api_deck_port)
+			robot.emit('network.on.port')
 			break
 		case '/kcsapi/api_get_member/slot_item':
 			resolve_slot(body, store.state.api.mst_slotitem)
@@ -70,6 +71,7 @@ ipcRenderer.on('network.on.api', (event, path, body, reqBody) => {
 			store.commit('UPDATE_FOUR_MATERIAL', body.api_data.api_material)	
 			break
 		case '/kcsapi/api_req_mission/result':
+			robot.emit('network.on.missionReturn', reqBody.api_deck_id)
 		case '/kcsapi/api_req_kousyou/destroyitem2':
 			store.commit('PLUSE_MATERIAL', body.api_data.api_get_material)	
 			break
@@ -91,12 +93,20 @@ ipcRenderer.on('network.on.api', (event, path, body, reqBody) => {
 		case '/kcsapi/api_req_hokyu/charge':
 			store.commit('UPDATE_FOUR_MATERIAL', body.api_data.api_material)
 			store.commit('UPDATE_SHIP_ARRAY', body.api_data.api_ship)
+			robot.emit('network.on.charge')
 			break
 		case '/kcsapi/api_get_member/ship3':
 			store.commit('UPDATE_SHIP_ARRAY', body.api_data.api_ship_data)
 			break
+		case '/kcsapi/api_req_mission/start':
+			robot.emit('network.on.missionStart', body.api_data.api_complatetime)
+			break
+		case '/kcsapi/api_get_member/mission':
+			robot.emit('network.on.mission')
+			break
 		case '/kcsapi/api_start2':
 			resolve_start(body)
+			robot.emit('network.on.start')
 			break
 	}
 })
