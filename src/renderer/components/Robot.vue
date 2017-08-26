@@ -1,24 +1,24 @@
 <template>
 	<div class="tab-content">
-		<div class="flex-column">
-            <div class="robot-enable margin-content">
-				<label class="btn btn-primary">
+		<div class="flex-column robot">
+            <div class="robot-enable">
+				<label class="btn btn-primary" :class="{ 'btn-danger': isEnabled }">
                 	<input type="checkbox" v-model="isEnabled">
                     	{{ $t('Robot_enable') }}
 				</label>
             </div>
 			<hr>
-            <div class="robot-sortie margin-content">
-				<label class="btn btn-success">
+            <div class="robot-sortie">
+				<label class="btn btn-success" :class="{ 'btn-danger': Sortie }">
                 	<input type="checkbox" v-model="Sortie">
                     	{{ $t('Auto_sortie') }}
 				</label>
             </div>
-            <div class="click-delayms margin-content">
+            <div class="click-delayms">
                 <input type="number" v-model.number="Delayms">
                     {{ $t('Click_delayms') }}
             </div>
-            <div class="Expedition-delay-time margin-content">
+            <div class="Expedition-delay-time">
                 <select class="custom-select" v-model="EnseiDelayMin">
                         <option disabled value="">{{$t('min-mintus')}}</option>
   				        <option v-for="index in enseiIndex" :key="index" :value="index+1">{{ `${index+1} ${$t('minutes')}` }}</option>
@@ -31,13 +31,13 @@
                     {{$t('Expedition_delay_minutes')}}
                 </span>
             </div>
-            <div class="sleep-time margin-content">
+            <div class="sleep-time">
                 <timepicker format="HH:mm:ss" v-model="sleepTime" :second-interval="15" @change="onChangeSleepTime" hide-clear-button></timepicker>
                 <span>
                     {{ $t('Sleep_start') }} <span style="color:#ff5286">{{$t('Sleep_info')}}</span>
                 </span>
             </div>
-            <div class="sleep-end margin-content margin-bottom">
+            <div class="sleep-end">
                     <timepicker format="HH:mm:ss" v-model="sleepEnd" :second-interval="15" @change="onChangeSleepEnd" hide-clear-button></timepicker>
                     <span>
                         {{ $t('Sleep_end') }}
@@ -90,7 +90,7 @@ export default {
         },
         Delayms: {
             get () { return this.$store.state.robot_cf.Delayms },
-            set (value) { this.$store.commit('UPDATE_DELAYMS', value); if(value) this.$robot.checkMission();}
+            set (value) { this.$store.commit('UPDATE_DELAYMS', value); if(value) this.$robot.emit('network.on.checkMission');}
         },
         isEnabled: {
             get () { return this.$store.state.robot_cf.isEnabled },

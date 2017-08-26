@@ -74,7 +74,7 @@ export default {
 	    margin: 10px;
 	    font-size: 16px;
         width: 120px;
-        background: #3d3d3d;
+        background: #222;
         position: absolute;
     }
 </style>

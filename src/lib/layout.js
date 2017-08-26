@@ -26,9 +26,9 @@ const getFlexCss = ({ webviewWidth }) => {
     `
 }
 
-const setCss = ({ webviewWidth , webviewHeight }) => {
+const setCss = ({ webviewWidth , webviewHeight , mainTabViewHeight}) => {
     let { innerHeight } = window
-    let { zoomLevel } = store.state.config
+    let { zoomLevel } = getZoomLevel()
     additionalStyle.innerHTML = `
         .main-game {
             width: 0;
@@ -36,6 +36,10 @@ const setCss = ({ webviewWidth , webviewHeight }) => {
         }
         .main-tab {
             width: calc(100% / ${zoomLevel});
+        }
+        .main-tab-view {
+            height: ${mainTabViewHeight}px;
+            overflow:auto;
         }
         webview {
             width: ${ webviewWidth }px !important;
@@ -61,11 +65,12 @@ export const adjustSize = () => {
     let webviewHeight = Math.min(window.innerHeight , Math.round(webviewWidth / 800.0 * 480.0))
     let cap
     cap = Math.ceil(375 * 1 * zoom)
-    if (window.innerWidth - webviewWidth < cap) {
+    if ((window.innerWidth - webviewWidth) < cap) {
     webviewWidth = window.innerWidth - cap
     webviewHeight = Math.min(innerHeight, Math.round(webviewWidth / 800.0 * 480))
     }
-    setCss({webviewWidth,webviewHeight})
+    let mainTabViewHeight = (window.innerHeight - document.querySelector('.shigure-tab>.tabs').clientHeight)
+    setCss({webviewWidth,webviewHeight,mainTabViewHeight})
 }
 remote.getCurrentWebContents().on('dom-ready', () => {
     adjustSize()

@@ -43,20 +43,3 @@ export default {
 }
 
 </script>
-
-<style>
-.resource_board{
-	border: 2px solid #3d3d3d;
-	border-radius: 5px;
-	margin: 10px;
-	font-size: 13px;
-}
-.resource_inside{
-	margin:5px 10px 10px 10px;
-	width:100%;
-}
-.resource_inside th{
-	text-align: left;
-
-}
-</style>

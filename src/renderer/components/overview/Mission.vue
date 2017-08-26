@@ -44,23 +44,3 @@ export default {
 }
 
 </script>
-
-<style>
-.mission{
-	border: 2px solid #3d3d3d;
-	border-radius: 5px;
-	margin: 10px;
-	font-size: 16px;
-}
-.mission-inside{
-    display: flex;
-    flex-flow: row;
-    margin: 5px 10px 5px 5px;
-}
-.mission-name {
-    flex: 1
-}
-.mission-timer {
-
-}
-</style>

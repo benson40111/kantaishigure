@@ -1,7 +1,8 @@
 html body {
-	background-color: #222222;
+	background-color: #1b1b1b;
 	height: 100%;
 	font-family:sans-serif;
+	overflow: hidden;	
 }
 .main {
 	display: flex;
@@ -9,6 +10,7 @@ html body {
 }
 .main-tab{
 	height:100%;
+	background-color: #1b1b1b;
 }
 .flex-content {
 	display: flex;
@@ -25,10 +27,14 @@ html body {
 	flex: 1
 }
 .ship_status{
+	background: #222;
 	border: 2px solid #3d3d3d;
 	border-radius: 5px;
 	margin: 10px;
 	font-size: 14px;
+}
+.ship_status .nav-link.active{
+	background-color: #222 !important;
 }
 .ship-item {
 	display: flex;
@@ -46,12 +52,13 @@ html body {
 }
 .ship-hp {
 	flex: 1;
-	font-size: 14px
+	font-size: 14px;
 }
 .progress-hp {
 	margin-top: 7px
 }
 .ndock{
+	background: #222;	
 	border: 2px solid #3d3d3d;
 	border-radius: 5px;
 	margin: 10px;
@@ -71,28 +78,19 @@ html body {
 	margin: 5px 5px 10px 5px;
 }
 .ship-slot {
-	width: 130px;
-}
-.setting-left {
-	flex: 1;
-}
-.setting-right {
-	flex: 1;
+	flex:1;
 }
 .setting h3{
     color: aqua;
 }
-.margin-content{
-    margin: 10px 10px 0px 10px;
-}
-.margin-bottom{
-    margin-bottom: 10px;
+.setting>div, .robot>div{
+	margin: 10px 10px 0px 10px;
 }
 .expedition-inside{
     margin: 10px;
 }
 .shigure-tab{
-	background-color: #333;
+	background-color: #1b1b1b;
 	color: #FFF;
 }
 .nav-link{
@@ -100,21 +98,21 @@ html body {
 }
 .nav-link:hover{
 	color: aqua !important;
-	border-color: #333 !important;
+	border-color: #1b1b1b !important;
 	border-bottom-color: aqua !important;
 }
 .nav-link.active{
-	background-color: #333 !important;
+	background-color: #1b1b1b !important;
 	color: aqua !important;
-	border-color: #333 !important;
+	border-color: #1b1b1b !important;
 	border-bottom-color: aqua !important;
 }
 .per_status{
 	text-align: center;
 	width: 100%;
-	padding: 5px 5px 5px 5px;
+	padding: 10px 5px 5px 5px;
 	height: auto;
-	border: 2px solid #3d3d3d;
+	border-bottom: 2px solid #3d3d3d;
 	border-radius: 5px;
 	font-size: 13px;
 }
@@ -126,11 +124,12 @@ hr{
 .kdock{
 	border: 2px solid #3d3d3d;
 	border-radius: 5px;
+	background: #222;
 	margin: 10px;
 	font-size: 16px;
 }
 .kdock-inside{
-    margin: 5px 10px 5px 5px;
+	margin: 5px 10px 5px 5px;
 }
 .kdock-item {
     display: flex;
@@ -138,4 +137,40 @@ hr{
 }
 .kdock-name {
     flex: 1;
+}
+.mission{
+	border: 2px solid #3d3d3d;
+	border-radius: 5px;
+	margin: 10px;
+    font-size: 16px;
+    background: #222;
+}
+.mission-inside{
+    display: flex;
+    flex-flow: row;
+    margin: 5px 10px 5px 5px;
+}
+.mission-name {
+    flex: 1
+}
+.ndock-item {
+    display: flex;
+    flex-flow: row nowrap;
+}
+.ndock-name {
+    flex: 1;
+}
+.resource_board{
+	border: 2px solid #3d3d3d;
+	border-radius: 5px;
+	margin: 10px;
+	font-size: 13px;
+	background: #222;
+}
+.resource_inside{
+	margin:5px 10px 10px 10px;
+	width:100%;
+}
+.resource_inside th{
+	text-align: left;
 }

@@ -1,6 +1,5 @@
 <template>
-	<div class="flex-content setting">
-		<div class="flex-column setting-left">
+	<div class="flex-column setting">
 			<div class="browser">
 				<h3>{{ $t('Browser') }}</h3>
 				<input type="url" v-model="webviewURL" @keyup.enter="onSearch">
@@ -43,8 +42,6 @@
 				<button class="btn btn-primary" @click="clearLocalStorage">{{$t('ClearLocalStore')}}</button>
 				<button class="btn btn-primary" @click="clearCookies">{{$t('ClearCookies')}}</button>
 			</div>
-		</div>
-		<div class="flex-column setting-right">
 			<div class="devTool">
 				<h3>{{$t('OpenDevTool')}}</h3>
 					<button class="btn btn-primary" @click="toggleDevTools">{{$t('Toggle')}}</button>
@@ -53,7 +50,6 @@
 				<h3>{{ $t('Game_Audio_Muted')}}</h3>
 					<button type="checkbox" class="btn btn-primary" @click="toggleGameAudio">{{ gameAudioMuted ? $t('Unmuted') : $t('Muted') }}</button>
 			</div>
-		</div>
 	</div>
 </template>
 

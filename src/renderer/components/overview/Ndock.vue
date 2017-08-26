@@ -40,13 +40,3 @@ export default {
 }
 
 </script>
-
-<style>
-.ndock-item {
-    display: flex;
-    flex-flow: row nowrap;
-}
-.ndock-name {
-    flex: 1;
-}
-</style>

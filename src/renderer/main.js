@@ -5,7 +5,7 @@ import vuexI18n from 'vuex-i18n'
 import App from './App'
 import router from './router'
 import store from './store'
-import robot from '../lib/robot.js'
+import robot from '../lib/Robot.js'
 
 robot.setMaxListeners(30)
 
