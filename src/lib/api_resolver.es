@@ -99,7 +99,7 @@ ipcRenderer.on('network.on.api', (event, path, body, reqBody) => {
 			store.commit('UPDATE_SHIP_ARRAY', body.api_data.api_ship_data)
 			break
 		case '/kcsapi/api_req_mission/start':
-			robot.emit('network.on.missionStart', body.api_data.api_complatetime)
+			robot.emit('network.on.missionStart', body.api_data.api_complatetime, Number(reqBody.api_deck_id)-2)
 			break
 		case '/kcsapi/api_get_member/mission':
 			robot.emit('network.on.mission')

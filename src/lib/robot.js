@@ -162,7 +162,7 @@ class Robot extends EventEmitter {
                     ensei_timeout.map(x => clearTimeout(x))
                     store.state.api.mission.map( (e, i) => {
                         if( e != undefined && e[2] != 0){
-                            this.emit('network.on.missionStart', e[2])
+                            this.emit('network.on.missionStart', e[2],i)
                         } else if(e != undefined && e[2] == 0){
                             ensei.push(i)
                         }
