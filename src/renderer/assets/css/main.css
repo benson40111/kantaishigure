@@ -91,3 +91,51 @@ html body {
 .expedition-inside{
     margin: 10px;
 }
+.shigure-tab{
+	background-color: #333;
+	color: #FFF;
+}
+.nav-link{
+	color: #FFF;
+}
+.nav-link:hover{
+	color: aqua !important;
+	border-color: #333 !important;
+	border-bottom-color: aqua !important;
+}
+.nav-link.active{
+	background-color: #333 !important;
+	color: aqua !important;
+	border-color: #333 !important;
+	border-bottom-color: aqua !important;
+}
+.per_status{
+	text-align: center;
+	width: 100%;
+	padding: 5px 5px 5px 5px;
+	height: auto;
+	border: 2px solid #3d3d3d;
+	border-radius: 5px;
+	font-size: 13px;
+}
+hr{
+	background-color: #a6a6a6;
+	width: 95%;
+	height: 1px;
+}
+.kdock{
+	border: 2px solid #3d3d3d;
+	border-radius: 5px;
+	margin: 10px;
+	font-size: 16px;
+}
+.kdock-inside{
+    margin: 5px 10px 5px 5px;
+}
+.kdock-item {
+    display: flex;
+    flex-flow: row nowrap;
+}
+.kdock-name {
+    flex: 1;
+}

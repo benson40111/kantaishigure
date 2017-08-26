@@ -2,12 +2,17 @@
 	<div class="tab-content">
 		<div class="flex-column">
             <div class="robot-enable margin-content">
-                <input type="checkbox" v-model="isEnabled">
-                    {{ $t('Robot_enable') }}
+				<label class="btn btn-primary">
+                	<input type="checkbox" v-model="isEnabled">
+                    	{{ $t('Robot_enable') }}
+				</label>
             </div>
+			<hr>
             <div class="robot-sortie margin-content">
-                <input type="checkbox" v-model="Sortie">
-                    {{ $t('Auto_sortie') }}
+				<label class="btn btn-success">
+                	<input type="checkbox" v-model="Sortie">
+                    	{{ $t('Auto_sortie') }}
+				</label>
             </div>
             <div class="click-delayms margin-content">
                 <input type="number" v-model.number="Delayms">
@@ -38,6 +43,7 @@
                         {{ $t('Sleep_end') }}
                     </span>
             </div>
+			<hr>
             <div class="robot-expedition margin-content">
                 <tabs>
                     <tab v-for="(mission,i) in Mission" :id="i" :name="index[i]" :key="i" v-if="mission != undefined" :selected="i === 0 ? true : false">

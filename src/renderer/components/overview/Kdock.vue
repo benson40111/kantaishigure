@@ -41,21 +41,3 @@ export default {
 
 </script>
 
-<style>
-.kdock{
-	border: 2px solid #3d3d3d;
-	border-radius: 5px;
-	margin: 10px;
-	font-size: 16px;
-}
-.kdock-inside{
-    margin: 5px 10px 5px 5px;
-}
-.kdock-item {
-    display: flex;
-    flex-flow: row nowrap;
-}
-.kdock-name {
-    flex: 1;
-}
-</style>

@@ -5,7 +5,7 @@
 				LV.{{basic.api_level}} {{ basic.api_nickname }} {{ $t('Ship') }}：{{ chara }}/{{ basic.api_max_chara }} {{ $t('Equip') }}：{{ slot }}/{{ basic.api_max_slotitem }}
 			</div>
 			<ul class="nav nav-tabs nav-fill flex-content">
-				<div class="flex-content" style="flex:8">
+				<div class="flex-content">
 					<li class="nav-item">
 						<router-link to="/" class="nav-link" exact>
 							<i class="fa fa-home" aria-hidden="true"></i>
@@ -57,32 +57,3 @@ export default {
 }
 </script>
 
-<style>
-	.shigure-tab {
-		background-color: #333;
-		color: #FFF;
-	}
-	.nav-link {
-		color: #FFF;
-	}
-	.nav-link:hover{
-		color: aqua !important;
-		border-color: #333 !important;
-		border-bottom-color: aqua !important;
-	}
-	.nav-link.active {
-		background-color: #333 !important;
-		color:aqua !important;
-		border-color: #333 !important;
-		border-bottom-color: aqua !important;
-	}
-	.per_status{
-		text-align: center;
-		width: 100%;
-		padding: 5px 5px 5px 5px;
-		height: auto;
-		border: 2px solid #3d3d3d;
-		border-radius: 5px;
-		font-size: 13px;
-	}
-</style>

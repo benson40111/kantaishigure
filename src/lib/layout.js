@@ -18,10 +18,10 @@ remote.getCurrentWindow().webContents.on('dom-ready', () => {
 const getFlexCss = ({ webviewWidth }) => {
     return `
         .main-game {
-            flex: ${webviewWidth}
+            flex: ${webviewWidth};
         }
         .main-tab {
-            flex: ${window.innerWidth - webviewWidth}
+            flex: ${window.innerWidth - webviewWidth};
         }
     `
 }
