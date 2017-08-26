@@ -72,13 +72,10 @@ export const adjustSize = () => {
     let mainTabViewHeight = (window.innerHeight - document.querySelector('.shigure-tab>.tabs').clientHeight)
     setCss({webviewWidth,webviewHeight,mainTabViewHeight})
 }
-remote.getCurrentWebContents().on('dom-ready', () => {
-    adjustSize()
-})
 
-remote.getCurrentWindow().on('resize', () => {
-    adjustSize()
-})
+
+window.addEventListener('DOMContentLoaded', adjustSize)
+window.addEventListener('resize', adjustSize)
 
 store.watch( (state) => state.config.webviewWidth, () => { adjustSize() })
 store.watch( (state) => state.config.zoomLevel, () => { adjustSize() })
