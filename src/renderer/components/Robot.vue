@@ -1,17 +1,19 @@
 <template>
 	<div class="tab-content">
 		<div class="flex-column robot">
-            <div class="robot-enable">
+            <div class="robot-enable" data-toggle="buttons">
 				<label class="btn btn-primary" :class="{ 'btn-danger': isEnabled }">
                 	<input type="checkbox" v-model="isEnabled">
-                    	{{ $t('Robot_enable') }}
+					<span v-if="isEnabled">{{ $t('Robot_enable') }}</span>
+					<span v-else>{{ $t('Robot_disable') }}</span>
 				</label>
             </div>
 			<hr>
-            <div class="robot-sortie">
+            <div class="robot-sortie" data-toggle="buttons">
 				<label class="btn btn-success" :class="{ 'btn-danger': Sortie }">
                 	<input type="checkbox" v-model="Sortie">
-                    	{{ $t('Auto_sortie') }}
+						<span v-if="Sortie">{{ $t('Auto_sortie') }}</span>
+						<span v-else>{{ $t('Auto_sortie_disable') }}</span>
 				</label>
             </div>
             <div class="click-delayms">
@@ -33,9 +35,9 @@
             </div>
             <div class="sleep-time">
                 <timepicker format="HH:mm:ss" v-model="sleepTime" :second-interval="15" @change="onChangeSleepTime" hide-clear-button></timepicker>
-                <span>
-                    {{ $t('Sleep_start') }} <span style="color:#ff5286">{{$t('Sleep_info')}}</span>
-                </span>
+                <span> {{ $t('Sleep_start') }} </span>
+				<br>
+				<span style="color:#ff5286">{{$t('Sleep_info')}}</span>
             </div>
             <div class="sleep-end">
                     <timepicker format="HH:mm:ss" v-model="sleepEnd" :second-interval="15" @change="onChangeSleepEnd" hide-clear-button></timepicker>

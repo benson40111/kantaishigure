@@ -39,7 +39,7 @@ const setCss = ({ webviewWidth , webviewHeight , mainTabViewHeight}) => {
         }
         .main-tab-view {
             height: ${mainTabViewHeight}px;
-            overflow:auto;
+            overflow:hidden;
         }
         webview {
             width: ${ webviewWidth }px !important;
