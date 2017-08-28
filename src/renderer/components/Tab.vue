@@ -31,7 +31,9 @@
 					</li>
 			</ul>
 		</div>
-		<router-view class="main-tab-view"></router-view>
+		<transition name="fade">
+			<router-view class="main-tab-view"></router-view>
+		</transition>
 	</div>
 </template>
 
