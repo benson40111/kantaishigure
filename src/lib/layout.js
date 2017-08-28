@@ -28,7 +28,7 @@ const getFlexCss = ({ webviewWidth }) => {
 
 const setCss = ({ webviewWidth , webviewHeight , mainTabViewHeight}) => {
     let { innerHeight } = window
-    let { zoomLevel } = getZoomLevel()
+    let zoomLevel = getZoomLevel()
     additionalStyle.innerHTML = `
         .main-game {
             width: 0;
@@ -39,7 +39,7 @@ const setCss = ({ webviewWidth , webviewHeight , mainTabViewHeight}) => {
         }
         .main-tab-view {
             height: ${mainTabViewHeight}px;
-            overflow:hidden;
+            overflow:auto;
         }
         webview {
             width: ${ webviewWidth }px !important;

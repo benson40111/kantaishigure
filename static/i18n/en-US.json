@@ -3,13 +3,16 @@
 	"Robot_enable": "Robot Enable",
 	"Auto_sortie": "Auto Sortie",
 	"Auto_expedition": "Auto Expedition",
-	"Force_focus": "Force Focus",
     "Ensei-ID": "Ensei ID",
 	"Click_delayms": "Click Delay Time(ms)",
 	"Expedition_delay_minutes": "Expedition Delay Minutes(In Range Random Choose)",
 	"Sleep_start": "Sleep Start Time",
 	"Sleep_end": "Sleep End Time",
-	"Sleep_info": "!IMPORTANT can not cross day",
+	"Sleep_info": "Important can not cross day",
 	"clear_localStorage": "Clear LocalStorage",
-	"Game_Audio_Muted": "Game Audio Muted"
+	"Game_Audio_Muted": "Game Audio Muted",
+	"Robot_enabled": "Robot Enabled",
+	"Robot_disabled": "Robot Disabled",
+	"Auto_sortie_enabled": "Auto Sortie Enabled",
+	"Auto_sortie_disabled": "Auto Sortie Disabled"
 }

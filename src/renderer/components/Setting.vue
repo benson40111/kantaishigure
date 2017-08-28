@@ -12,7 +12,7 @@
 			</div>
 			<div class="flashsize">
 				<h3>{{ $t('flashsize') }}</h3>
-				<select class="custom-select" v-model="webviewWidth">
+				<select class="custom-select" v-model.number="webviewWidth">
   					<option value="400">50%</option>
   					<option value="800">100%</option>
   					<option value="1200">150%</option>
@@ -22,7 +22,7 @@
 			</div>
 			<div class="zoomLevel">
 				<h3>zoomLevel</h3>
-				<select class="custom-select" v-model="zoomLevel">
+				<select class="custom-select" v-model.number="zoomLevel">
   					<option value="0.5">50%</option>
   					<option value="1">100%</option>
   					<option value="1.5">150%</option>

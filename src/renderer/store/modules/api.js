@@ -7,6 +7,7 @@ const state = {
 	ndock: [],
 	kdock: [],
 	slotitem: [],
+	quest: [],
 	mst_ship: [],
 	mst_mission: [],
 	mst_slotitem: [],
@@ -14,6 +15,31 @@ const state = {
 }
 
 const mutations = {
+	UPDATE_QUEST(state, res) {
+		let sort = false
+		for(let i = 0; i < res.length; i++){
+			let x
+			if( (res[i] != -1) && (x = state.quest.findIndex(x => x.api_no == res[i].api_no)) != -1){
+				Object.assign(state.quest[x], res[i])
+			} else if(res[i] != -1){
+				state.quest.push(res[i])
+				sort = true
+			}
+		}
+		if(sort){
+			state.quest.sort( (x,y) => x.api_no - y.api_no)
+		}
+	},
+	UPDATE_QUEST_CANCEL(state, id){
+		let x = state.quest.findIndex(quest => quest.api_no == id)
+		if( x != -1) state.quest[x].api_state = 1		
+	},
+	UPDATE_QUEST_CLEAR(state, id){
+		let x = state.quest.findIndex(quest => quest.api_no == id)
+		if( x != -1 && state.quest[x].api_type == 4){
+			state.quest.splice(x,1)
+		} else if( x != 1) state.quest[x].api_state = 0
+	},
 	UPDATE_SHIP_ARRAY(state, res){
 		res.map( x => Object.assign(state.ship.find( ship => ship.api_id == x.api_id ), x))
 	},
@@ -98,6 +124,9 @@ const getters = {
 	},
 	needSupplys: (state) => () =>  {
 		return state.fleet.map( x => x.fleet).map( fleet => fleet.filter( x => x != undefined).find(x => x.api_buil != x.api_buil_max || x.api_fuel != x.api_fuel_max) != undefined)
+	},
+	quest_list: (state) => () => {
+		return state.quest.filter(quest => quest.api_state != 1 && quest.api_state != 0)
 	}
 }
 

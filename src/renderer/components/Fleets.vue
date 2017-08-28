@@ -2,7 +2,7 @@
 	<div class="fleet-outer">
 		<div class="fleet-inside">
 			<tabs>
-				<tab v-for="(fleet,i) in fleets" :id="i" :key="fleet.id" :name="fleet.fleet_name" :selected="i === 0 ? true : false">
+				<tab class="ship-column" v-for="(fleet,i) in fleets" :id="i" :key="fleet.id" :name="fleet.fleet_name" :selected="i === 0 ? true : false">
 					<div class="ship-item" v-for="ship in fleet.fleet" :key="ship.id" v-if="ship != undefined">
 						<div class="ship-title">
 							<div class="ship-info">

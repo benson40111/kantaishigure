@@ -21,7 +21,7 @@ class Robot extends EventEmitter {
         this.isActive = false
         this.isSleep = false
         this.needRefreshPort = false
-        this.isEnable = store.state.robot_cf.isEnabled
+        this.isEnable = () => store.state.robot_cf.isEnabled
         this.waitActive = async () => {
             if(this.isActive){
                 await new Promise ( resolve => setTimeout( async () => { await this.waitActive(); resolve()}, 5000))
@@ -42,7 +42,7 @@ class Robot extends EventEmitter {
         }
         this.PromiseMoveClick = ([x,y], time = this.Delayms()) => {
             return new Promise ( async resolve => {
-            if(this.isEnable){
+            if(this.isEnable()){
                 setTimeout( async ()=> {
                     await document.querySelector('webview').sendInputEvent({type:'mouseDown', x:x, y: y, button:'left', clickCount: 1})
                     await document.querySelector('webview').sendInputEvent({type:'mouseUp', x:x, y: y, button:'left', clickCount: 1});
@@ -130,7 +130,7 @@ class Robot extends EventEmitter {
                     this.isActive = true
                     await this.AutoRun('mainExpedition')
                     let e
-                    while((e = ensei.shift()) != undefined){
+                    while((e = ensei.shift()) >=0 ){
                         if(Expedition_list[e][0]){
                             await this.AutoRun('startExpedition',e)
                             await delay(6000)
@@ -145,7 +145,7 @@ class Robot extends EventEmitter {
                 return new Promise( async resolve => {
                     let hasNext = false
                     this.isActive = true
-                    this.once('network.on.missionReturn', () => { hasNext = true })
+                    this.once('network.on.missionReturn', () => hasNext = true )
                     await this.PromiseMoveClick(position.mainExpedition(),10000)
                     for(let i = 0 ; i < 5 ; i++){
                         await this.PromiseMoveClick(position.mainExpedition(),1000)
@@ -158,7 +158,7 @@ class Robot extends EventEmitter {
                 })
             }
             this.on('network.on.checkMission', () => {
-                if(this.isEnable){
+                if(this.isEnable()){
                     ensei_timeout.map(x => clearTimeout(x))
                     store.state.api.mission.map( (e, i) => {
                         if( e != undefined && e[2] != 0){
@@ -172,7 +172,7 @@ class Robot extends EventEmitter {
             })
             this.on('network.on.missionStart', (time,i) => {
                     ensei_timeout[i] = setTimeout( async () => {
-                        if(this.isEnable){
+                        if(this.isEnable()){
                             if(this.isSleep) {
                                 this.needRefreshPort = true
                             }
@@ -184,14 +184,14 @@ class Robot extends EventEmitter {
                     }, (Number(time) -(new Date()).getTime() + this.ExpeditionDelayTime()))
                 })
             this.on('network.on.missionReturn', data => {
-                if(this.isEnable){
+                if(this.isEnable()){
                     ensei.push(Number(data-2))
                     missionReturn()
                 }
             })
         }
         this.on('network.on.start', async () => {
-            if(this.isEnable){
+            if(this.isEnable()){
                 await this.PromiseMoveClick(position.Start())
                 this.once('network.on.port', () => {
                     this.emit('network.on.checkMission')

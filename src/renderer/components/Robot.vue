@@ -2,32 +2,32 @@
 	<div class="tab-content">
 		<div class="flex-column robot">
             <div class="robot-enable" data-toggle="buttons">
-				<label class="btn btn-primary" :class="{ 'btn-danger': isEnabled }">
+				<label class="btn btn-border" :class="{ 'btn-border-danger': !isEnabled }">
                 	<input type="checkbox" v-model="isEnabled">
-					<span v-if="isEnabled">{{ $t('Robot_enable') }}</span>
-					<span v-else>{{ $t('Robot_disable') }}</span>
+					<span v-if="isEnabled">{{ $t('Robot_enabled') }}</span>
+					<span v-else>{{ $t('Robot_disabled') }}</span>
 				</label>
             </div>
 			<hr>
-            <div class="robot-sortie" data-toggle="buttons">
-				<label class="btn btn-success" :class="{ 'btn-danger': Sortie }">
+            <div class="auto-sortie" data-toggle="buttons">
+				<label class="btn btn-border" :class="{ 'btn-border-danger': !Sortie }">
                 	<input type="checkbox" v-model="Sortie">
-						<span v-if="Sortie">{{ $t('Auto_sortie') }}</span>
-						<span v-else>{{ $t('Auto_sortie_disable') }}</span>
+						<span v-if="Sortie">{{ $t('Auto_sortie_enabled') }}</span>
+						<span v-else>{{ $t('Auto_sortie_disabled') }}</span>
 				</label>
             </div>
             <div class="click-delayms">
-                <input type="number" v-model.number="Delayms">
+                <input type="number" v-model.number="Delayms" style="width:100px;text-align:center;">
                     {{ $t('Click_delayms') }}
             </div>
             <div class="Expedition-delay-time">
                 <select class="custom-select" v-model="EnseiDelayMin">
                         <option disabled value="">{{$t('min-mintus')}}</option>
-  				        <option v-for="index in enseiIndex" :key="index" :value="index+1">{{ `${index+1} ${$t('minutes')}` }}</option>
+  				        <option v-for="index in delayIndex" :key="index" :value="index" :disabled="index >= EnseiDelayMax">{{ `${index} ${$t('minutes')}` }}</option>
 			    </select>
                 <select class="custom-select" v-model="EnseiDelayMax">
                         <option disabled value="">{{$t('max-mintus')}}</option>
-  				        <option v-for="index in enseiIndex" :key="index" :value="index+1"  :disabled="index < EnseiDelayMin">{{ `${index+1} ${$t('minutes')}` }}</option>
+  				        <option v-for="index in delayIndex" :key="index" :value="index"  :disabled="index < EnseiDelayMin">{{ `${index} ${$t('minutes')}` }}</option>
 			    </select>
                 <span>
                     {{$t('Expedition_delay_minutes')}}
@@ -46,14 +46,18 @@
                     </span>
             </div>
 			<hr>
-            <div class="robot-expedition margin-content">
+            <div class="auto-expedition">
                 <tabs>
                     <tab v-for="(mission,i) in Mission" :id="i" :name="index[i]" :key="i" v-if="mission != undefined" :selected="i === 0 ? true : false">
                             <div class="expedition-inside flex-content">
                                 <div class="expedition">
-                                    <input type="checkbox" v-model="Expedition[i][0]" @change="onChangeExpedition">
-                                        <span style="margin-right:10px">{{ $t('Auto_expedition') }}</span>
-                                        <span style="margin-right:10px">{{ $t('Ensei-ID') }}</span>
+                                    <span class="auto-Ensei" data-toggle="buttons">
+				                        <label class="btn btn-border" :class="{ 'btn-border-danger': !Expedition[i][0] }">
+                                            <input type="checkbox" v-model="Expedition[i][0]" @change="onChangeExpedition">
+						                        <span>{{ $t('Auto_expedition') }}</span>
+				                        </label>
+                                    </span>
+                                    <span style="margin-right:10px">{{ $t('Ensei-ID') }}</span>
 			                        <select class="custom-select" v-model="Expedition[i][1]" @change="onChangeExpedition" :disabled="!Expedition[i][0]">
                                         <option disabled value="">{{$t('Select-one')}}</option>
   				                        <option v-for="index in enseiIndex" :key="index" :value="index">{{ index+1 }}</option>
@@ -79,7 +83,9 @@ export default {
     data() {
         return {
             index: ['II', 'III', 'IV'],
-            enseiIndex: [...Array(40).keys()]
+            enseiIndex: [...Array(40).keys()],
+            delayIndex: [...Array(11).keys()],
+            Expedition: this.$store.state.robot_cf.Expedition
         }
     },
     computed: {
@@ -92,11 +98,11 @@ export default {
         },
         Delayms: {
             get () { return this.$store.state.robot_cf.Delayms },
-            set (value) { this.$store.commit('UPDATE_DELAYMS', value); if(value) this.$robot.emit('network.on.checkMission');}
+            set (value) { if(value >= 1000) this.$store.commit('UPDATE_DELAYMS', value);}
         },
         isEnabled: {
             get () { return this.$store.state.robot_cf.isEnabled },
-            set (value) { this.$store.commit('UPDATE_ISENABLED', value)}
+            set (value) { this.$store.commit('UPDATE_ISENABLED', value); if(value) this.$robot.emit('network.on.checkMission');}
         },
         EnseiDelayMax: {
             get() { return this.$store.state.robot_cf.EnseiDelayMax },
@@ -106,14 +112,11 @@ export default {
             get() { return this.$store.state.robot_cf.EnseiDelayMin },
             set(value) { this.$store.commit('UPDATE_ENSEIDELAYMIN', value) }
         },
-        Expedition() {
-            return JSON.parse(JSON.stringify(this.$store.state.robot_cf.Expedition))
-        },
         sleepTime() {
-            return JSON.parse(JSON.stringify(this.$store.state.robot_cf.sleepTime))
+            return this.$store.state.robot_cf.sleepTime
         },
         sleepEnd() {
-            return JSON.parse(JSON.stringify(this.$store.state.robot_cf.sleepEnd))
+            return this.$store.state.robot_cf.sleepEnd
         }
     },
     methods: {
@@ -121,10 +124,10 @@ export default {
             this.$store.commit('UPDATE_EXPEDITION', this.Expedition)
         },
         onChangeSleepTime({data}) {
-            this.$store.commit('UPDATE_SLEEPTIME', data)
+            if(JSON.stringify(this.sleepTime) !== JSON.stringify(data)) this.$store.commit('UPDATE_SLEEPTIME', data)
         },
         onChangeSleepEnd({data}) {
-            this.$store.commit('UPDATE_SLEEPEND', data)
+            if(JSON.stringify(this.sleepEnd) !== JSON.stringify(data)) this.$store.commit('UPDATE_SLEEPEND', data)
         }
     }
 }

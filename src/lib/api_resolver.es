@@ -1,3 +1,4 @@
+/* global robot */
 import store from '../renderer/store/index.js'
 import { ipcRenderer } from 'electron'
 
@@ -49,7 +50,6 @@ const resolve_start = (body) => {
 
 
 ipcRenderer.on('network.on.api', (event, path, body, reqBody) => {
-	let res
 	body = JSON.parse(body)
 	reqBody = JSON.parse(reqBody)
 	delete reqBody.api_token
@@ -72,6 +72,8 @@ ipcRenderer.on('network.on.api', (event, path, body, reqBody) => {
 			break
 		case '/kcsapi/api_req_mission/result':
 			robot.emit('network.on.missionReturn', reqBody.api_deck_id)
+			store.commit('PLUSE_MATERIAL', body.api_data.api_get_material)	
+			break			
 		case '/kcsapi/api_req_kousyou/destroyitem2':
 			store.commit('PLUSE_MATERIAL', body.api_data.api_get_material)	
 			break
@@ -103,6 +105,15 @@ ipcRenderer.on('network.on.api', (event, path, body, reqBody) => {
 			break
 		case '/kcsapi/api_get_member/mission':
 			robot.emit('network.on.mission')
+			break
+		case '/kcsapi/api_get_member/questlist':
+			if(body.api_data.api_list != null) store.commit('UPDATE_QUEST', body.api_data.api_list)
+			break
+		case '/kcsapi/api_req_quest/clearitemget':
+			store.commit('UPDATE_QUEST_CLEAR', Number(reqBody.api_quest_id))
+			break
+		case '/kcsapi/api_req_quest/stop':
+			store.commit('UPDATE_QUEST_CANCEL', Number(reqBody.api_quest_id))
 			break
 		case '/kcsapi/api_start2':
 			resolve_start(body)

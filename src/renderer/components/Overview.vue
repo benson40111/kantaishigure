@@ -15,6 +15,7 @@
 					</tab>
 					</tabs>
 					<mission></mission>
+					<quest></quest>
 				</div>
 			</div>
 	</div>
@@ -26,6 +27,7 @@ import ship_status from './overview/Ship_Status.vue'
 import mission from './overview/Mission.vue'
 import ndock from './overview/Ndock.vue'
 import kdock from './overview/Kdock.vue'
+import quest from './overview/Quest.vue'
 import tab from './models/Tab.vue'
 import tabs from './models/Tabs.vue'
 export default {
@@ -36,6 +38,7 @@ export default {
 		mission,
 		ndock,
 		kdock,
+		quest,
 		tab,
 		tabs
 	}
