@@ -10,7 +10,7 @@
 	"Ready": "準備完成",
 	"Done": "完成",
 	"Unused": "未使用",
-	"Browser": "瀏覽器",
+	"Browser": "瀏覽器(輸入網址後移動)",
 	"Robot": "機器人",
 	"Robot_enabled": "機器人已啟用",
 	"Robot_disabled": "機器人已關閉",
@@ -32,5 +32,6 @@
 	"ClearCookies": "清理Cookies",
 	"Game_Audio_Muted": "遊戲靜音",
 	"Muted": "靜音",
-	"Unmuted": "取消"
+	"Unmuted": "取消",
+	"OpenDevTool": "開發者工具"
 }

@@ -217,3 +217,10 @@ hr{
 	background: #222;
 	position: absolute;
 }
+
+
+.segment{
+	background: #222;
+	border: 2px solid #3d3d3d;
+	border-radius: 5px;
+}

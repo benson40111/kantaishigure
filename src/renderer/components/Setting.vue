@@ -2,53 +2,62 @@
 	<div class="flex-column setting">
 			<div class="browser">
 				<h3>{{ $t('Browser') }}</h3>
-				<input type="url" v-model="webviewURL" @keyup.enter="onSearch">
-				<button type="submit" class="btn btn-outline-primary" @click="onSearch">
-						<i class="fa fa-search fa-lg"></i>
-				</button>
-				<button type="submit" class="btn btn-outline-primary" @click="onRefresh">
-					<i class="fa fa-refresh fa-lg" aria-hidden="true"></i>
-				</button>
+				<div class="input-group">
+						<input type="url" v-model="webviewURL" @keyup.enter="onSearch" style="width:100%">
+						<span class="input-group-btn">
+							<button type="submit" class="btn btn-outline-primary" @click="onSearch">			
+								<i class="fa fa-search fa-lg"></i>
+							</button>
+							<!--<button type="submit" class="btn btn-outline-primary" @click="onRefresh">
+								<i class="fa fa-refresh fa-lg" aria-hidden="true"></i>
+								</button>-->
+						</span>
+				</div>
 			</div>
-			<div class="flashsize">
-				<h3>{{ $t('flashsize') }}</h3>
-				<select class="custom-select" v-model.number="webviewWidth">
-  					<option value="400">50%</option>
-  					<option value="800">100%</option>
-  					<option value="1200">150%</option>
-					<option value="1400">175%</option>
-  					<option value="1600">200%</option>
-				</select>
+			<div class="segment" style="display:flex">
+				<div style="flex:1">
+					<h3>{{ $t('flashsize') }}</h3>
+					<select class="custom-select" v-model.number="webviewWidth">
+  						<option value="400">50%</option>
+  						<option value="800">100%</option>
+  						<option value="1200">150%</option>
+						<option value="1400">175%</option>
+  						<option value="1600">200%</option>
+					</select>
+				</div>
+				<div style="flex:1">
+					<h3>zoomLevel</h3>
+					<select class="custom-select" v-model.number="zoomLevel">
+  						<option value="0.5">50%</option>
+  						<option value="1">100%</option>
+  						<option value="1.5">150%</option>
+						<option value="1.75">175%</option>
+  						<option value="2">200%</option>
+					</select>
+				</div>
 			</div>
-			<div class="zoomLevel">
-				<h3>zoomLevel</h3>
-				<select class="custom-select" v-model.number="zoomLevel">
-  					<option value="0.5">50%</option>
-  					<option value="1">100%</option>
-  					<option value="1.5">150%</option>
-					<option value="1.75">175%</option>
-  					<option value="2">200%</option>
-				</select>
-			</div>
-			<div class="language">
+			<div class="segment">
 				<h3>{{ $t('Language') }}</h3>
 				<select class="custom-select" v-model="language" @change="onChangeLan(language)">
   					<option value="en-US">{{$t('English')}}</option>
   					<option value="zh-TW">{{$t('Chinese(traditional)')}}</option>
 				</select>
 			</div>
-			<div class="localStorage">
+			<div class="segment">
 				<h3>{{$t('clear_localStorage')}}</h3>
 				<button class="btn btn-primary" @click="clearLocalStorage">{{$t('ClearLocalStore')}}</button>
 				<button class="btn btn-primary" @click="clearCookies">{{$t('ClearCookies')}}</button>
 			</div>
-			<div class="devTool">
-				<h3>{{$t('OpenDevTool')}}</h3>
-					<button class="btn btn-primary" @click="toggleDevTools">{{$t('Toggle')}}</button>
-			</div>
-			<div class="game-AudioMuted">
-				<h3>{{ $t('Game_Audio_Muted')}}</h3>
-					<button type="checkbox" class="btn btn-primary" @click="toggleGameAudio">{{ gameAudioMuted ? $t('Unmuted') : $t('Muted') }}</button>
+
+			<div class="segment" style="display:flex">
+				<div style="flex:1">
+					<h3>{{$t('OpenDevTool')}}</h3>
+						<button class="btn btn-primary" @click="toggleDevTools">{{$t('Toggle')}}</button>
+				</div>
+				<div style="flex:1">
+					<h3>{{ $t('Game_Audio_Muted')}}</h3>
+						<button type="checkbox" class="btn btn-primary" @click="toggleGameAudio">{{ gameAudioMuted ? $t('Unmuted') : $t('Muted') }}</button>
+				</div>
 			</div>
 	</div>
 </template>
