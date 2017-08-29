@@ -21,3 +21,19 @@ remote.getCurrentWebContents().on('dom-ready', () => {
 	})
 	document.querySelector('webview').loadURL(store.state.config.webviewURL)
 })
+
+const clearQuest = () => {
+	let japanDate = new Date((new Date((new Date()).getTime() + (new Date().getTimezoneOffset())*60000 + 540 * 60000)).setHours(4,0,0))
+	if(japanDate < (new Date())){
+		japanDate = new Date(japanDate.setDate(japanDate.getDate()+1))
+	}
+	window.setTimeout( () => {
+		store.commit('UPDATE_QUEST_DAY', japanDate.getTime())
+		window.setInterval(() => {
+			japanDate = (new Date((new Date()).getTime() + (new Date().getTimezoneOffset())*60000 + 540 * 60000)).setHours(4,0,0)
+			store.commit('UPDATE_QUEST_DAY', japanDate)
+		}, 86400000)
+	} , japanDate.getTime() - (new Date().getTime()))
+}
+
+clearQuest()

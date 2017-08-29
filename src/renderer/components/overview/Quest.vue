@@ -20,7 +20,7 @@ export default {
     },
     computed: {
         quests() {
-            return this.$store.getters.quest_list()
+            return this.$store.state.api.quest.filter(quest => quest.api_state == 2 || quest.api_state == 3)
         }
     },
     filters: {

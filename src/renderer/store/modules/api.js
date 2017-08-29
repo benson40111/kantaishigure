@@ -40,6 +40,17 @@ const mutations = {
 			state.quest.splice(x,1)
 		} else if( x != 1) state.quest[x].api_state = 0
 	},
+	UPDATE_QUEST_DAY(state,time){
+		for(let i = 0; i < state.quest.length ; i++){
+			if(state.quest[i].api_type == 1){
+				state.quest[i].api_state = 1	
+			} else if(new Date(time).getDay() == 1 && state.quest[i].qpi_type == 2 ){
+				state.quest[i].api_state = 1				
+			} else if(new Date(time).getDate() == 1 && state.quest[i].qpi_type == 3 ){
+				state.quest[i].api_state = 1
+			}
+		}
+	},
 	UPDATE_SHIP_ARRAY(state, res){
 		res.map( x => Object.assign(state.ship.find( ship => ship.api_id == x.api_id ), x))
 	},
@@ -124,9 +135,6 @@ const getters = {
 	},
 	needSupplys: (state) => () =>  {
 		return state.fleet.map( x => x.fleet).map( fleet => fleet.filter( x => x != undefined).find(x => x.api_buil != x.api_buil_max || x.api_fuel != x.api_fuel_max) != undefined)
-	},
-	quest_list: (state) => () => {
-		return state.quest.filter(quest => quest.api_state != 1 && quest.api_state != 0)
 	}
 }
 
