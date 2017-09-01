@@ -56,7 +56,11 @@ class Robot extends EventEmitter {
             return new Promise ( async resolve => {
                 let isWait = true
                 let wait = async (time = 10) => {
-                    if(time == 0) {remote.getCurrentWindow().reload(); resolve()}
+                    if(time == 0) {
+                        remote.getCurrentWindow().reload()
+                        isWait = false
+                        return
+                    }
                     else if(isWait){
                         await new Promise ( resolve => setTimeout( async () => { await wait(time-1); resolve()}, 2000))                        
                     }
@@ -121,7 +125,7 @@ class Robot extends EventEmitter {
             let isEnsei = false
             const startMission = async () => {
                 if(!isEnsei && ensei.length){
-                    await this.waitActive()                    
+                    await this.waitActive()
                     isEnsei = true
                     while(store.getters.needSupplys().includes(true)){
                         await this.AutoRun('supply')
@@ -159,6 +163,7 @@ class Robot extends EventEmitter {
             }
             this.on('network.on.checkMission', () => {
                 if(this.isEnable()){
+                    ensei = []
                     ensei_timeout.map(x => clearTimeout(x))
                     store.state.api.mission.map( (e, i) => {
                         if( e != undefined && e[2] != 0){
