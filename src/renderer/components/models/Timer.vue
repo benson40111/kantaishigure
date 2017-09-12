@@ -1,9 +1,6 @@
 <template>
     <div>
-        <div class="external-return-time" v-show="active" :style="position">
-            {{ $t('Done')}}: {{ (new Date(endtime)).toString().substr(16,8)}}
-        </div>
-        <span :style="color" v-if="endtime != 0" @mouseover="(active = true) && getPosition()" @mouseout="active=false">
+        <span :style="color" v-if="endtime != 0" v-tooltip.left="$t('Done') + ':' + (new Date(endtime)).toString().substr(16,8)">
             {{ hours | non_negtive | two_digits }}:{{ minutes | non_negtive | two_digits }}:{{ seconds | non_negtive | two_digits }}
         </span>
     </div>
@@ -58,23 +55,6 @@ export default {
             }
             return "color:aqua"
         }
-    },
-    methods: {
-        getPosition() {
-            this.position = `top:${this.$el.offsetTop-12}px;left:${this.$el.offsetLeft-140}px;`
-        }
     }
 }
 </script>
-
-<style>
-    .external-return-time{
-	    border: 2px solid #3d3d3d;
-	    border-radius: 5px;
-	    margin: 10px;
-	    font-size: 16px;
-        width: 120px;
-        background: #222;
-        position: absolute;
-    }
-</style>

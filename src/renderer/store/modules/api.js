@@ -11,21 +11,25 @@ const state = {
 	mst_ship: [],
 	mst_mission: [],
 	mst_slotitem: [],
-	mst_slotitemtype: []
+	mst_slotitemtype: [],
+	battleresult: {}
 }
 
 const mutations = {
+	UPDATE_BATTLERESULT(state,res){
+		state.battleresult = res
+	},
 	UPDATE_QUEST(state, res) {
 		let sort = false
-		for(let i = 0; i < res.length; i++){
-			let x
-			if( (res[i] != -1) && (x = state.quest.findIndex(x => x.api_no == res[i].api_no)) != -1){
-				Object.assign(state.quest[x], res[i])
-			} else if(res[i] != -1){
-				state.quest.push(res[i])
+		let x
+		res.map( quest => {
+			if( (x = state.quest.findIndex(x => x.api_no == quest.api_no)) != -1 ){
+				Object.assign(state.quest[x], quest)
+			} else {
+				state.quest.push(quest)
 				sort = true
 			}
-		}
+		})
 		if(sort){
 			state.quest.sort( (x,y) => x.api_no - y.api_no)
 		}
@@ -135,6 +139,9 @@ const getters = {
 	},
 	needSupplys: (state) => () =>  {
 		return state.fleet.map( x => x.fleet).map( fleet => fleet.filter( x => x != undefined).find(x => x.api_buil != x.api_buil_max || x.api_fuel != x.api_fuel_max) != undefined)
+	},
+	getFleet: (state) => (id) => {
+		return state.fleet[id].fleet
 	}
 }
 

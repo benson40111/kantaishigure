@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import axios from 'axios'
 import vuexI18n from 'vuex-i18n'
+import VTooltip from 'v-tooltip'
 
 import App from './App'
 import router from './router'
@@ -10,6 +11,7 @@ import robot from '../lib/robot.js'
 robot.setMaxListeners(30)
 
 Vue.use(vuexI18n.plugin,store)
+Vue.use(VTooltip)
 
 if (!process.env.IS_WEB) Vue.use(require('vue-electron'))
 Vue.http = Vue.prototype.$http = axios
@@ -24,6 +26,7 @@ new Vue({
   template: '<App/>'
 }).$mount('#app')
 
+console.log('test')
 import '../lib/services.es'
-require('../lib/api_resolver.es')
 import '../lib/layout.js'
+require('../lib/api_resolver.es')

@@ -219,14 +219,40 @@ hr{
 }
 
 
-.segment{
-	background: #222;
-	border: 2px solid #3d3d3d;
-	border-radius: 5px;
-}
 .fade-enter-active, .fade-leave-active {
 	transition: opacity .5s
 }
 .fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
 	opacity: 0
+}
+.tooltip {
+  display: block !important;
+  padding: 4px;
+  z-index: 10000;
+}
+
+.tooltip .tooltip-inner {
+  background: black;
+  color: white;
+  border-radius: 16px;
+  padding: 5px 10px 4px;
+}
+
+.tooltip tooltip-arrow {
+  display: none;
+}
+
+.tooltip[aria-hidden='true'] {
+  visibility: hidden;
+  opacity: 0;
+  transition: opacity .15s, visibility .15s;
+}
+
+.tooltip[aria-hidden='false'] {
+  visibility: visible;
+  opacity: 1;
+  transition: opacity .15s;
+}
+.show {
+	display: block;
 }

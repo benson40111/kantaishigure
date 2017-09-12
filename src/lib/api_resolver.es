@@ -1,5 +1,6 @@
 /* global robot */
 import store from '../renderer/store/index.js'
+import sortie from './sortie.js'
 import { ipcRenderer } from 'electron'
 
 const resolve_fleet = ( api_deck_port ) => {
@@ -59,6 +60,7 @@ ipcRenderer.on('network.on.api', (event, path, body, reqBody) => {
 			resolve_port(body)
 			resolve_ship(body.api_data, body.api_data, store.state.api.mst_ship)
 			resolve_mission(body.api_data.api_deck_port)
+			sortie.next()
 			robot.emit('network.on.port')
 			break
 		case '/kcsapi/api_get_member/slot_item':
@@ -114,6 +116,15 @@ ipcRenderer.on('network.on.api', (event, path, body, reqBody) => {
 			break
 		case '/kcsapi/api_req_quest/stop':
 			store.commit('UPDATE_QUEST_CANCEL', Number(reqBody.api_quest_id))
+			break
+		case '/kcsapi/api_req_sortie/battle':
+			sortie.battle(body)
+			break
+		case '/kcsapi/api_req_battle_midnight/battle':
+			sortie.midnight(body)
+			break
+		case '/kcsapi/api_req_map/next':
+			sortie.next()
 			break
 		case '/kcsapi/api_start2':
 			resolve_start(body)
