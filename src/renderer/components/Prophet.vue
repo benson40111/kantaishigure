@@ -42,7 +42,7 @@
 								{{ ship.api_name }}
 							</span>
 						</div>
-						<div class="ship_damage">
+						<div class="ship-damage">
 							{{ ship.api_damage }}
 						</div>
 					</div>

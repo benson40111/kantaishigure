@@ -1,8 +1,8 @@
 <template>
 	<div class="mission">
-        <div v-for="mission in missions" v-if="mission != undefined" :key="mission.id">
+        <div v-for="mission in missions" v-if="mission" :key="mission.id">
             <div v-if="mission[0] !== 0" class="mission-inside">
-                <div class="mission-name">
+                <div class="mission-name nowrap">
                     {{ mission[1] | mission_format(mst_mission) }} 
                 </div>
                 <div class="mission-timer">

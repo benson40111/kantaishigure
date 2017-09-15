@@ -40,6 +40,10 @@ const mutations = {
 			state.quest.sort( (x,y) => x.api_no - y.api_no)
 		}
 	},
+	UPDATE_QUEST_START(state, id){
+		let x = state.quest.findIndex(quest => quest.api_no == id)
+		if( x != -1) state.quest[x].api_state = 2
+	},
 	UPDATE_QUEST_CANCEL(state, id){
 		let x = state.quest.findIndex(quest => quest.api_no == id)
 		if( x != -1) state.quest[x].api_state = 1		

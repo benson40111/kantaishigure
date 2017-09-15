@@ -114,6 +114,9 @@ ipcRenderer.on('network.on.api', (event, path, body, reqBody) => {
 		case '/kcsapi/api_get_member/mission':
 			robot.emit('network.on.mission')
 			break
+		case '/kcsapi/api_req_quest/start':
+			store.commit('UPDATE_QUEST_START',reqBody.api_quest_id)
+			break
 		case '/kcsapi/api_get_member/questlist':
 			if(body.api_data.api_list != null) store.commit('UPDATE_QUEST', { res: body.api_data.api_list, count:body.api_data.api_exec_count})
 			break
