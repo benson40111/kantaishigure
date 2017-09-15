@@ -1,18 +1,18 @@
 <template>
-	<div class="tab-content">
-			<div class="flex-content">
-				<div class="left-flex flex-column">
+	<div class="tab-content" >
+			<div class="flex-row d-flex">
+				<div class="d-flex flex-column" style="flex:1;">
 					<resource></resource>
 					<ship_status></ship_status>
 				</div>
-				<div class="right-flex flex-column">
+				<div class="d-flex flex-column" style="flex:1;">
 					<tabs>
-					<tab id="Docking" :name="$t('Docking')" :selected="true">
-						<ndock></ndock>
-					</tab>
-					<tab id="Building" :name="$t('Construction')">
-						<kdock></kdock>
-					</tab>
+						<tab id="Docking" :name="$t('Docking')" :selected="true">
+							<ndock></ndock>
+						</tab>
+						<tab id="Building" :name="$t('Construction')">
+							<kdock></kdock>
+						</tab>
 					</tabs>
 					<mission></mission>
 					<quest></quest>

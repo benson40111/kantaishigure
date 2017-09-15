@@ -26,7 +26,6 @@ new Vue({
   template: '<App/>'
 }).$mount('#app')
 
-console.log('test')
 import '../lib/services.es'
 import '../lib/layout.js'
 require('../lib/api_resolver.es')

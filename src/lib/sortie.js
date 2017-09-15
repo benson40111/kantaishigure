@@ -10,6 +10,12 @@ class sortie{
 			let { api_maxhps, api_nowhps } = api_data
 			let api_onDamageHps = [...api_nowhps] 
 			let api_countDamage = Array(api_maxhps.length).fill(0)
+			const onDamageKouku = ({api_edam, api_fdam}) => {
+				for(let i = 1 ; i < api_fdam.length ; i++){
+					api_onDamageHps[i] -= Math.round(api_fdam[i])
+					api_onDamageHps[6+i] -= Math.round(api_edam[i])					
+				}
+			}
 			const onDamageHougeki = ({ api_at_list , api_df_list , api_damage }) => {
 				let hougeki  = []
 				for(let i = 1 ; i < api_at_list.length ; i++){
@@ -37,6 +43,9 @@ class sortie{
 			})
 			if(api_data['api_raigeki'] != undefined){
 				onDamageRaigeki(api_data['api_raigeki'])
+			}
+			if(api_data['api_kouku'] != undefined && api_data['api_kouku']['api_stage3'] != null){
+				onDamageKouku(api_data.api_kouku.api_stage3)
 			}
 			let fleet = store.getters.getFleet(Number(api_data.api_dock_id)-1)
 			let nowFleet = []
@@ -66,7 +75,7 @@ class sortie{
 				'fleet': nowFleet,
 				'enemy': nowenemy
 			}
-			store.commit('UPDATE_BATTLERESULT', battleresult)
+			store.commit('UPDATE_BATTLE', battleresult)
 		}
 		this.midnight = ({ api_data }) => { // for normal midnight battle
 			if(Object.keys(store.state.api.battleresult).length){
@@ -111,13 +120,21 @@ class sortie{
 					'fleet': nowFleet,
 					'enemy': nowEnemy
 				}
-				store.commit('UPDATE_BATTLERESULT', midnightbattleresult)
+				store.commit('UPDATE_BATTLE', midnightbattleresult)
 			} else {
 				this.battle({ api_data : api_data })
 			}
 		}
 		this.next = () => { // clear battleresult
-			store.commit('UPDATE_BATTLERESULT', {})
+			store.commit('UPDATE_BATTLE', {'fleet': store.getters.getFleet(0)})
+		}
+		this.result = ({api_data}) => {
+			let result = { 
+				api_win_rank : api_data.api_win_rank,
+				api_mvp: api_data.api_mvp,
+				api_get_ship: api_data.api_get_ship ? api_data.api_get_ship.api_ship_name : undefined
+			}
+			store.commit('UPDATE_BATTLERESULT', result)
 		}
 	}
 }

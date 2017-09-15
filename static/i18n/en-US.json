@@ -14,5 +14,8 @@
 	"Robot_enabled": "Robot Enabled",
 	"Robot_disabled": "Robot Disabled",
 	"Auto_sortie_enabled": "Auto Sortie Enabled",
-	"Auto_sortie_disabled": "Auto Sortie Disabled"
+	"Auto_sortie_disabled": "Auto Sortie Disabled",
+	"battle_rank": "Battle Rank",
+	"get_ship": "Get Ship",
+	"need_supply": "Need Supply"
 }

@@ -54,9 +54,12 @@ ipcRenderer.on('network.on.api', (event, path, body, reqBody) => {
 	body = JSON.parse(body)
 	reqBody = JSON.parse(reqBody)
 	delete reqBody.api_token
-	console.log(path, body, reqBody)
+	if(process.env.NODE_ENV == 'development'){
+		console.log(path, body, reqBody)
+	}
 	switch(path){
 		case '/kcsapi/api_port/port':
+			document.querySelector('#home').click()
 			resolve_port(body)
 			resolve_ship(body.api_data, body.api_data, store.state.api.mst_ship)
 			resolve_mission(body.api_data.api_deck_port)
@@ -66,6 +69,9 @@ ipcRenderer.on('network.on.api', (event, path, body, reqBody) => {
 		case '/kcsapi/api_get_member/slot_item':
 			resolve_slot(body, store.state.api.mst_slotitem)
 			break
+		case '/kcsapi/api_get_member/preset_deck':
+			document.querySelector('#fleets').click()
+			break
 		case '/kcsapi/api_get_member/material':
 			store.commit('UPDATE_MATERIAL', body.api_data)
 			break
@@ -73,7 +79,7 @@ ipcRenderer.on('network.on.api', (event, path, body, reqBody) => {
 			store.commit('UPDATE_FOUR_MATERIAL', body.api_data.api_material)	
 			break
 		case '/kcsapi/api_req_mission/result':
-			robot.emit('network.on.missionReturn', reqBody.api_deck_id)
+			robot.emit('network.on.missionReturn')
 			store.commit('PLUSE_MATERIAL', body.api_data.api_get_material)	
 			break			
 		case '/kcsapi/api_req_kousyou/destroyitem2':
@@ -109,7 +115,7 @@ ipcRenderer.on('network.on.api', (event, path, body, reqBody) => {
 			robot.emit('network.on.mission')
 			break
 		case '/kcsapi/api_get_member/questlist':
-			if(body.api_data.api_list != null) store.commit('UPDATE_QUEST', body.api_data.api_list)
+			if(body.api_data.api_list != null) store.commit('UPDATE_QUEST', { res: body.api_data.api_list, count:body.api_data.api_exec_count})
 			break
 		case '/kcsapi/api_req_quest/clearitemget':
 			store.commit('UPDATE_QUEST_CLEAR', Number(reqBody.api_quest_id))
@@ -123,8 +129,16 @@ ipcRenderer.on('network.on.api', (event, path, body, reqBody) => {
 		case '/kcsapi/api_req_battle_midnight/battle':
 			sortie.midnight(body)
 			break
+		case '/kcsapi/api_req_map/start':
 		case '/kcsapi/api_req_map/next':
+			document.querySelector('#prophet').click()
 			sortie.next()
+			break
+		case '/kcsapi/api_req_sortie/battleresult':
+			sortie.result(body)
+			break
+		case '/kcsapi/api_get_member/ship_deck':
+			store.commit('UPDATE_SHIP_ARRAY', body.api_data.api_ship_data)
 			break
 		case '/kcsapi/api_start2':
 			resolve_start(body)

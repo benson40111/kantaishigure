@@ -1,8 +1,12 @@
 <template>
 <div>
-    <ul class="nav nav-tabs nav-fill">
-        <li class="nav-item" style="flex:1" v-for="tab in tabs" :key="tab.id">
-            <a class="nav-link" :class="{ 'active' : tab.isActive }" @click="selectTab(tab)">{{ tab.name }}</a>
+    <ul class="nav nav-tabs nav-fill nav-shigure">
+        <li class="nav-item" :style="'width:' + 100/tabs.length + '%;'" v-for="tab in tabs" :key="tab.id">
+            <a class="nav-link" :class="{ 'active' : tab.isActive }" @click="selectTab(tab)">
+                <span>
+                {{ tab.name }}
+                </span>
+            </a>
         </li>
     </ul>
     <div class="tab-content">

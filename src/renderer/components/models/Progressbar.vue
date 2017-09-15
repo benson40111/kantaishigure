@@ -44,20 +44,11 @@ export default {
             } else if(this.precent > 50) {
                 return "bg-small-break"
             } else if(this.precent > 25){
-                return "bg-warning"
+                return "bg-medium-break"
             } else {
-                return "bg-danger"
+                return "bg-large-break"
             }
         }
     }
 }
 </script>
-
-<style>
-    .progress {
-        border-radius: 0;
-    }
-    .bg-small-break {
-        background-color: #869645 !important;
-    }
-</style>

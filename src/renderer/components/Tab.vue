@@ -4,43 +4,42 @@
 			<div class="per_status">
 				LV.{{basic.api_level}} {{ basic.api_nickname }} {{ $t('Ship') }}：{{ chara }}/{{ basic.api_max_chara }} {{ $t('Equip') }}：{{ slot }}/{{ basic.api_max_slotitem }}
 			</div>
-			<ul class="nav nav-tabs nav-fill flex-content">
-				<div class="flex-content" style="flex:8">
-					<li class="nav-item" style="flex:1">
-						<router-link to="/" class="nav-link" exact>
-							<i class="fa fa-home" aria-hidden="true"></i>
+			<ul class="nav nav-tabs nav-fill nav-shigure">
+					<li class="nav-item" style="width:26%">
+						<router-link to="/" id="home" class="nav-link" exact>
+							<span>
+								<span class="fa fa-home" aria-hidden="true"></span>
 								{{ $t('Overview') }}
-							</i>
+							</span>
 						</router-link>
 					</li>
-					<li class="nav-item" style="flex:1">
-						<router-link to="fleets" class="nav-link" exact>
-							<i class="fa fa-ship" aria-hidden="true"></i>
+					<li class="nav-item" style="width:26%">
+						<router-link to="fleets" id="fleets" class="nav-link" exact>
+							<span>
+								<span class="fa fa-ship" aria-hidden="true"></span>
 								{{ $t('Fleets') }}
+							</span>
 						</router-link>
 					</li>
-					<li class="nav-item" style="flex:1">
-						<router-link :to="order[0]" class="nav-link" v-html="sort[order[0]]" exact>
+					<li class="nav-item" style="width:26%">
+						<router-link :to="order[0]" :id="order[0]" class="nav-link" v-html="sort[order[0]]" exact>
 						</router-link>
 					</li>
-				</div>
-				<div class="flex-content" style="flex:2">
-					<li class="nav-item dropdown" @click="dropdown = !dropdown" style="flex:1">
-						<a class="nav-link" >
+					<li class="nav-item dropdown" @click="dropdown = !dropdown;tooltip_pos()" style="width:11%">
+						<a class="nav-link">
 							<i class="fa fa-caret-down" aria-hidden="true"></i>
 						</a>
-						<div class="dropdown-menu dropdown-menu-right" :class="{ show : dropdown } ">
-							<a class="dropdown-item" v-for="(value,i) in order.slice(1)" @click="changeOrder(i+1,value)"> {{ $t(value.charAt(0).toUpperCase() + value.slice(1)) }}</a>
-						</div>
 					</li>
-					<li class="nav-item" style="flex:1">
-						<router-link to="setting" class="nav-link" exact>
+					<li class="nav-item" style="width:11%">
+						<router-link to="setting" id="setting" class="nav-link" exact>
 							<router-link tag='i' to='/setting' class="fa fa-cog" active-class='fa-spin' aria-hidden="true" exact>
 							</router-link>
 						</router-link>
 					</li>
-				</div>
 			</ul>
+			<div class="dropdown-shigure" :style="pos" :class="{ show : dropdown } ">
+				<a class="dropdown-shigure-item" :id="value" v-for="(value,i) in order.slice(1)" @click="changeOrder(i+1,value);dropdown=false"> {{ $t(value.charAt(0).toUpperCase() + value.slice(1)) }}</a>
+			</div>
 		</div>
 		<transition name="fade">
 		<router-view class="main-tab-view"></router-view>
@@ -55,7 +54,8 @@ export default {
 	data() {
 		return {
 			order: [ 'robot' , 'prophet'],
-			dropdown: false
+			dropdown: false,
+			pos: ''
 		}
 	},
 	computed: {
@@ -71,12 +71,16 @@ export default {
 		sort() { 
 			return {
 				robot: `
-							<i class="fa fa-android " aria-hidden="true"></i>
+						<span>
+							<span class="fa fa-android " aria-hidden="true"></span>
 							${ this.$t('Robot')}
+						</span>
 			`,
 				prophet: `
-							<i class="fa fa-eye " aria-hidden="true"></i>
+						<span>
+							<span class="fa fa-eye " aria-hidden="true"></span>
 							${ this.$t('Prophet')}
+						</span>
 			`
 			}
 		}
@@ -87,6 +91,10 @@ export default {
 			this.order[0] = this.order[index]
 			this.order[index] = temp
 			location.href = `#/${value}`
+		},
+		tooltip_pos(){
+			let temp = document.querySelector('.nav-item.dropdown')
+			this.pos = `top:${temp.offsetTop + temp.offsetHeight}px;left:${temp.offsetLeft - temp.offsetWidth}px;`
 		}
 	}
 }

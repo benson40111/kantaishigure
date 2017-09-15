@@ -9,8 +9,8 @@
 				</label>
             </div>
 			<hr>
-            <div class="auto-sortie" data-toggle="buttons">
-				<label class="btn btn-border" :class="{ 'btn-border-danger': !Sortie }">
+            <div class="auto-sortie" data-toggle="buttons" >
+				<label v-tooltip.right="'Undone'" class="btn btn-border" :class="{ 'btn-border-danger': !Sortie }">
                 	<input type="checkbox" v-model="Sortie">
 						<span v-if="Sortie">{{ $t('Auto_sortie_enabled') }}</span>
 						<span v-else>{{ $t('Auto_sortie_disabled') }}</span>

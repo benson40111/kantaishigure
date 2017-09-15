@@ -2,7 +2,6 @@
 import EventEmitter from 'events'
 import store from '../renderer/store/index.js'
 import position from './position.js'
-import { remote } from 'electron'
 
 const delay = (time = 3000) => {
 	return new Promise( resolve => {
@@ -67,7 +66,7 @@ class Robot extends EventEmitter {
 				let wait = (time = 20) => {
 					return new Promise ( async promise_resolve => {
 						if(time == 0) {
-							remote.getCurrentWindow().reload()
+							document.querySelector('webview').reload()
 							this.isReload = true
 							promise_resolve(true)
 						}
@@ -93,6 +92,7 @@ class Robot extends EventEmitter {
 						break
 					case 'mainExpedition':
 						this.once('network.on.mission', () => isWait = false)
+						await delay()
 						await this.PromiseMoveClick(position.Sortie())
 						await this.PromiseMoveClick(position.mainExpedition())
 						await wait()
@@ -114,7 +114,8 @@ class Robot extends EventEmitter {
 					case 'supply':
 						var needSupply = store.getters.needSupplys()
 						if(needSupply.includes(true)){
-							await this.PromiseMoveClick(position.Supply())                            
+							await delay()
+							await this.PromiseMoveClick(position.Supply())
 							for(let i = 0; i < needSupply.length ; i++){
 								isWait = true
 								if(needSupply[i]){
@@ -182,12 +183,12 @@ class Robot extends EventEmitter {
 						await this.PromiseMoveClick(position.mainExpedition(),1000)
 					}
 					if(!hasNext) {
-						startMission()
+						this.emit('network.on.checkMission')
 					}
 					resolve()
 				})
 			}
-			this.on('network.on.checkMission', () => {
+			this.on('network.on.checkMission',async () => {
 				if(this.isEnable()){
 					ensei = []
 					ensei_timeout.map(x => clearTimeout(x))
@@ -198,6 +199,7 @@ class Robot extends EventEmitter {
 							ensei.push(i)
 						}
 					})
+					await delay()
 					startMission()
 				}
 			})
@@ -213,20 +215,21 @@ class Robot extends EventEmitter {
 					}
 				}, (Number(time) -(new Date()).getTime() + this.ExpeditionDelayTime()))
 			})
-			this.on('network.on.missionReturn', data => {
+			this.on('network.on.missionReturn', () => {
 				if(this.isEnable()){
-					ensei.push(Number(data-2))
 					missionReturn()
 				}
 			})
 		}
 		this.on('network.on.start', async () => {
-			this.isReload = false 
+			this.isReload = false
+			this.isActive = false
 			if(this.isEnable()){
-				await this.PromiseMoveClick(position.Start())
 				this.once('network.on.port', () => {
 					this.emit('network.on.checkMission')
-				})                
+				})
+				await delay()
+				await this.PromiseMoveClick(position.Start())
 			}
 		})
 		window.setInterval( () => this.sleepTime(), 120000 )

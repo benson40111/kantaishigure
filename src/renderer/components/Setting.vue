@@ -8,9 +8,6 @@
 					<button type="submit" class="btn btn-outline-primary" @click="onSearch">			
 						<i class="fa fa-search fa-lg"></i>
 					</button>
-					<!--<button type="submit" class="btn btn-outline-primary" @click="onRefresh">
-		 <i class="fa fa-refresh fa-lg" aria-hidden="true"></i>
-		 </button>-->
 				</span>
 			</div>
 		</div>
@@ -46,7 +43,7 @@
 		<div class="segment">
 			<h3>{{$t('clear_localStorage')}}</h3>
 			<button class="btn btn-primary" @click="clearLocalStorage">{{$t('ClearLocalStore')}}</button>
-			<button class="btn btn-primary" @click="clearCookies">{{$t('ClearCookies')}}</button>
+			<button v-tooltip.right="'important clear cookies will let your setting clear'" class="btn btn-primary" @click="clearCookies">{{$t('ClearCookies')}}</button>
 		</div>
 
 		<div class="segment">
