@@ -4,6 +4,11 @@ html body {
 	font-family:sans-serif;
 	overflow: hidden;	
 }
+::-webkit-scrollbar {
+    width: 0px;  /* remove scrollbar space */
+    background: transparent;  /* optional: just make scrollbar invisible */
+}
+
 .main {
 	display: flex;
 	flex-flow: row nowrap;
@@ -11,20 +16,11 @@ html body {
 .main-tab{
 	height:100%;
 	background-color: #1b1b1b;
+	flex-flow: nowrap;
 }
-.flex-content {
-	display: flex;
-	flex-flow: row nowrap;
-}
-.flex-column {
-	display: flex;
-	flex-flow: column;
-}
-.left-flex {
-	flex: 1
-}
-.right-flex {
-	flex: 1
+
+.segment{
+	display: block;
 }
 .ship_status{
 	background: #222;
@@ -57,8 +53,18 @@ label.btn {
 	flex: 1;
 	font-size: 14px;
 }
+.ship-damage {
+	flex:none;
+	padding:3px 5px;
+}
 .progress-hp {
 	margin-top: 7px
+}
+.nowrap {
+	text-overflow: ellipsis;
+	overflow: hidden;
+	white-space: nowrap;
+	width:0;
 }
 .ndock{
 	background: #222;	
@@ -91,7 +97,16 @@ label.btn {
 	margin: 5px 5px 10px 5px;
 }
 .ship-slot {
-	flex:1;
+	display: flex;
+	flex:none;
+	width:100px;
+	align-items:center;
+}
+.ship-slot > div > span{
+	overflow:hidden;
+	white-space:nowrap;
+	text-overflow:ellipsis;
+	padding-left:10px;
 }
 .setting h3{
     color: aqua;
@@ -126,6 +141,44 @@ div.auto-sortie, div.sleep-end, div.auto-expedition {
 .shigure-tab{
 	background-color: #1b1b1b;
 	color: #FFF;
+}
+.nav-shigure{
+	display:block !important;
+	overflow:hidden;
+	padding-bottom:2px;
+	border:none;
+}
+.nav-shigure > li {
+	float:left;
+	overflow:hidden;
+	white-space:nowrap;
+}
+.dropdown-shigure{
+	position: absolute;
+	display: none;
+	z-index:1000;
+	left: auto;
+	min-width: width 10rem;
+	padding:.5rem 0;
+	margin:.125rem 0 0;
+	font-size: 1rem;
+	background: black;
+	color: white;
+	padding: 5px 10px 4px;
+	text-align:left;
+	list-style-type: square none;
+	background-clip: padding-box;
+}
+.dropdown-shigure-item{
+	display: block;
+	width: 100%;
+	padding: 3px 1.5rem;
+	clear: both;
+	font-weight: 400;
+	text-align: inherit;
+	white-space: nowrap;
+	background: 0 0;
+	border: 0;
 }
 .nav-link{
 	color: #FFF;
@@ -208,25 +261,53 @@ hr{
 .resource_inside th{
 	text-align: left;
 }
-.external {
-	border: 2px solid #3d3d3d;
-	border-radius: 5px;
-	margin: 10px;
-	font-size: 16px;
-	width: 200px;
-	background: #222;
-	position: absolute;
-}
 
-
-.segment{
-	background: #222;
-	border: 2px solid #3d3d3d;
-	border-radius: 5px;
-}
 .fade-enter-active, .fade-leave-active {
-	transition: opacity .5s
+	transition: opacity .3s
 }
 .fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
 	opacity: 0
+}
+.tooltip {
+  display: block !important;
+  padding: 4px;
+  z-index: 10000;
+}
+
+.tooltip .tooltip-inner {
+  background: black;
+  color: white;
+  padding: 5px 10px 4px;
+}
+
+.tooltip tooltip-arrow {
+  display: none;
+}
+
+.tooltip[aria-hidden='true'] {
+  visibility: hidden;
+  opacity: 0;
+  transition: opacity .15s, visibility .15s;
+}
+
+.tooltip[aria-hidden='false'] {
+  visibility: visible;
+  opacity: 1;
+  transition: opacity .15s;
+}
+.show {
+	display: block;
+}
+
+.progress {
+	border-radius: 0;
+}
+.bg-small-break {
+	background-color: #869645 !important;
+}
+.bg-medium-break {
+	background-color: #CE9C0E !important;
+}
+.bg-large-break {
+	background-color: #d9534f !important;
 }

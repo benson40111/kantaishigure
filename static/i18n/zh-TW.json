@@ -33,5 +33,9 @@
 	"Game_Audio_Muted": "遊戲靜音",
 	"Muted": "靜音",
 	"Unmuted": "取消",
-	"OpenDevTool": "開發者工具"
+	"OpenDevTool": "開發者工具",
+	"Prophet": "戰鬥預測",
+	"battle_rank": "戰鬥Rank",
+	"get_ship": "掉落艦娘",
+	"need_supply": "需要補給"
 }

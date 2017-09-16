@@ -13,12 +13,12 @@
 							</span>
 						</div>
 						<div class="ship-stat"> 
-							<div class="flex-content"> 
+							<div class="d-flex flex-row"> 
 								<span class="ship-hp"> 
 									{{ ship.api_nowhp }}/{{ ship.api_maxhp }} 
 								</span>
 								<div>
-									<span class="fa fa-database" style="margin-right:5px; background:red;" v-if="ship.api_bull != ship.api_bull_max || ship.api_fuel != ship.api_fuel_max">
+									<span v-tooltip.left="$t('need_supply')" class="fa fa-database" style="margin-right:5px; background:red;" v-if="ship.api_bull != ship.api_bull_max || ship.api_fuel != ship.api_fuel_max">
 									</span>
 									<span class="ship-cond fa fa-star" :style="{ 'color' : ship.api_cond > 49 ? '#FFFF40' : ship.api_cond < 40 ? (ship.api_cond < 20 ? '#d7211f' : '#e37b3c') : '#FFF' }">
 										{{ ship.api_cond }}

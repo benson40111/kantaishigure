@@ -1,6 +1,6 @@
 {
   "name": "kantaishigure",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "author": "Sean2525 <madness48596@gmail.com>",
   "description": "An electron-vue project",
   "license": "MIT",
@@ -66,6 +66,7 @@
   },
   "dependencies": {
     "axios": "^0.16.1",
+    "v-tooltip": "^2.0.0-beta.12",
     "vue": "^2.3.3",
     "vue-electron": "^1.0.6",
     "vue-router": "^2.5.3",

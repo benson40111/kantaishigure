@@ -24,6 +24,11 @@ let routes = [
 		path: '/robot',
 		name: 'robot',
 		component: require('@/components/Robot')
+	},
+	{
+		path: '/prophet',
+		name: 'prophet',
+		component: require('@/components/Prophet')
 	}
 ] 
 

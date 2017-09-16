@@ -14,7 +14,7 @@
 								</span>
 							</div>
 							<div class="ship-stat"> 
-								<div class="flex-content"> 
+								<div class="d-flex flex-row"> 
 									<span class="ship-hp"> 
 										{{ ship.api_nowhp }}/{{ ship.api_maxhp }} 
 									</span>
@@ -39,7 +39,9 @@
 						</span>
 						<div class="ship-slot">
 							<div v-for="slot in ship.api_slot" :key="slot.api_id" v-if="slot != -1 && slotitemDone">
-								{{ find_slot(slot).api_name }}
+								<span>
+								{{ find_slot(slot).api_slotitem_id }}
+								</span>
 							</div>
 						</div>
 					</div>
