@@ -570,6 +570,9 @@ class Robot extends EventEmitter {
 							return
 						}
 					}
+					if(await this.docking()){
+						return
+					}
 					if(store.state.robot_cf.waitCond){
 						let cond = store.state.api.battleresult.fleet.filter( x => x).map( x => x.api_cond)
 						cond = cond.filter( x => x < store.state.robot_cf.Cond).sort( (x,y) => x-y)
@@ -585,9 +588,6 @@ class Robot extends EventEmitter {
 							this.isSortie = false
 							return
 						}
-					}
-					if(await this.docking()){
-						return
 					}
 					await this.AutoRun('startSortie')
 					let port = false
