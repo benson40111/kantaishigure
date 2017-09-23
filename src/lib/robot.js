@@ -138,7 +138,7 @@ class Robot extends EventEmitter {
 		}
 		this.AutoRun = (target, num) => {
 			return new Promise ( async resolve => {
-				if(this.isReload){
+				if(this.isReload || !this.isEnable()){
 					resolve()
 					return
 				}
@@ -243,10 +243,10 @@ class Robot extends EventEmitter {
 						await this.PromiseMoveClick(position.RowSortie[area1]())
 						if(area2 > 3){
 							await this.PromiseMoveClick(position.ColumnSortie[4]())
-							if(area2 % 2){
-								await this.PromiseMoveClick(position.ColumnSortie[0]())
+							if(area2 == 4){
+								await this.PromiseMoveClick(position.ColumnSortie[1]())
 							} else {
-								await this.PromiseMoveClick(position.ColumnSortie[2]())
+								await this.PromiseMoveClick(position.ColumnSortie[3]())
 							}
 						} else {
 							await this.PromiseMoveClick(position.ColumnSortie[area2]())
@@ -416,7 +416,7 @@ class Robot extends EventEmitter {
 											await delay(10000)
 										} else {
 											setTimeout( async () => {
-												if(!this.isActive && !this.isEnsei && !this.isSleep){
+												if(this.isEnable() && !this.isActive && !this.isEnsei && !this.isSleep){
 													await this.AutoRun('refreshPort')
 												}
 											}, repair[id][1]*1000)
@@ -509,7 +509,7 @@ class Robot extends EventEmitter {
 						if(this.isSleep) {
 							this.needRefreshPort = true
 						}
-						else if(!this.isActive && !this.isEnsei && !this.isSortie){
+						else if(this.isEnable() && !this.isActive && !this.isEnsei && !this.isSleep && !this.isSortie){
 							await this.AutoRun('refreshPort')
 						}
 					}
@@ -525,7 +525,7 @@ class Robot extends EventEmitter {
 				time.map( x => {
 					console.log(x)
 					setTimeout( async () => {
-						if(!this.isActive && !this.isEnsei && !this.isSleep){
+						if(this.isEnable() && !this.isActive && !this.isEnsei && !this.isSleep && !this.isSortie){
 							await this.AutoRun('refreshPort')
 						}
 					}, x - (new Date().getTime()))
@@ -576,11 +576,11 @@ class Robot extends EventEmitter {
 						if(cond.length){
 							this.waitCond = true
 							setTimeout( async () => {
-								await this.waitActive()
-								await this.waitEnsei()
-								await this.AutoRun('refreshPort')
 								this.waitCond = false
-								this.startSortie()
+								if(this.isEnable() && !this.isActive && !this.isEnsei && !this.isSleep && !this.isSortie){
+									await this.AutoRun('refreshPort')
+									this.startSortie()
+								}
 							}, (store.state.robot_cf.Cond - cond[0])*60*1000)
 							this.isSortie = false
 							return
