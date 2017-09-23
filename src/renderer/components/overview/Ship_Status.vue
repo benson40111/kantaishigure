@@ -4,7 +4,7 @@
 			<tabs>
 				<tab v-for="(fleet,i) in fleets" :id="i" :key="fleet.id" :name="INDEX[i]" :selected="i === 0 ? true : false">
 					<div class="ship-item" v-for="ship in fleet.fleet" :key="ship.id" v-if="ship != undefined">
-						<div class="ship-info">
+						<div class="ship-info nowrap">
 							<span class="ship-name">
 								{{ ship.api_name }}
 							</span>
@@ -12,7 +12,7 @@
 								Lv. {{ ship.api_lv }}
 							</span>
 						</div>
-						<div class="ship-stat"> 
+						<div class="ship-stat nowrap">
 							<div class="d-flex flex-row"> 
 								<span class="ship-hp"> 
 									{{ ship.api_nowhp }}/{{ ship.api_maxhp }} 
@@ -28,6 +28,9 @@
 							<div class="progress-hp">
 								<progressbar height="8px" :max="ship.api_maxhp" :now="ship.api_nowhp"></progressbar>
 							</div>
+							<div class="repair" v-if="repair(ship.api_id)">
+								<timer :endtime="ndock[repair_index(ship.api_id)].api_complete_time"></timer>
+							</div>
 						</div>
 					</div>
 					<div v-else>
@@ -42,10 +45,11 @@
 <script>
 import tab from '../models/Tab.vue'
 import tabs from '../models/Tabs.vue'
+import timer from '../models/Timer.vue'
 import progressbar from '../models/Progressbar.vue' 
 export default {
 	name: 'ship_status',
-	components: { tab , tabs , progressbar },
+	components: { tab , tabs , progressbar , timer },
 	data() {
 		return {
 			INDEX: ['I', 'II', 'III', 'IV']
@@ -53,7 +57,21 @@ export default {
 	},
 	computed: {
 		fleets() {
-			return this.$store.state.api.fleet
+			return this.$store.getters.getAllFleet()
+		},
+		ndock() {
+			return this.$store.state.api.ndock.filter(x => x.api_ship_id != 0)
+		}
+	},
+	methods: {
+		repair(id) {
+			if(this.ndock.map(x => x.api_ship_id).includes(id)){
+				return true
+			}
+			return false
+		},
+		repair_index(id) {
+			return this.ndock.map(x => x.api_ship_id).indexOf(id)
 		}
 	}
 }

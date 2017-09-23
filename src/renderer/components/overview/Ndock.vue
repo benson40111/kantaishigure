@@ -5,7 +5,7 @@
                 {{ $t('Unused') }}
             </div>
             <div class="ndock-item" v-else>
-                <div class="ndock-name">
+                <div class="ndock-name nowrap">
                     {{ ship_name(ndock.api_ship_id) }}
                 </div>
                 <div class="ndock-timer">

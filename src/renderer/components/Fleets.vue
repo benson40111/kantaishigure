@@ -5,7 +5,7 @@
 				<tab class="ship-column" v-for="(fleet,i) in fleets" :id="i" :key="fleet.id" :name="fleet.fleet_name" :selected="i === 0 ? true : false">
 					<div class="ship-item" v-for="ship in fleet.fleet" :key="ship.id" v-if="ship != undefined">
 						<div class="ship-title">
-							<div class="ship-info">
+							<div class="ship-info nowrap">
 								<span class="ship-name">
 									{{ ship.api_name }}
 								</span>
@@ -13,7 +13,7 @@
 									Lv. {{ ship.api_lv }}
 								</span>
 							</div>
-							<div class="ship-stat"> 
+							<div class="ship-stat nowrap"> 
 								<div class="d-flex flex-row"> 
 									<span class="ship-hp"> 
 										{{ ship.api_nowhp }}/{{ ship.api_maxhp }} 
@@ -27,6 +27,9 @@
 								<div class="progress-hp">
 									<progressbar height="10px" :max="ship.api_maxhp" :now="ship.api_nowhp"></progressbar>
 								</div>
+								<div class="repair" v-if="repair(ship.api_id)">
+									<timer :endtime="ndock[repair_index(ship.api_id)].api_complete_time"></timer>
+								</div>
 							</div>
 						</div>
 						<span class="ship-fb">
@@ -38,9 +41,14 @@
 							</div>
 						</span>
 						<div class="ship-slot">
-							<div v-for="slot in ship.api_slot" :key="slot.api_id" v-if="slot != -1 && slotitemDone">
-								<span>
-								{{ find_slot(slot).api_slotitem_id }}
+							<div v-for="(slot,i) in ship.api_slot" :key="slot.api_id" v-if="slot != -1 && slotitemDone">
+								<span v-tooltip.left ="find_slot(slot).api_name">
+									{{ i+1 }}
+								</span>
+							</div>
+							<div v-if="ship.api_slot_ex">
+								<span v-tooltip.left ="find_slot(ship.api_slot_ex).api_name">
+									{{ 5 }}
 								</span>
 							</div>
 						</div>
@@ -78,21 +86,34 @@ api_lucky 運（lucky），靠杯為什麼運氣就是用英文 XD (他爽啦 �
 <script charset="utf-8">
 import tab from './models/Tab.vue'
 import tabs from './models/Tabs.vue'
+import timer from './models/Timer.vue'
 import progressbar from './models/Progressbar.vue'
 export default {
 	name: 'Fleets',
-	components: { tab , tabs , progressbar },
+	components: { tab , tabs , progressbar , timer },
 	computed: {
 		slotitemDone() {
 			return this.$store.state.api.slotitem.length > 0 ? true : false
 		},
 		fleets() {
-			return this.$store.state.api.fleet
+			return this.$store.getters.getAllFleet()
+		},
+		ndock() {
+			return this.$store.state.api.ndock.filter(x => x.api_ship_id != 0)
 		}
 	},
 	methods: {
 		find_slot(id) {
 			return this.$store.getters.find_slot(id)
+		},
+		repair(id) {
+			if(this.ndock.map(x => x.api_ship_id).includes(id)){
+				return true
+			}
+			return false
+		},
+		repair_index(id) {
+			return this.ndock.map(x => x.api_ship_id).indexOf(id)
 		}
 	}
 }

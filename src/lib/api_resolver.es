@@ -7,7 +7,7 @@ const resolve_fleet = ( api_deck_port ) => {
 	let fleets = api_deck_port.map( fleet => {
 	return {
 		"fleet_name": fleet.api_name,
-		"fleet": fleet.api_ship.map( id => (id != -1 && id != undefined) ? store.getters.find_ship(id) : undefined)
+		"fleet": fleet.api_ship
 	}})
 	store.commit('UPDATE_FLEET', fleets)
 }
@@ -43,6 +43,7 @@ const resolve_slot = ( { api_data } , mst_slot) => {
 
 const resolve_start = (body) => {
 		store.commit('STORE_MST_SHIP', body.api_data.api_mst_ship)
+		store.commit('STORE_MST_STYPE', body.api_data.api_mst_stype)
 		store.commit('STORE_MST_MISSION', body.api_data.api_mst_mission)
 		store.commit('STORE_MST_MAPINFO', body.api_data.api_mst_mapinfo)
 		store.commit('STORE_MST_SLOTITEM', body.api_data.api_mst_slotitem)
@@ -70,7 +71,11 @@ ipcRenderer.on('network.on.api', (event, path, body, reqBody) => {
 			resolve_slot(body, store.state.api.mst_slotitem)
 			break
 		case '/kcsapi/api_get_member/preset_deck':
+			robot.emit('network.on.preset_deck')
 			document.querySelector('#fleets').click()
+			break
+		case '/kcsapi/api_req_hensei/preset_select':
+			robot.emit('network.on.preset_select')
 			break
 		case '/kcsapi/api_get_member/material':
 			store.commit('UPDATE_MATERIAL', body.api_data)
@@ -93,6 +98,10 @@ ipcRenderer.on('network.on.api', (event, path, body, reqBody) => {
 			break
 		case '/kcsapi/api_get_member/ndock':
 			store.commit('UPDATE_NDOCK', body.api_data)
+			robot.emit('network.on.ndock')
+			break
+		case '/kcsapi/api_req_nyukyo/start':
+		    robot.emit('network.on.dockStart')
 			break
 		case '/kcsapi/api_req_kousyou/getship':
 			store.commit('UPDATE_KDOCK', body.api_data.api_kdock)
@@ -126,22 +135,40 @@ ipcRenderer.on('network.on.api', (event, path, body, reqBody) => {
 		case '/kcsapi/api_req_quest/stop':
 			store.commit('UPDATE_QUEST_CANCEL', Number(reqBody.api_quest_id))
 			break
+		case '/kcsapi/api_req_practice/battle':
+			document.querySelector('#prophet').click()
 		case '/kcsapi/api_req_sortie/battle':
 			sortie.battle(body)
+			robot.emit('network.on.sortieBattle')
 			break
 		case '/kcsapi/api_req_battle_midnight/battle':
+		case '/kcsapi/api_req_practice/midnight_battle':
 			sortie.midnight(body)
+			robot.emit('network.on.sortieMidnight')
 			break
 		case '/kcsapi/api_req_map/start':
+			document.querySelector('#prophet').click()
+			robot.emit('network.on.sortieStart')
+			break
 		case '/kcsapi/api_req_map/next':
 			document.querySelector('#prophet').click()
 			sortie.next()
+			robot.emit('network.on.sortieNext')
 			break
 		case '/kcsapi/api_req_sortie/battleresult':
 			sortie.result(body)
+			robot.emit('network.on.sortieResult')
+			break
+		case '/kcsapi/api_get_member/mapinfo':
+			robot.emit('network.on.mapinfo')
 			break
 		case '/kcsapi/api_get_member/ship_deck':
 			store.commit('UPDATE_SHIP_ARRAY', body.api_data.api_ship_data)
+			break
+		case '/kcsapi/api_req_hensei/change':
+		    store.commit('UPDATE_FLEET_CHANGE', reqBody)
+			sortie.next()
+			robot.emit('network.on.change')
 			break
 		case '/kcsapi/api_start2':
 			resolve_start(body)

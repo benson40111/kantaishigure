@@ -1,6 +1,6 @@
 <template>
     <div class="progress-outer">
-        <div class="progress">
+        <div class="progress" style="background:#292b2c;">
             <div class="progress-bar"
                  :class="type"
                  role="progressbar"
@@ -42,11 +42,11 @@ export default {
             if(this.precent > 75){
                 return "bg-success"
             } else if(this.precent > 50) {
-                return "bg-small-break"
+                return "bg-minor-damaged"
             } else if(this.precent > 25){
-                return "bg-medium-break"
+                return "bg-moderate-damaged"
             } else {
-                return "bg-large-break"
+                return "bg-heavily-damaged"
             }
         }
     }

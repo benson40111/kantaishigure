@@ -5,10 +5,11 @@ const state = {
 	fleet: [],
 	mission: [],
 	ndock: [],
-	kdock: [],
+	kdock: [undefined,undefined,undefined,undefined],
 	slotitem: [],
 	quest: [],
 	mst_ship: [],
+	mst_stype: [],
 	mst_mission: [],
 	mst_slotitem: [],
 	mst_slotitemtype: [],
@@ -18,6 +19,32 @@ const state = {
 const mutations = {
 	UPDATE_BATTLE(state,res){
 		state.battleresult = res
+	},
+	UPDATE_FLEET_CHANGE(state, {api_id, api_ship_id, api_ship_idx}){
+		api_ship_id = Number(api_ship_id)
+		api_ship_idx = Number(api_ship_idx)
+		let fleet = state.fleet[Number(api_id)-1].fleet
+		if(api_ship_id == -1){
+			fleet[api_ship_idx] = -1
+			state.fleet[Number(api_id)-1].fleet = fleet.filter(x => x != -1)
+			while(fleet.length <6) {
+				fleet.push(-1)
+			}
+		} else if(api_ship_id == -2){
+			for(let i = 1 ; i < fleet.length; i++){
+				fleet[i] = -1
+			}
+		} else {
+			let i = fleet.indexOf(api_ship_id)
+			if(i != -1){
+				let temp = fleet[api_ship_idx]
+				fleet[api_ship_idx] = api_ship_id
+				fleet[i] = temp
+			} else {
+				fleet[api_ship_idx] = api_ship_id
+			}
+		}
+		state.fleet = state.fleet.map(x => x)
 	},
 	UPDATE_BATTLERESULT(state,res){
 		state.battleresult = Object.assign({},state.battleresult,res)
@@ -117,6 +144,9 @@ const mutations = {
 	STORE_MST_SHIP(state, res){
 		state.mst_ship = res
 	},
+	STORE_MST_STYPE(state, res){
+		state.mst_stype = res
+	},
 	STORE_MST_MISSION(state, res){
 		state.mst_mission = res
 	},
@@ -144,14 +174,22 @@ const getters = {
 	find_slot: (state) => (id) => {
 		return state.slotitem.find(ship => ship.api_id == id)
 	},
-	needSupply: (state) => (id) => {
-		return state.fleet[id].fleet.filter(x => x !=undefined).find(x => x.api_buil != x.api_buil_max || x.api_fuel != x.api_fuel_max) != undefined
+	getFleet: (state, getters) => (id) => {
+		return state.fleet[id].fleet.map( id => (id != -1 && id != undefined) ? getters.find_ship(id) : undefined)
 	},
-	needSupplys: (state) => () =>  {
-		return state.fleet.map( x => x.fleet).map( fleet => fleet.filter( x => x != undefined).find(x => x.api_buil != x.api_buil_max || x.api_fuel != x.api_fuel_max) != undefined)
+	getAllFleet: (state, getters) => () => {
+		return state.fleet.map( (x,i) => {
+			return {
+				'fleet_name': x.fleet_name,
+				'fleet': getters.getFleet(i)
+			}
+		})
 	},
-	getFleet: (state) => (id) => {
-		return state.fleet[id].fleet
+	needSupply: (state, getters) => (id) => {
+		return getters.getFleet(id).filter(x => x !=undefined).find(x => x.api_buil != x.api_buil_max || x.api_fuel != x.api_fuel_max) != undefined
+	},
+	needSupplys: (state, getters) => () =>  {
+		return getters.getAllFleet().map( x => x.fleet).map( fleet => fleet.filter( x => x != undefined).find(x => x.api_buil != x.api_buil_max || x.api_fuel != x.api_fuel_max) != undefined)
 	}
 }
 
