@@ -381,6 +381,8 @@ class Robot extends EventEmitter {
 											await this.PromiseMoveClick(position.dockType(), 800)
 											await this.PromiseMoveClick(position.dockType(), 800)
 											firstDock = false
+										} else {
+											await this.PromiseMoveClick(position.DockPage[0](), 800)
 										}
 										var isfastRepair = false
 										var index = ship.findIndex( x => Number(x.api_id) == Number(repair[id][0]))+1
