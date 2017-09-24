@@ -43,7 +43,7 @@ const checkNdock = () => {
 			case 0:
 				return true
 			case 1:
-				if((new Date().getTime()) - x.api_complete_time > 0){
+				if(x.api_complete_time - (new Date().getTime()) > 0){
 					return false
 				} else {
 					return true
@@ -108,7 +108,7 @@ class Robot extends EventEmitter {
 			let now = (new Date().getTime())
 			if( now > sleepStart && now < sleepEnd){
 				this.isSleep = true
-				if(this.isEnable() && this.isSortieEnable() && store.state.robot_cf.sortieSleepClear && store.state.api.battleresult.fleet.length>1){
+				if(this.isEnable() && this.isSortieEnable() && store.state.robot_cf.sortieSleepClear && store.state.api.battleresult.fleet[1]){
 					await this.waitActive()
 					await this.waitSortie()
 					await this.waitEnsei()
@@ -221,6 +221,7 @@ class Robot extends EventEmitter {
 							}
 							this.isActive = false
 							await this.PromiseMoveClick(position.mainExpedition())
+							await delay(3000)
 							resolve()
 							break
 						}
@@ -289,6 +290,7 @@ class Robot extends EventEmitter {
 						}
 						this.isActive = false
 						await this.PromiseMoveClick(position.mainExpedition())
+						await delay(3000)
 						resolve(true)
 						break
 					case 'clearFleet':
@@ -319,14 +321,20 @@ class Robot extends EventEmitter {
 						resolve(true)
 						break
 					case 'sortieBattle':
+						var port = false
 						if(checkDamage(store.state.api.battleresult.fleet, store.state.robot_cf.returnPort)){
 							document.querySelector('webview').reload()
 							this.isReload = true
 							break
 						}
+						this.once('network.on.port', () => { isWait = false; port = true; })
 						this.once('network.on.sortieBattle', () => isWait = false)
 						if(await wait(30, () => this.PromiseMoveClick(position.SortieFormation[store.state.robot_cf.Formation]()))) {
 							this.isActive = false
+							resolve()
+							break
+						}
+						if(port){
 							resolve()
 							break
 						}
@@ -435,6 +443,7 @@ class Robot extends EventEmitter {
 								}
 								this.isActive = false
 								await this.PromiseMoveClick(position.mainExpedition())
+								await delay(3000)
 								resolve()
 								break
 							}
@@ -455,6 +464,8 @@ class Robot extends EventEmitter {
 			const startMission = async () => {
 				if(!this.isEnsei && ensei.length){
 					this.isEnsei = true
+					await this.waitActive()
+					await this.waitSortie()
 					await this.AutoRun('supply')
 					if(this.isActive){
 						this.isEnsei = false
@@ -525,7 +536,6 @@ class Robot extends EventEmitter {
 			this.on('network.on.checkNdock', () => {
 				let time = store.state.api.ndock.map( x => x.api_complete_time).filter(x => x)
 				time.map( x => {
-					console.log(x)
 					setTimeout( async () => {
 						if(this.isEnable() && !this.isActive && !this.isEnsei && !this.isSleep && !this.isSortie){
 							await this.AutoRun('refreshPort')
@@ -559,18 +569,12 @@ class Robot extends EventEmitter {
 					if(this.sortieFleet){
 						if(await this.AutoRun('sortieFleet')){
 							this.sortieFleet = false
-							if(this.isActive){
-								this.isSortie = false
-								return
-							}
+							await this.waitActive()
 						}
 					}
 					if(store.getters.needSupplys().includes(true)){
 						await this.AutoRun('supply')
-						if(this.isActive){
-							this.isSortie = false
-							return
-						}
+						await this.waitActive()
 					}
 					if(await this.docking()){
 						return
@@ -597,14 +601,15 @@ class Robot extends EventEmitter {
 					for(let i = 0 ; i < store.state.robot_cf.sortieTimes ; i++){
 						if(port) break
 						await this.AutoRun('sortieBattle')
+						if(port) break						
 						await this.AutoRun('sortieResult', i+1)
 					}
+					this.PromiseMoveClick(position.mainExpedition(),1000)
+					await delay(3000)
+					await this.waitActive()
 					if(store.getters.needSupplys().includes(true)){
 						await this.AutoRun('supply')
-						if(this.isActive){
-							this.isSortie = false
-							return
-						}
+						await this.waitActive()						
 					}
 					await this.docking()
 					this.isSortie = false
@@ -624,6 +629,7 @@ class Robot extends EventEmitter {
 						if(needDock){
 							await this.AutoRun('docking')
 						}
+						await this.waitActive()						
 						this.isSortie = false
 						resolve(true)
 					} else {
