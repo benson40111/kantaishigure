@@ -10,14 +10,14 @@ const delay = (time = 3000) => {
 }
 const checkDamage = (fleet, range) => {
 	return fleet.map( ship => 
-		ship ? (ship.api_nowhp*100/ship.api_maxhp) < (range+1) * 25 ? true : false : false
+		ship ? (ship.api_nowhp*100/ship.api_maxhp) <= (range+1) * 25 ? true : false : false
 	).includes(true) ? 1 : 0 // 1 return 0 keep
 }
 
 const checkRepair = (fleet, range) => {
 	let findScnt = (id) => store.state.api.mst_stype.find( x => Number(x.api_id) == Number(id)).api_scnt
 	let repair = fleet.map( ship => 
-		ship ? (ship.api_nowhp*100/ship.api_maxhp) < (range+1) * 25 ? ship : false : false
+		ship ? (ship.api_nowhp*100/ship.api_maxhp) <= (range+1) * 25 ? ship : false : false
 	)
 	repair = repair.filter( x => x )
 	if(repair.length == 0 ){ return false }
@@ -335,6 +335,7 @@ class Robot extends EventEmitter {
 							break
 						}
 						if(port){
+							this.isActive = false							
 							resolve()
 							break
 						}
