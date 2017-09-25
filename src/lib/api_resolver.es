@@ -56,7 +56,7 @@ ipcRenderer.on('network.on.api', (event, path, body, reqBody) => {
 	reqBody = JSON.parse(reqBody)
 	delete reqBody.api_token
 	if(process.env.NODE_ENV == 'development'){
-		console.log(path, body, reqBody)
+		console.log(path, body, reqBody, new Date())
 	}
 	switch(path){
 		case '/kcsapi/api_port/port':
