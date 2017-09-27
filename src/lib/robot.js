@@ -63,6 +63,7 @@ class Robot extends EventEmitter {
 		this.base()
 	}
 	init = () => {
+		this.isStart = true
 		this.isActive = false
 		this.isSleep = false
 		this.isEnsei = false
@@ -117,7 +118,7 @@ class Robot extends EventEmitter {
 				}
 			} else {
 				this.isSleep = false
-				if(this.isEnable() && !this.isReload){
+				if(this.isEnable() && !this.isReload && this.isStart){
 					if(this.needRefreshPort) { await this.AutoRun('refreshPort'); this.needRefreshPort = false }
 					if(this.isSortieEnable() && !this.waitCond) { this.startSortie() }
 				}
@@ -170,8 +171,9 @@ class Robot extends EventEmitter {
 							resolve()
 							break
 						}
-						await this.PromiseMoveClick(position.mainExpedition())
 						this.isActive = false
+						await this.PromiseMoveClick(position.mainExpedition(), 1000)
+						await delay()
 						resolve()
 						break
 					case 'mainExpedition':
@@ -181,7 +183,7 @@ class Robot extends EventEmitter {
 						await this.PromiseMoveClick(position.mainExpedition())
 						await wait()
 						this.removeAllListeners('network.on.mission')
-						this.isActive = false
+						this.isActive = false						
 						resolve()
 						break
 					case 'startExpedition':
@@ -585,9 +587,11 @@ class Robot extends EventEmitter {
 			this.isEnsei = false
 			this.waitCond = false
 			this.isSortie = false
-			this.sortieFleet = true			
+			this.sortieFleet = true
+			this.isStart = false
 			if(this.isEnable()){
 				this.once('network.on.port', () => {
+					this.isStart = true
 					this.emit('network.on.checkMission')
 					this.emit('network.on.checkNdock')
 				})

@@ -52,10 +52,10 @@ const mutations = {
 	UPDATE_QUEST(state, { res, count }) {
 		let sort = false
 		let x
-		if(state.quest.filter(x => x.api_state ==2).length != count){
+		if(state.quest.filter(x => x.api_state == 2 || x.api_state == 3).length != count){
 			state.quest = []
 		}
-		res.map( quest => {
+		res.filter(x => x != -1).map( quest => {
 			if( (x = state.quest.findIndex(x => x.api_no == quest.api_no)) != -1 ){
 				Object.assign(state.quest[x], quest)
 			} else {
