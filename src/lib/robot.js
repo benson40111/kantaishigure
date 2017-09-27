@@ -354,7 +354,6 @@ class Robot extends EventEmitter {
 							resolve()
 							break
 						}
-						this.removeAllListeners('network.on.port')						
 						this.removeAllListeners('network.on.sortieBattle')
 						if(port){
 							this.isActive = false							
@@ -390,7 +389,6 @@ class Robot extends EventEmitter {
 							resolve()
 							break
 						}
-						this.removeAllListeners('network.on.port')						
 						this.removeAllListeners('network.on.sortieNext')
 						this.isActive = false
 						resolve()
@@ -597,6 +595,8 @@ class Robot extends EventEmitter {
 				})
 				await delay()
 				await this.PromiseMoveClick(position.Start())
+			} else {
+				this.isStart = true
 			}
 		})
 		this.base = () => {
