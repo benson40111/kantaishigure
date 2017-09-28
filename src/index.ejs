@@ -15,7 +15,10 @@
 	<div id="app"></div>
     <!-- Set `__static` path to static files in production -->
     <script>
-      if (process.env.NODE_ENV !== 'development') window.__static = require('path').join(__dirname, '/static').replace(/\\/g, '\\\\')
+      if (process.env.NODE_ENV !== 'development') { 
+        window.__static = require('path').join(__dirname, '/static').replace(/\\/g, '\\\\');
+        window.__resources = require('path').join(__dirname, '..', '..', '..').replace(/\\/g, '\\\\');
+      }
 	    document.addEventListener("keydown", function (e) {
 		    if (e.which === 123) {
 			    require('electron').remote.getCurrentWindow().toggleDevTools();

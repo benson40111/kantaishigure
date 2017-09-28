@@ -349,7 +349,7 @@ class Robot extends EventEmitter {
 						this.once('network.on.sortieBattle', () => isWait = false)
 						if(await wait(30, () => this.PromiseMoveClick(position.SortieFormation[store.state.robot_cf.Formation]()))) {
 							this.isActive = false
-							this.removeAllListeners('network.on.port')							
+							this.removeAllListeners('network.on.port')
 							this.removeAllListeners('network.on.sortieBattle')
 							resolve()
 							break
