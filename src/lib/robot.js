@@ -154,7 +154,7 @@ class Robot extends EventEmitter {
 							promise_resolve(true)
 						}
 						else if(isWait){
-							await new Promise ( () => setTimeout( async () => { await callback();promise_resolve(await wait(time-1, callback))}, 2000))                        
+							await new Promise ( () => { callback(); setTimeout( async () => { promise_resolve(await wait(time-1, callback))}, 2000 )})                        
 						} else {
 							promise_resolve(false)
 						}
@@ -208,7 +208,7 @@ class Robot extends EventEmitter {
 								if(needSupply[i]){
 									this.once('network.on.charge', () => isWait = false)
 									await this.PromiseMoveClick(position.FleetSupply[i]())
-									await this.PromiseMoveClick(position.FleetSupply[i](), 1000)									
+									await this.PromiseMoveClick(position.FleetSupply[i](), 1000)
 									if(await wait(10, () => this.PromiseMoveClick(position.FullSupply(), 1000) )) {
 										this.isActive = false
 										this.removeAllListeners('network.on.charge')
@@ -317,7 +317,7 @@ class Robot extends EventEmitter {
 						}
 						isWait = true
 						this.once('network.on.change', () => isWait = false)
-						if(await wait(10, () => this.PromiseMoveClick(position.clearFleet()))){
+						if(await wait(10, () => this.PromiseMoveClick(position.clearFleet(), 1000))){
 							this.isActive = false
 							this.removeAllListeners('network.on.change')
 							resolve(false)
@@ -345,7 +345,7 @@ class Robot extends EventEmitter {
 						}
 						this.once('network.on.port', () => { isWait = false; port = true; })
 						this.once('network.on.sortieBattle', () => isWait = false)
-						if(await wait(30, () => this.PromiseMoveClick(position.SortieFormation[store.state.robot_cf.Formation]()))) {
+						if(await wait(30, () => this.PromiseMoveClick(position.SortieFormation[store.state.robot_cf.Formation](), 1000))) {
 							this.isActive = false
 							this.removeAllListeners('network.on.port')
 							this.removeAllListeners('network.on.sortieBattle')
@@ -362,7 +362,7 @@ class Robot extends EventEmitter {
 						this.once('network.on.sortieMidnight', () => isWait = false)
 						this.once('network.on.sortieResult', () => isWait = false)
 						var midnight = store.state.robot_cf.SortieMidnight ? 1 : 0
-						if(await wait(100, () => this.PromiseMoveClick(position.SortieLeftRight[midnight]()))) {
+						if(await wait(100, () => this.PromiseMoveClick(position.SortieLeftRight[midnight](), 1000))) {
 							this.isActive = false
 							this.removeAllListeners('network.on.sortieMidnight')
 							this.removeAllListeners('network.on.sortieResult')
@@ -372,15 +372,14 @@ class Robot extends EventEmitter {
 						this.removeAllListeners('network.on.sortieMidnight')
 						this.removeAllListeners('network.on.sortieResult')
 						this.isActive = false
-						await this.PromiseMoveClick(position.mainSortie())
-						resolve(true)
+						resolve()
 						break
 					case 'sortieResult':
 						this.once('network.on.port', () => isWait = false)
 						this.once('network.on.sortieNext', () => isWait = false)
 						var AtteckReturn = checkDamage(store.state.api.battleresult.fleet, store.state.robot_cf.returnPort)				
 						AtteckReturn = num >= store.state.robot_cf.sortieTimes ? 1 : AtteckReturn
-						if(await wait(20, () => this.PromiseMoveClick(position.SortieLeftRight[AtteckReturn]()))){
+						if(await wait(20, () => this.PromiseMoveClick(position.SortieLeftRight[AtteckReturn](), 1000))){
 							this.isActive = false
 							this.removeAllListeners('network.on.port')
 							this.removeAllListeners('network.on.sortieNext')
@@ -641,13 +640,12 @@ class Robot extends EventEmitter {
 						await this.AutoRun('sortieResult', i+1)
 					}
 					this.removeAllListeners('network.on.port')
+					await delay()
 					this.PromiseMoveClick(position.mainExpedition(),1000)
 					await delay()
 					await this.waitActive()
-					if(store.getters.needSupplys().includes(true)){
-						await this.AutoRun('supply')
-						await this.waitActive()
-					}
+					await this.AutoRun('supply')
+					await this.waitActive()
 					await this.docking()
 					this.isSortie = false
 				}
