@@ -38,7 +38,7 @@
                 <div class="sortie-times">
                     <select class="custom-select" style="margin-top:10px" v-model.number="sortieTimes">
                             <option disabled value="">{{$t('attack-times')}}</option>
-  				            <option v-for="index in sortieIndex" :key="index" :value="index+1">{{ `${index+1}` }}</option>
+  				            <option v-for="index in sortieIndex2" :key="index" :value="index+1">{{ `${index+1}` }}</option>
 			        </select>
                     <select class="custom-select" style="margin-top:10px" v-model.number="Formation">
                             <option disabled value="">{{$t('Formation')}}</option>
@@ -171,6 +171,7 @@ export default {
             condIndex: [...Array(49).keys()],
             delayIndex: [...Array(11).keys()],
             sortieIndex: [...Array(6).keys()],
+            sortieIndex2: [...Array(10).keys()],
             Expedition: JSON.parse(JSON.stringify(this.$store.state.robot_cf.Expedition))
         }
     },

@@ -77,7 +77,7 @@ class Robot extends EventEmitter {
 		this.waitActive = () => {
 			return new Promise ( async promise_resolve => {
 				if(this.isActive){
-					await new Promise ( () => setTimeout( async () => { promise_resolve(await this.waitActive())}, 5000))                        
+					await new Promise ( () => setTimeout( async () => { promise_resolve(await this.waitActive())}, 5000))
 				} else {
 					promise_resolve(false)
 				}
@@ -86,7 +86,7 @@ class Robot extends EventEmitter {
 		this.waitEnsei = () => {
 			return new Promise ( async promise_resolve => {
 				if(this.isEnsei){
-					await new Promise ( () => setTimeout( async () => { promise_resolve(await this.waitEnsei())}, 5000))                        
+					await new Promise ( () => setTimeout( async () => { promise_resolve(await this.waitEnsei())}, 5000))
 				} else {
 					promise_resolve(false)
 				}
@@ -95,7 +95,7 @@ class Robot extends EventEmitter {
 		this.waitSortie = () => {
 			return new Promise ( async promise_resolve => {
 				if(this.isSortie){
-					await new Promise ( () => setTimeout( async () => { promise_resolve(await this.waitSortie())}, 5000))                        
+					await new Promise ( () => setTimeout( async () => { promise_resolve(await this.waitSortie())}, 5000))
 				} else {
 					promise_resolve(false)
 				}
@@ -127,9 +127,9 @@ class Robot extends EventEmitter {
 		this.PromiseMoveClick = ([x,y], time = this.Delayms()) => {
 			return new Promise ( async resolve => {
 				if(this.isEnable() && !this.isReload){
-					setTimeout( async () => {
-						await document.querySelector('webview').sendInputEvent({type:'mouseDown', x:x, y: y, button:'left', clickCount: 1})
-						await document.querySelector('webview').sendInputEvent({type:'mouseUp', x:x, y: y, button:'left', clickCount: 1});
+					setTimeout( () => {
+						document.querySelector('webview').sendInputEvent({type:'mouseDown', x:x, y: y, button:'left', clickCount: 1})
+						document.querySelector('webview').sendInputEvent({type:'mouseUp', x:x, y: y, button:'left', clickCount: 1});
 						resolve()
 					}, time)
 				} else {
@@ -154,7 +154,7 @@ class Robot extends EventEmitter {
 							promise_resolve(true)
 						}
 						else if(isWait){
-							await new Promise ( () => setTimeout( async () => { callback();promise_resolve(await wait(time-1, callback))}, 2000))                        
+							await new Promise ( () => setTimeout( async () => { await callback();promise_resolve(await wait(time-1, callback))}, 2000))                        
 						} else {
 							promise_resolve(false)
 						}
@@ -209,15 +209,13 @@ class Robot extends EventEmitter {
 									this.once('network.on.charge', () => isWait = false)
 									await this.PromiseMoveClick(position.FleetSupply[i]())
 									await this.PromiseMoveClick(position.FleetSupply[i](), 1000)									
-									await this.PromiseMoveClick(position.FullSupply())
-									await this.PromiseMoveClick(position.FullSupply(), 1000)
-									await delay()
-									if(await wait()) {
+									if(await wait(10, () => this.PromiseMoveClick(position.FullSupply(), 1000) )) {
 										this.isActive = false
 										this.removeAllListeners('network.on.charge')
 										resolve()
 										break
 									}
+									await delay()
 								}
 							}
 							isWait = true
@@ -277,13 +275,13 @@ class Robot extends EventEmitter {
 					case 'sortieFleet':
 						var fleet = store.state.robot_cf.sortieFleet
 						this.once('network.on.preset_deck', () => isWait = false)
-						await this.PromiseMoveClick(position.Organize())
-						if(await wait()) {
+						if(await wait(20, () => this.PromiseMoveClick(position.Organize(), 1000) )) {
 							this.isActive = false
 							this.removeAllListeners('network.on.preset_deck')
 							resolve(false)
 							break
 						}
+						await delay()
 						isWait = true
 						this.once('network.on.preset_select', () => isWait = false)
 						await this.PromiseMoveClick(position.fleetUnfolded())
@@ -475,7 +473,7 @@ class Robot extends EventEmitter {
 								}
 								this.isActive = false
 								await this.PromiseMoveClick(position.mainExpedition())
-								await delay(3000)
+								await delay()
 								resolve()
 								break
 							}
@@ -612,8 +610,8 @@ class Robot extends EventEmitter {
 					}
 					if(store.getters.needSupplys().includes(true)){
 						await this.AutoRun('supply')
-						await this.waitActive()
 					}
+					await this.waitActive()
 					if(await this.docking()){
 						return
 					}
@@ -644,7 +642,7 @@ class Robot extends EventEmitter {
 					}
 					this.removeAllListeners('network.on.port')
 					this.PromiseMoveClick(position.mainExpedition(),1000)
-					await delay(3000)
+					await delay()
 					await this.waitActive()
 					if(store.getters.needSupplys().includes(true)){
 						await this.AutoRun('supply')
@@ -668,7 +666,7 @@ class Robot extends EventEmitter {
 						if(needDock){
 							await this.AutoRun('docking')
 						}
-						await this.waitActive()						
+						await this.waitActive()
 						this.isSortie = false
 						resolve(true)
 					} else {

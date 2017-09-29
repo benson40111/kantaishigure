@@ -37,14 +37,15 @@ class sortie{
 					api_countDamage[6+i] += Math.round(api_eydam[i])
 				}
 			}
-			let key = ["api_hougeki1", "api_hougeki2", "api_hougeki3", "api_hougeki"]
-			key.map( x => {
-				if(api_data[x] != undefined) onDamageHougeki(api_data[x])
+			let battle_key = ["api_hougeki1", "api_hougeki2", "api_hougeki3", "api_hougeki" , "api_opening_taisen"]
+			battle_key.map( x => {
+				if(api_data[x]) onDamageHougeki(api_data[x])
 			})
-			if(api_data['api_raigeki'] != undefined){
-				onDamageRaigeki(api_data['api_raigeki'])
-			}
-			if(api_data['api_kouku'] != undefined && api_data['api_kouku']['api_stage3'] != null){
+			let raigeki_key = ["api_raigeki", "api_opening_atack"]
+			raigeki_key.map( x => {
+				if(api_data[x]) onDamageRaigeki(api_data[x])
+			})
+			if(api_data['api_kouku'] && api_data['api_kouku']['api_stage3']){
 				onDamageKouku(api_data.api_kouku.api_stage3)
 			}
 			let fleet = store.getters.getFleet(Number(api_data.api_dock_id)-1)
