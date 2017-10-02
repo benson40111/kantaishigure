@@ -323,3 +323,19 @@ hr{
 	text-align:center;
 	transform:rotate(8deg);
 }
+.main-btn{
+	background:transparent;
+	color:aqua;
+	border:none;
+}
+.main-btn:hover{
+	background:transparent;
+	color:white !important;
+}
+.main-btn:focus{
+	outline: none;
+}
+.btn-radio{
+	position: absolute;
+	opacity: 0;
+}

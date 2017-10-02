@@ -69,9 +69,9 @@ class Robot extends EventEmitter {
 		this.isEnsei = false
 		this.waitCond = false
 		this.isSortie = false
-		this.sortieFleet = true
 		this.isReload = true
 		this.needRefreshPort = false
+		this.sortieFleetStatus = () => store.state.robot_cf.sortieFleetStatus		
 		this.isEnable = () => store.state.robot_cf.isEnabled
 		this.isSortieEnable = () => store.state.robot_cf.Sortie
 		this.waitActive = () => {
@@ -113,7 +113,7 @@ class Robot extends EventEmitter {
 					await this.waitActive()
 					await this.waitSortie()
 					await this.waitEnsei()
-					this.sortieFleet = true
+					store.commit('UPDATE_SORTIEFLEETSTATUS', true)
 					await this.AutoRun('clearFleet')
 				}
 			} else {
@@ -148,12 +148,13 @@ class Robot extends EventEmitter {
 				let isWait = true
 				let wait = (time = 20, callback = () => true ) => {
 					return new Promise ( async promise_resolve => {
-						if(time == 0) {
+						if(!this.isEnable()){
+							promise_resolve(false)
+						} else if(time == 0) {
 							document.querySelector('webview').reload()
 							this.isReload = true
 							promise_resolve(true)
-						}
-						else if(isWait){
+						} else if(isWait){
 							await new Promise ( () => { callback(); setTimeout( async () => { promise_resolve(await wait(time-1, callback))}, 2000 )})                        
 						} else {
 							promise_resolve(false)
@@ -167,7 +168,7 @@ class Robot extends EventEmitter {
 						await this.PromiseMoveClick(position.Port())
 						if(await wait()) {
 							this.isActive = false
-							this.removeAllListeners('network.on.port')							
+							this.removeAllListeners('network.on.port')
 							resolve()
 							break
 						}
@@ -215,6 +216,7 @@ class Robot extends EventEmitter {
 										resolve()
 										break
 									}
+									this.removeAllListeners('network.on.charge')									
 									await delay()
 								}
 							}
@@ -246,6 +248,7 @@ class Robot extends EventEmitter {
 							resolve()
 							break
 						}
+						this.removeAllListeners('network.on.mapinfo')						
 						isWait = true
 						this.once('network.on.sortieStart', () => isWait = false)						
 						var area1 = store.state.robot_cf.sortieArea1
@@ -269,7 +272,8 @@ class Robot extends EventEmitter {
 							resolve()
 							break
 						}
-						this.isActive = false												
+						this.removeAllListeners('network.on.sortieStart')						
+						this.isActive = false
 						resolve()
 						break
 					case 'sortieFleet':
@@ -281,6 +285,7 @@ class Robot extends EventEmitter {
 							resolve(false)
 							break
 						}
+						this.removeAllListeners('network.on.preset_deck')
 						await delay()
 						isWait = true
 						this.once('network.on.preset_select', () => isWait = false)
@@ -292,6 +297,7 @@ class Robot extends EventEmitter {
 							resolve(false)
 							break
 						}
+						this.removeAllListeners('network.on.preset_select')						
 						isWait = true
 						this.once('network.on.port', () => isWait = false)
 						await this.PromiseMoveClick(position.Port())
@@ -315,6 +321,7 @@ class Robot extends EventEmitter {
 							resolve(false)
 							break
 						}
+						this.removeAllListeners('network.on.preset_deck')						
 						isWait = true
 						this.once('network.on.change', () => isWait = false)
 						if(await wait(10, () => this.PromiseMoveClick(position.clearFleet(), 1000))){
@@ -323,6 +330,7 @@ class Robot extends EventEmitter {
 							resolve(false)
 							break
 						}
+						this.removeAllListeners('network.on.change')						
 						isWait = true
 						this.once('network.on.port', () => isWait = false)
 						await this.PromiseMoveClick(position.Port())
@@ -403,6 +411,7 @@ class Robot extends EventEmitter {
 									resolve()
 									break
 								}
+								this.removeAllListeners('network.on.ndock')								
 								dock = dock.map((x,i) => x ? String(i) : false).filter(x => x)
 								var ship = store.state.api.ship	
 								var end = Math.ceil(ship.length/10)
@@ -450,6 +459,7 @@ class Robot extends EventEmitter {
 											resolve()
 											break
 										}
+										this.removeAllListeners('network.on.dockStart')										
 										if(isfastRepair) { 
 											await delay(10000)
 										} else {
@@ -582,8 +592,8 @@ class Robot extends EventEmitter {
 			this.isEnsei = false
 			this.waitCond = false
 			this.isSortie = false
-			this.sortieFleet = true
 			this.isStart = false
+			store.commit('UPDATE_SORTIEFLEETSTATUS', true)			
 			if(this.isEnable()){
 				this.once('network.on.port', () => {
 					this.isStart = true
@@ -601,9 +611,9 @@ class Robot extends EventEmitter {
 				if(!this.isSortie && !this.isEnsei && !this.waitCond && !this.isActive){
 					this.isSortie = true
 					await this.waitActive()
-					if(this.sortieFleet){
+					if(this.sortieFleetStatus()){
 						if(await this.AutoRun('sortieFleet')){
-							this.sortieFleet = false
+							store.commit('UPDATE_SORTIEFLEETSTATUS', false)
 							await this.waitActive()
 						}
 					}

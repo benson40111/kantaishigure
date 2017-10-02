@@ -1,29 +1,36 @@
 <template>
 	<div class="tab-content">
 		<div class="flex-column robot">
-            <div class="robot-enable" data-toggle="buttons">
+            <div class="robot-enable">
 				<label class="btn btn-border" :class="{ 'btn-border-danger': !isEnabled }">
-                	<input type="checkbox" v-model="isEnabled">
+                	<input type="checkbox" class="btn-radio" v-model="isEnabled">
 					<span v-if="isEnabled">{{ $t('Robot_enabled') }}</span>
 					<span v-else>{{ $t('Robot_disabled') }}</span>
 				</label>
             </div>
 			<hr>
-            <div class="auto-sortie" data-toggle="buttons" >
+            <div class="auto-sortie">
 				<label class="btn btn-border" :class="{ 'btn-border-danger': !Sortie }">
-                	<input type="checkbox" v-model="Sortie">
+                	<input type="checkbox" class="btn-radio" v-model="Sortie">
 						<span v-if="Sortie">{{ $t('Auto_sortie_enabled') }}</span>
 						<span v-else>{{ $t('Auto_sortie_disabled') }}</span>
 				</label>
             </div>
             <div v-show="Sortie">
                 <div class="sortiefleet">
-                    <select class="custom-select" v-model.number="sortieFleet" v-tooltip.right="$t('sortieFleet-info')">
+                    <select class="custom-select" v-model.number="sortieFleet" v-tooltip.top="$t('sortieFleet-info')">
                             <option disabled value="">{{$t('sortieFleet')}}</option>
   				            <option value="0">1</option>
                             <option value="1">2</option>
                             <option value="2">3</option>
 			        </select>
+                    <span>
+                    	<label v-tooltip.right="$t('sortiefleetStatus')" class="btn btn-border" :class="{ 'btn-border-danger': !sortieFleetStatus }">
+                	        <input type="checkbox" class="btn-radio" v-model="sortieFleetStatus">
+						    <span v-if="sortieFleetStatus">{{ $t('sortiefleetStatus-start') }}</span>
+						    <span v-else>{{ $t('sortiefleetStatus-stop') }}</span>
+				        </label>
+                    </span>
                 </div>
                 <div class="sortie-Area" style="margin-top:10px">
                     <select class="custom-select" v-model.number="sortieArea1">
@@ -63,9 +70,9 @@
                             <option value="2">{{$t('minor-damaged')}}</option>
 			        </select>
                 </div>
-                <div data-toggle="buttons" style="margin-top:10px;">
+                <div style="margin-top:10px;">
 				    <label class="btn btn-border" :class="{ 'btn-border-danger': !fastRepair }">
-                	    <input type="checkbox" v-model="fastRepair">
+                	    <input type="checkbox" class="btn-radio" v-model="fastRepair">
 					    <span v-if="fastRepair">{{ $t('fastRepair-Enabled') }}</span>
 				    	<span v-else>{{ $t('fastRepair-Disabled') }}</span>
 				    </label>
@@ -74,9 +81,9 @@
   				            <option :value="value+1" v-for="value in condIndex" :key="value">{{ `${value+1} ${$t('minutes')}` }}</option>
 			        </select>
                 </div>
-                <div data-toggle="buttons" style="margin-top:10px;">
+                <div style="margin-top:10px;">
 				    <label class="btn btn-border" :class="{ 'btn-border-danger': !waitCond }">
-                	    <input type="checkbox" v-model="waitCond">
+                	    <input type="checkbox" class="btn-radio" v-model="waitCond">
 					    <span v-if="waitCond">{{ $t('waitCond-Enabled') }}</span>
 				    	<span v-else>{{ $t('waitCond-Disabled') }}</span>
 				    </label>
@@ -85,16 +92,16 @@
   				            <option :value="value+1" v-for="value in condIndex" :key="value">{{ value+1 }}</option>
 			        </select>
                 </div>
-                <div data-toggle="buttons" style="margin-top:10px;">
+                <div style="margin-top:10px;">
 				    <label class="btn btn-border" :class="{ 'btn-border-danger': !SortieMidnight }">
-                	    <input type="checkbox" v-model="SortieMidnight">
+                	    <input type="checkbox" class="btn-radio" v-model="SortieMidnight">
 					    <span v-if="SortieMidnight">{{ $t('SortieMidnight-Enabled') }}</span>
 				    	<span v-else>{{ $t('SortieMidnight-Disabled') }}</span>
 				    </label>
                 </div>
-                <div data-toggle="buttons" style="margin-top:10px;">
-				    <label class="btn btn-border" :class="{ 'btn-border-danger': !sortieSleepClear }">
-                	    <input type="checkbox" v-model="sortieSleepClear">
+                <div style="margin-top:10px;">
+				    <label class="btn btn-border" v-tooltip.right="$t('sortieSleepClear-info')" :class="{ 'btn-border-danger': !sortieSleepClear }">
+                	    <input type="checkbox" class="btn-radio" v-model="sortieSleepClear">
 					    <span v-if="sortieSleepClear">{{ $t('sortieSleepClear-Enabled') }}</span>
 				    	<span v-else>{{ $t('sortieSleepClear-Disabled') }}</span>
 				    </label>
@@ -245,7 +252,11 @@ export default {
         },
         sortieFleet: {
             get() { return this.$store.state.robot_cf.sortieFleet },
-            set(value) { this.$store.commit('UPDATE_SORTIEFLEET', value)}
+            set(value) { this.$store.commit('UPDATE_SORTIEFLEET', value); this.$store.commit('UPDATE_SORTIEFLEETSTATUS', true); }
+        },
+        sortieFleetStatus: {
+            get() { return this.$store.state.robot_cf.sortieFleetStatus },
+            set(value) { this.$store.commit('UPDATE_SORTIEFLEETSTATUS', value) }
         },
         repair: {
             get() { return this.$store.state.robot_cf.repair },

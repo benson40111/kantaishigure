@@ -50,10 +50,6 @@
 			<h3>{{$t('OpenDevTool')}}</h3>
 			<button class="btn btn-primary" @click="toggleDevTools">{{$t('Toggle')}}</button>
 		</div>
-		<div class="segment">
-			<h3>{{ $t('Game_Audio_Muted')}}</h3>
-			<button type="checkbox" class="btn btn-primary" @click="toggleGameAudio">{{ gameAudioMuted ? $t('Unmuted') : $t('Muted') }}</button>
-		</div>
 	</div>
 	</div>
 </template>
@@ -75,9 +71,6 @@ export default {
 		zoomLevel: {
 			get() { return this.$store.state.config.zoomLevel },
 			set(value) { this.$store.commit('UPDATE_ZOOMLEVEL', value) }
-		},
-		gameAudioMuted() {
-			return this.$store.state.config.gameAudioMuted
 		}
 	},
 	methods: {
@@ -102,10 +95,6 @@ export default {
 		},
 		toggleDevTools() {
 			require('electron').remote.getCurrentWindow().toggleDevTools();
-		},
-		toggleGameAudio() {
-			document.querySelector('webview').setAudioMuted(!this.gameAudioMuted)
-			this.$store.commit('UPDATE_GAMEAUDIOMUTED', !this.gameAudioMuted)
 		}
 	}
 }

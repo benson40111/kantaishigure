@@ -27,7 +27,8 @@ const state = {
     fastRepairTime: 10, //minutes
     fastRepair: false,
     sortieSleepClear: true, // 休眠時間是否將艦隊清除剩一隻
-    sortieFleet: 0 // 要展開第幾個編成紀錄
+    sortieFleet: 0, // 要展開第幾個編成紀錄
+    sortieFleetStatus: true // status
 }
 
 const mutations = {
@@ -36,6 +37,9 @@ const mutations = {
     },
     UPDATE_SORTIEFLEET(state, res){
         state.sortieFleet = res
+    },
+    UPDATE_SORTIEFLEETSTATUS(state, res){
+        state.sortieFleetStatus = res
     },
     UPDATE_FASTREPAIR(state, res){
         state.fastRepair = res
