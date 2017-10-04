@@ -32,6 +32,7 @@ export default {
 	},
 	methods: {
 		capture() {
+			// take a screenshot for webview
 			document.querySelector('webview').capturePage( (img)=> {
 				if(!img.isEmpty()){
 					let jpgFile = img.toJPEG(90);
@@ -42,6 +43,7 @@ export default {
 				}
 			})
 		},
+		// open dir for screenshot
 		opendir() {
 			require('electron').shell.openExternal(`file://${path.resolve(__resources)}`,{}, (err) => {
 				if(err) throw err

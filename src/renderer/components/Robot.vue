@@ -25,7 +25,7 @@
                             <option value="2">3</option>
 			        </select>
                     <span>
-                    	<label v-tooltip.right="$t('sortiefleetStatus')" class="btn btn-border" :class="{ 'btn-border-danger': !sortieFleetStatus }">
+                    	<label class="btn btn-border" v-tooltip.right="sortieFleetStatus ? $t('sortiefleetStatus-start-info') : $t('sortiefleetStatus-stop-info')" :class="{ 'btn-border-danger': !sortieFleetStatus }">
                 	        <input type="checkbox" class="btn-radio" v-model="sortieFleetStatus">
 						    <span v-if="sortieFleetStatus">{{ $t('sortiefleetStatus-start') }}</span>
 						    <span v-else>{{ $t('sortiefleetStatus-stop') }}</span>
@@ -102,8 +102,7 @@
                 <div style="margin-top:10px;">
 				    <label class="btn btn-border" v-tooltip.right="$t('sortieSleepClear-info')" :class="{ 'btn-border-danger': !sortieSleepClear }">
                 	    <input type="checkbox" class="btn-radio" v-model="sortieSleepClear">
-					    <span v-if="sortieSleepClear">{{ $t('sortieSleepClear-Enabled') }}</span>
-				    	<span v-else>{{ $t('sortieSleepClear-Disabled') }}</span>
+					    <span>{{ $t('sortieSleepClear') }}</span>
 				    </label>
                 </div>
             </div>

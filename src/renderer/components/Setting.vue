@@ -43,7 +43,7 @@
 		<div class="segment">
 			<h3>{{$t('clear_localStorage')}}</h3>
 			<button class="btn btn-primary" @click="clearLocalStorage">{{$t('ClearLocalStore')}}</button>
-			<button v-tooltip.right="'important clear cookies will let your setting clear'" class="btn btn-primary" @click="clearCookies">{{$t('ClearCookies')}}</button>
+			<button class="btn btn-primary" @click="clearCookies">{{$t('ClearCookies')}}</button>
 		</div>
 
 		<div class="segment">
@@ -91,7 +91,7 @@ export default {
 			window.localStorage.clear()
 		},
 		clearCookies() {
-			require('electron').remote.getCurrentWebContents().session.clearStorageData([], () => console.log('clearCookies'))
+			require('electron').remote.getCurrentWebContents().session.clearStorageData(["cookies"], () => console.log('clearCookies'))
 		},
 		toggleDevTools() {
 			require('electron').remote.getCurrentWindow().toggleDevTools();

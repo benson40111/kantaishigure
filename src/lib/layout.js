@@ -1,6 +1,7 @@
 import store from '../renderer/store/index.js'
 import { remote } from 'electron'
 
+// get vuex state
 const getWebviewWidth = () => {
     return store.state.config.webviewWidth
 }

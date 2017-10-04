@@ -12,7 +12,7 @@ const resolve_fleet = ( api_deck_port ) => {
 	store.commit('UPDATE_FLEET', fleets)
 }
 
-const resolve_ship = ( { api_ship } , { api_deck_port } , mst_ship) => {
+const resolve_ship = ( { api_ship } , { api_deck_port } , mst_ship = store.state.api.mst_ship ) => {
 	let ships = api_ship.map(ship => Object.assign({}, mst_ship.find(mst => mst.api_sortno == ship.api_sortno), ship))
 	store.commit('UPDATE_SHIP', ships)
 	resolve_fleet(api_deck_port)
@@ -62,7 +62,7 @@ ipcRenderer.on('network.on.api', (event, path, body, reqBody) => {
 		case '/kcsapi/api_port/port':
 			document.querySelector('#home').click()
 			resolve_port(body)
-			resolve_ship(body.api_data, body.api_data, store.state.api.mst_ship)
+			resolve_ship(body.api_data, body.api_data)
 			resolve_mission(body.api_data.api_deck_port)
 			sortie.next()
 			robot.emit('network.on.port')
@@ -72,7 +72,6 @@ ipcRenderer.on('network.on.api', (event, path, body, reqBody) => {
 			break
 		case '/kcsapi/api_get_member/preset_deck':
 			robot.emit('network.on.preset_deck')
-			document.querySelector('#fleets').click()
 			break
 		case '/kcsapi/api_req_hensei/preset_select':
 			robot.emit('network.on.preset_select')

@@ -4,6 +4,7 @@ import store from '../renderer/store/index.js'
 
 remote.getCurrentWebContents().on('dom-ready', () => {
 	document.querySelector('webview').addEventListener('dom-ready', (e) => {
+		// set cookie
 		document.querySelector('webview').executeJavaScript(`
 					document.cookie = "cklg=welcome;expires=Sun, 09 Feb 2019 09:00:09 GMT;domain=.dmm.com;path=/";
 					document.cookie = "cklg=welcome;expires=Sun, 09 Feb 2019 09:00:09 GMT;domain=.dmm.com;path=/netgame/";
@@ -16,12 +17,16 @@ remote.getCurrentWebContents().on('dom-ready', () => {
 					document.cookie = "ckcy=1;expires=Sun, 09 Feb 2019 09:00:09 GMT;domain=.dmm.com;path=/netgame/";
 					document.cookie = "ckcy=1;expires=Sun, 09 Feb 2019 09:00:09 GMT;domain=.dmm.com;path=/netgame_s/";
 				  `)
+		// disable reloadDialog
 		document.querySelector('webview').executeJavaScript('DMM.netgame.reloadDialog=function(){}')
+		// set audio
 		document.querySelector('webview').setAudioMuted(store.state.config.gameAudioMuted)
 	})
+	// load home
 	document.querySelector('webview').loadURL(store.state.config.webviewURL)
 })
 
+// clear cross day quests
 const clearQuest = () => {
 	let japanDate = new Date((new Date((new Date()).getTime() + (new Date().getTimezoneOffset())*60000 + 540 * 60000)).setHours(4,0,0))
 	if(japanDate < (new Date())){

@@ -1,8 +1,8 @@
 {
   "name": "kantaishigure",
-  "version": "0.3.1",
+  "version": "0.3.2",
   "author": "Sean2525 <madness48596@gmail.com>",
-  "description": "An electron-vue project",
+  "description": "An electron project for kancolle",
   "license": "MIT",
   "main": "./dist/electron/main.js",
   "scripts": {
@@ -55,10 +55,10 @@
       ]
     },
     "mac": {
-      "icon": "build/icons/icon.icns"
+      "icon": "build/icons/shigure.icns"
     },
     "win": {
-      "icon": "build/icons/icon.ico"
+      "icon": "build/icons/shigure.ico"
     },
     "linux": {
       "icon": "build/icons"

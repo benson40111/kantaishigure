@@ -77,15 +77,10 @@ class Proxy extends EventEmitter {
 	load = () => {
 		let currentServer = null
 		this.server = http.createServer((req,res) => {
-			const serverList = JSON.parse(fs.readFileSync(path.join(__static, 'data', 'server.json'),'utf8'))
 			delete req.headers['proxy-connection']
 			req.headers['connection'] = 'close'
 			const parsed = url.parse(req.url)
 			const isGameApi = parsed.pathname.startsWith('/kcsapi')
-			if(isGameApi && serverList[parsed.hostname] && currentServer !== serverList[parsed.hostname].num ){
-				currentServer = serverList[parsed.hostname].num
-				this.emit('network.get.server',Object.assign(serverList[parsed.hostname],{ip: parsed.hostname}))
-			}
 			let reqBody = Buffer.alloc(0)
 			// Get all request body
 			req.on ('data', (data) => {
@@ -147,7 +142,7 @@ class Proxy extends EventEmitter {
 							if(resolvedBody === null) {
 								throw new Error('Empty Body')
 							}
-							if(response.statusCode == 200) {
+							if(response.statusCode == 200 && isGameApi) {
 								this.emit('network.on.response', req.method, [domain, pathname, requrl], JSON.stringify(resolvedBody), reqBody, Date.now())
 							} else {
 								this.emit('network.error', [domain, pathname, requrl], response.statusCode)

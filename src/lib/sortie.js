@@ -10,12 +10,14 @@ class sortie{
 			let { api_maxhps, api_nowhps } = api_data
 			let api_onDamageHps = [...api_nowhps] 
 			let api_countDamage = Array(api_maxhps.length).fill(0)
+			// compute Kouku damage
 			const onDamageKouku = ({api_edam, api_fdam}) => {
 				for(let i = 1 ; i < api_fdam.length ; i++){
 					api_onDamageHps[i] -= Math.round(api_fdam[i])
 					api_onDamageHps[6+i] -= Math.round(api_edam[i])					
 				}
 			}
+			// compute Hougeki damage
 			const onDamageHougeki = ({ api_at_list , api_df_list , api_damage }) => {
 				let hougeki  = []
 				for(let i = 1 ; i < api_at_list.length ; i++){
@@ -29,6 +31,7 @@ class sortie{
 				})
 			}
 			// fydam: attack enemys damage || fdam: our fleet onDamage || eydam: attack our fleet damage || edam: enemys onDamage
+			// compute Raigeki damage
 			const onDamageRaigeki = ({ api_fydam , api_fdam , api_eydam , api_edam}) => {
 				for(let i = 1 ; i < api_fydam.length; i++){
 					api_onDamageHps[i] -= Math.round(api_fdam[i])
@@ -37,14 +40,17 @@ class sortie{
 					api_countDamage[6+i] += Math.round(api_eydam[i])
 				}
 			}
+			// hougeki
 			let battle_key = ["api_hougeki1", "api_hougeki2", "api_hougeki3", "api_hougeki" , "api_opening_taisen"]
 			battle_key.map( x => {
 				if(api_data[x]) onDamageHougeki(api_data[x])
 			})
+			// raigeki
 			let raigeki_key = ["api_raigeki", "api_opening_atack"]
 			raigeki_key.map( x => {
 				if(api_data[x]) onDamageRaigeki(api_data[x])
 			})
+			// Kouku
 			if(api_data['api_kouku'] && api_data['api_kouku']['api_stage3']){
 				onDamageKouku(api_data.api_kouku.api_stage3)
 			}
@@ -84,6 +90,7 @@ class sortie{
 				let api_onDamageHps = [...api_nowhps]
 				let api_countDamage = Array(api_maxhps.length).fill(0)
 				let battleresult = store.state.api.battleresult
+				// hougeki
 				const onDamageHougeki = ({ api_at_list , api_df_list , api_damage }) => {
 					let hougeki  = []
 					for(let i = 1 ; i < api_at_list.length ; i++){
@@ -96,7 +103,7 @@ class sortie{
 						}
 					})
 				}
-				if(api_data.api_hougeki != undefined) onDamageHougeki(api_data.api_hougeki)
+				if(api_data.api_hougeki) onDamageHougeki(api_data.api_hougeki)
 				let fleet = battleresult.fleet
 				let nowFleet = []
 				for(let i = 0 ; i < fleet.length ; i++){
@@ -130,6 +137,7 @@ class sortie{
 			store.commit('UPDATE_BATTLE', {'fleet': store.getters.getFleet(0)})
 		}
 		this.result = ({api_data}) => {
+			// save result
 			let result = { 
 				api_win_rank : api_data.api_win_rank,
 				api_mvp: api_data.api_mvp,

@@ -74,6 +74,7 @@ class Robot extends EventEmitter {
 		this.sortieFleetStatus = () => store.state.robot_cf.sortieFleetStatus		
 		this.isEnable = () => store.state.robot_cf.isEnabled
 		this.isSortieEnable = () => store.state.robot_cf.Sortie
+		// waiting active
 		this.waitActive = () => {
 			return new Promise ( async promise_resolve => {
 				if(this.isActive){
@@ -83,6 +84,7 @@ class Robot extends EventEmitter {
 				}
 			})
 		}
+		// waiting expedition
 		this.waitEnsei = () => {
 			return new Promise ( async promise_resolve => {
 				if(this.isEnsei){
@@ -92,6 +94,7 @@ class Robot extends EventEmitter {
 				}
 			})
 		}
+		// waiting sortie
 		this.waitSortie = () => {
 			return new Promise ( async promise_resolve => {
 				if(this.isSortie){
@@ -103,18 +106,24 @@ class Robot extends EventEmitter {
 		}
 		this.Delayms = (time = store.state.robot_cf.Delayms) => Math.floor(Math.random()*(-time*0.1,time*0.1)+time)
 		this.ExpeditionDelayTime = (max = store.state.robot_cf.EnseiDelayMax, min = store.state.robot_cf.EnseiDelayMin) => Math.floor(Math.random()*(Math.abs(max-min)) + min)*60000
+		// timer for robot
 		this.timer = async ({HH,mm,ss} = store.state.robot_cf.sleepTime, end = store.state.robot_cf.sleepEnd ) => {
 			let sleepStart = (new Date()).setHours(Number(HH),Number(mm),Number(ss))
 			let sleepEnd = (new Date()).setHours(Number(end.HH),Number(end.mm),Number(end.ss))
 			let now = (new Date().getTime())
 			if( now > sleepStart && now < sleepEnd){
+				// in sleeping time
 				this.isSleep = true
-				if(this.isEnable() && this.isSortieEnable() && store.state.robot_cf.sortieSleepClear && store.state.api.battleresult.fleet[1]){
+				if(!store.state.robot_cf.sortieFleetStatus){
+					store.commit('UPDATE_SORTIEFLEETSTATUS', true)					
+				}
+				if(this.isEnable() && this.isSortieEnable() && store.state.robot_cf.sortieSleepClear && store.state.api.battleresult.fleet[1] && this.isStart){
+					this.isStart = false
 					await this.waitActive()
 					await this.waitSortie()
 					await this.waitEnsei()
-					store.commit('UPDATE_SORTIEFLEETSTATUS', true)
 					await this.AutoRun('clearFleet')
+					this.isStart = true
 				}
 			} else {
 				this.isSleep = false
@@ -124,19 +133,21 @@ class Robot extends EventEmitter {
 				}
 			}
 		}
-		this.PromiseMoveClick = ([x,y], time = this.Delayms()) => {
+		// simulate a mouse click
+		this.PromiseMoveClick = ([x,y], delay = this.Delayms()) => {
 			return new Promise ( async resolve => {
 				if(this.isEnable() && !this.isReload){
 					setTimeout( () => {
 						document.querySelector('webview').sendInputEvent({type:'mouseDown', x:x, y: y, button:'left', clickCount: 1})
 						document.querySelector('webview').sendInputEvent({type:'mouseUp', x:x, y: y, button:'left', clickCount: 1});
 						resolve()
-					}, time)
+					}, delay)
 				} else {
 					resolve()
 				}
 			})
 		}
+		// for robot auto script
 		this.AutoRun = (target, num) => {
 			return new Promise ( async resolve => {
 				if(this.isReload || !this.isEnable()){
@@ -146,16 +157,19 @@ class Robot extends EventEmitter {
 				await this.waitActive()
 				this.isActive = true
 				let isWait = true
-				let wait = (time = 20, callback = () => true ) => {
+				let wait = (retries = 20, callback = () => true ) => {
 					return new Promise ( async promise_resolve => {
+						// robot disable
 						if(!this.isEnable()){
 							promise_resolve(false)
-						} else if(time == 0) {
+						} else if(retries == 0) {
+							// retries failed , reload webview
 							document.querySelector('webview').reload()
 							this.isReload = true
 							promise_resolve(true)
 						} else if(isWait){
-							await new Promise ( () => { callback(); setTimeout( async () => { promise_resolve(await wait(time-1, callback))}, 2000 )})                        
+							// delay 2s , and exec callback
+							await new Promise ( () => { callback(); setTimeout( async () => { promise_resolve(await wait(retries-1, callback))}, 2000 )})                        
 						} else {
 							promise_resolve(false)
 						}
@@ -501,6 +515,7 @@ class Robot extends EventEmitter {
 			let ensei_timeout = []
 			let Expedition_list = () => store.state.robot_cf.Expedition
 			const startMission = async () => {
+				// run expeditions
 				if(!this.isEnsei && ensei.length){
 					this.isEnsei = true
 					await this.waitActive()
@@ -526,6 +541,7 @@ class Robot extends EventEmitter {
 				}
 			}
 			const missionReturn = () => {
+				// check expedition return has the next one
 				return new Promise( async resolve => {
 					this.isActive = true
 					let hasNext = false
@@ -543,6 +559,7 @@ class Robot extends EventEmitter {
 				})
 			}
 			this.on('network.on.checkMission',async () => {
+				// check expedition
 				if(this.isEnable()){
 					ensei = []
 					ensei_timeout.map(x => clearTimeout(x))
@@ -558,6 +575,7 @@ class Robot extends EventEmitter {
 				}
 			})
 			this.on('network.on.missionStart', (time,i) => {
+				// when expedition start, set a timeout to refresh port
 				ensei_timeout[i] = setTimeout( async () => {
 					if(this.isEnable()){
 						if(this.isSleep) {
@@ -576,6 +594,7 @@ class Robot extends EventEmitter {
 				}
 			})
 			this.on('network.on.checkNdock', () => {
+				// check docking and set a timeout to refresh port
 				let time = store.state.api.ndock.map( x => x.api_complete_time).filter(x => x)
 				time.map( x => {
 					setTimeout( async () => {
@@ -587,6 +606,7 @@ class Robot extends EventEmitter {
 			})
 		}
 		this.on('network.on.start', async () => {
+			// when start reset all flag
 			this.isReload = false
 			this.isActive = false
 			this.isEnsei = false
@@ -608,6 +628,7 @@ class Robot extends EventEmitter {
 		})
 		this.base = () => {
 			this.startSortie = async () => {
+				// for run sortie script
 				if(!this.isSortie && !this.isEnsei && !this.waitCond && !this.isActive){
 					this.isSortie = true
 					await this.waitActive()
@@ -662,6 +683,7 @@ class Robot extends EventEmitter {
 			}
 			this.docking = () => {
 				return new Promise( async resolve => {
+					// docking first fleet
 					let repair = checkRepair(store.state.api.battleresult.fleet, store.state.robot_cf.repair)
 					if(repair){
 						let needDock = false

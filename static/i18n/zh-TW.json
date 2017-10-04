@@ -60,12 +60,12 @@
 	"repair-config": "維修設定",
 	"sortie-Area1": "出擊海域",
 	"sortie-Area2": "出擊關卡",
-	"sortieSleepClear-Enabled": "休眠時間設定單艦啟動",
-	"sortieSleepClear-Disabled": "修眠時間設定單鍵停用",
+	"sortieSleepClear": "休眠時間設定單艦設定",
 	"sortieSleepClear-info": "休眠時間自動將艦隊清除剩一位,並且將更換編成設置為啟動",
 	"sortieFleet": "出擊編成艦隊",
 	"sortieFleet-info": "出擊編成紀錄艦隊 只提供1~3 請自行先記錄",
 	"sortiefleetStatus-start": "更換編成啟用",
 	"sortiefleetStatus-stop": "更換編成停止",
-	"sortiefleetStatus": "操作只是暫時性, 重啟, 更換出擊編成艦隊, 都會自動重設狀態"
+	"sortiefleetStatus-start-info": "下次出擊會自動展開設定艦隊, 然後切換成停用",
+	"sortiefleetStatus-stop-info": "當遊戲重啟, 刷新, 更改機器人編成設定, 休眠時間, 將會自動切換成啟用"
 }

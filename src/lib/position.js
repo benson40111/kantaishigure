@@ -1,4 +1,6 @@
 /*global load*/
+
+// for kancolle flash position
 class Position {
     constructor(){
         this.load()
