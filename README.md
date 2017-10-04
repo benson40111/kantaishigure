@@ -2,7 +2,7 @@
 > An electron project for kancolle automate
 
 ## Features
-* Basic view &mdash; resource, fleets, quest, expeditions, docking, construction
+* Basic view &mdash; resources, fleets, quest, expeditions, docking, construction
 * Normal battle prophet
   * Doesn't supports combined battle
 * Expedition module &mdash; automate expeditions
@@ -46,11 +46,11 @@ A: Because I had only intended to take it to upgrade my ship.
 A: I'm not using graphic identification,just calculate the location to run script,
 so if your network unstable, it will happen often.
 
-#### Q: 2018 spring kancolle will update to html5, will you upgrade?
+#### Q: 2018 spring kancolle will upgrade to html5, will you update?
 
 A: Yes, if I have time.
 
-#### Q: Your code is ugly I can improve it?
+#### Q: Your code is ugly, can I improve it?
 
 A: Sure, just pull request.
 
