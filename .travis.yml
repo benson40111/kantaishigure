@@ -5,8 +5,9 @@ language: c
 matrix:
   include:
   - os: osx
+    env: TRAVIS_NODE_VERSION="8"
   - os: linux
-    env: CC=clang CXX=clang++ npm_config_clang=1
+    env: CC=clang CXX=clang++ npm_config_clang=1 TRAVIS_NODE_VERSION="8"
     compiler: clang
 cache:
   directories:
@@ -24,7 +25,7 @@ before_install:
   | tar -xz -C /tmp/git-lfs --strip-components 1 && /tmp/git-lfs/git-lfs pull
 - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then sudo apt-get install --no-install-recommends -y icnsutils graphicsmagick xz-utils; fi
 install:
-- nvm install 7
+- nvm install $TRAVIS_NODE_VERSION
 - curl -o- -L https://yarnpkg.com/install.sh | bash
 - source ~/.bashrc
 - npm install -g xvfb-maybe
