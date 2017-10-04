@@ -5,7 +5,8 @@ language: c
 matrix:
   include:
   - os: osx
-    env: TRAVIS_NODE_VERSION="8"
+    env: CC=clang CXX=clang++ npm_config_clang=1 TRAVIS_NODE_VERSION="8"
+    compiler: clang
   - os: linux
     env: CC=clang CXX=clang++ npm_config_clang=1 TRAVIS_NODE_VERSION="8"
     compiler: clang
