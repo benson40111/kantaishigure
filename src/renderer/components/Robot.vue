@@ -223,7 +223,7 @@ export default {
         },
         isEnabled: {
             get() { return this.$store.state.robot_cf.isEnabled },
-            set(value) { this.$store.commit('UPDATE_ISENABLED', value); if(value) this.$robot.emit('network.on.checkMission');}
+            set(value) { this.$store.commit('UPDATE_ISENABLED', value); if(value) setTimeout( () => this.$robot.emit('network.on.checkMission')  , 120000 ) }
         },
         EnseiDelayMax: {
             get() { return this.$store.state.robot_cf.EnseiDelayMax },

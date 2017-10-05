@@ -70,6 +70,7 @@ class Robot extends EventEmitter {
 		this.waitCond = false
 		this.isSortie = false
 		this.isReload = true
+		this.isCheckMission = false
 		this.needRefreshPort = false
 		this.sortieFleetStatus = () => store.state.robot_cf.sortieFleetStatus		
 		this.isEnable = () => store.state.robot_cf.isEnabled
@@ -560,18 +561,22 @@ class Robot extends EventEmitter {
 			}
 			this.on('network.on.checkMission',async () => {
 				// check expedition
-				if(this.isEnable()){
+				if(this.isEnable() && !this.isCheckMission){
+					this.isCheckMission = true
+					await this.waitActive()
+					await this.waitEnsei()
 					ensei = []
 					ensei_timeout.map(x => clearTimeout(x))
 					store.state.api.mission.map( (e, i) => {
-						if( e != undefined && e[2] != 0 && Expedition_list()[i].enable){
+						if( e && e[2] != 0 && Expedition_list()[i].enable){
 							this.emit('network.on.missionStart', e[2],i)
-						} else if(e != undefined && e[2] == 0 && Expedition_list()[i].enable){
+						} else if(e && e[2] == 0 && Expedition_list()[i].enable){
 							ensei.push(i)
 						}
 					})
 					await delay()
-					if(ensei.length) startMission()
+					if(ensei.length && this.isEnable()) await startMission()
+					this.isCheckMission = false
 				}
 			})
 			this.on('network.on.missionStart', (time,i) => {
@@ -615,7 +620,10 @@ class Robot extends EventEmitter {
 			this.isStart = false
 			store.commit('UPDATE_SORTIEFLEETSTATUS', true)			
 			if(this.isEnable()){
-				this.once('network.on.port', () => {
+				this.once('network.on.port', async () => {
+					await delay(1000)
+					await this.PromiseMoveClick(position.mainExpedition(), 1000)
+					await delay()
 					this.isStart = true
 					this.emit('network.on.checkMission')
 					this.emit('network.on.checkNdock')
