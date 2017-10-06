@@ -39,7 +39,7 @@ html body {
 .ship-info {
 	flex: 1;
 	display: flex;
-	flex-flow: column nowrap
+	flex-flow: column nowrap;
 }
 label.btn {
 	margin-bottom:0px;
@@ -47,7 +47,8 @@ label.btn {
 .ship-stat {
 	flex: 2;
 	display: flex;
-	flex-flow: column nowrap
+	flex-flow: column nowrap;
+	position:relative;
 }
 .ship-hp {
 	flex: 1;
@@ -180,6 +181,9 @@ div.auto-sortie, div.sleep-end, div.auto-expedition {
 	background: 0 0;
 	border: 0;
 }
+.dropdown-shigure > .dropdown-shigure-item:hover{
+	color: aqua !important;
+}
 .nav-link{
 	color: #FFF;
 }
@@ -302,12 +306,36 @@ hr{
 .progress {
 	border-radius: 0;
 }
-.bg-small-break {
+.bg-minor-damaged {
 	background-color: #869645 !important;
 }
-.bg-medium-break {
+.bg-moderate-damaged {
 	background-color: #CE9C0E !important;
 }
-.bg-large-break {
+.bg-heavily-damaged {
 	background-color: #d9534f !important;
+}
+.repair{
+	top:50%;
+	display:block;
+	position:absolute;
+	width:100%;
+	text-align:center;
+	transform:rotate(8deg);
+}
+.main-btn{
+	background:transparent;
+	color:aqua;
+	border:none;
+}
+.main-btn:hover{
+	background:transparent;
+	color:white !important;
+}
+.main-btn:focus{
+	outline: none;
+}
+.btn-radio{
+	position: absolute;
+	opacity: 0;
 }

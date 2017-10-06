@@ -1,6 +1,6 @@
 <template>
 	<div class="kdock">
-        <div class="kdock-inside" v-for="kdock in kdocks" :key="kdock.api_id" v-if="kdock.api_state != -1">
+        <div class="kdock-inside" v-for="kdock in kdocks" :key="kdock.api_id" v-if="kdock && kdock.api_state != -1">
             <div v-if="kdock.api_created_ship_id==0">
                 {{ $t('Unused') }}
             </div>

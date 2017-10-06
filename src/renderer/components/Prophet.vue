@@ -4,7 +4,7 @@
 			<div class="ship-item" v-for="(ship,index) in battleresult.fleet" :key="index" v-if="ship">
 				<div class="ship-title">
 					<div class="d-flex flex-row" style="flex:1;">
-						<div class="ship-info">
+						<div class="ship-info nowrap">
 							<span class="ship-name" style="padding:3px;">
 								{{ ship.api_name }}
 							</span>
@@ -37,7 +37,7 @@
 			<div class="ship-item" v-for="ship in battleresult.enemy" :key="ship.id" v-if="ship">
 				<div class="ship-title">
 					<div class="d-flex flex-row" style="flex:1">
-						<div class="ship-info">
+						<div class="ship-info nowrap">
 							<span class="ship-name" style="padding:3px">
 								{{ ship.api_name }}
 							</span>

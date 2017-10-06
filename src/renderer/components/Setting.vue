@@ -43,16 +43,12 @@
 		<div class="segment">
 			<h3>{{$t('clear_localStorage')}}</h3>
 			<button class="btn btn-primary" @click="clearLocalStorage">{{$t('ClearLocalStore')}}</button>
-			<button v-tooltip.right="'important clear cookies will let your setting clear'" class="btn btn-primary" @click="clearCookies">{{$t('ClearCookies')}}</button>
+			<button class="btn btn-primary" @click="clearCookies">{{$t('ClearCookies')}}</button>
 		</div>
 
 		<div class="segment">
 			<h3>{{$t('OpenDevTool')}}</h3>
 			<button class="btn btn-primary" @click="toggleDevTools">{{$t('Toggle')}}</button>
-		</div>
-		<div class="segment">
-			<h3>{{ $t('Game_Audio_Muted')}}</h3>
-			<button type="checkbox" class="btn btn-primary" @click="toggleGameAudio">{{ gameAudioMuted ? $t('Unmuted') : $t('Muted') }}</button>
 		</div>
 	</div>
 	</div>
@@ -75,9 +71,6 @@ export default {
 		zoomLevel: {
 			get() { return this.$store.state.config.zoomLevel },
 			set(value) { this.$store.commit('UPDATE_ZOOMLEVEL', value) }
-		},
-		gameAudioMuted() {
-			return this.$store.state.config.gameAudioMuted
 		}
 	},
 	methods: {
@@ -98,14 +91,10 @@ export default {
 			window.localStorage.clear()
 		},
 		clearCookies() {
-			require('electron').remote.getCurrentWebContents().session.clearStorageData([], () => console.log('clearCookies'))
+			require('electron').remote.getCurrentWebContents().session.clearStorageData(["cookies"], () => console.log('clearCookies'))
 		},
 		toggleDevTools() {
 			require('electron').remote.getCurrentWindow().toggleDevTools();
-		},
-		toggleGameAudio() {
-			document.querySelector('webview').setAudioMuted(!this.gameAudioMuted)
-			this.$store.commit('UPDATE_GAMEAUDIOMUTED', !this.gameAudioMuted)
 		}
 	}
 }
