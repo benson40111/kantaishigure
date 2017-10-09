@@ -677,8 +677,8 @@ class Robot extends EventEmitter {
 					}
 					this.removeAllListeners('network.on.port')
 					await delay(6000)
-					this.PromiseMoveClick(position.mainExpedition(),1000)
-					await delay()
+					this.PromiseMoveClick(position.mainExpedition(),1000) //check expedition return
+					await delay(6000)
 					await this.waitActive()
 					await this.AutoRun('supply')
 					await this.waitActive()
@@ -702,6 +702,7 @@ class Robot extends EventEmitter {
 							})
 						}
 						if(needDock){
+							await delay()
 							await this.AutoRun('docking')
 						}
 						await this.waitActive()
