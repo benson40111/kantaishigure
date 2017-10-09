@@ -317,52 +317,52 @@ class Position {
         this.ColumnShip = [
             ({x,y} = {x: 0, y: 0} , {width,height} = this.clientRect()) => {
                 x = Math.floor(Math.random()*(width*0.9487 - width*0.5200+1) + width*0.5200)
-                y = Math.floor(Math.random()*(height*0.3083 - height*0.2646+1) + height*0.2646)
+                y = Math.floor(Math.random()*(height*0.3000 - height*0.2806+1) + height*0.2806)
                 return [x, y]
             },
             ({x,y} = {x: 0, y: 0} , {width,height} = this.clientRect()) => {
                 x = Math.floor(Math.random()*(width*0.9487 - width*0.5200+1) + width*0.5200)
-                y = Math.floor(Math.random()*(height*0.3708 - height*0.3333+1) + height*0.3333)
+                y = Math.floor(Math.random()*(height*0.3583 - height*0.3444+1) + height*0.3444)
                 return [x, y]
             },
             ({x,y} = {x: 0, y: 0} , {width,height} = this.clientRect()) => {
                 x = Math.floor(Math.random()*(width*0.9487 - width*0.5200+1) + width*0.5200)
-                y = Math.floor(Math.random()*(height*0.4313 - height*0.4146+1) + height*0.4146)
+                y = Math.floor(Math.random()*(height*0.4236 - height*0.4097+1) + height*0.4097)
                 return [x, y]
             },
             ({x,y} = {x: 0, y: 0} , {width,height} = this.clientRect()) => {
                 x = Math.floor(Math.random()*(width*0.9487 - width*0.5200+1) + width*0.5200)
-                y = Math.floor(Math.random()*(height*0.5042 - height*0.4667+1) + height*0.4667)
+                y = Math.floor(Math.random()*(height*0.4889 - height*0.4750+1) + height*0.4750)
                 return [x, y]
             },
             ({x,y} = {x: 0, y: 0} , {width,height} = this.clientRect()) => {
                 x = Math.floor(Math.random()*(width*0.9487 - width*0.5200+1) + width*0.5200)
-                y = Math.floor(Math.random()*(height*0.5708 - height*0.5354+1) + height*0.5354)
+                y = Math.floor(Math.random()*(height*0.5556 - height*0.5417+1) + height*0.5417)
                 return [x, y]
             },
             ({x,y} = {x: 0, y: 0} , {width,height} = this.clientRect()) => {
                 x = Math.floor(Math.random()*(width*0.9487 - width*0.5200+1) + width*0.5200)
-                y = Math.floor(Math.random()*(height*0.6396 - height*0.6042+1) + height*0.6042)
+                y = Math.floor(Math.random()*(height*0.6181 - height*0.6042+1) + height*0.6042)
                 return [x, y]
             },
             ({x,y} = {x: 0, y: 0} , {width,height} = this.clientRect()) => {
                 x = Math.floor(Math.random()*(width*0.9487 - width*0.5200+1) + width*0.5200)
-                y = Math.floor(Math.random()*(height*0.7021 - height*0.6708+1) + height*0.6708)
+                y = Math.floor(Math.random()*(height*0.6819 - height*0.6681+1) + height*0.6681)
                 return [x, y]
             },
             ({x,y} = {x: 0, y: 0} , {width,height} = this.clientRect()) => {
                 x = Math.floor(Math.random()*(width*0.9487 - width*0.5200+1) + width*0.5200)
-                y = Math.floor(Math.random()*(height*0.7667 - height*0.7292+1) + height*0.7292)
+                y = Math.floor(Math.random()*(height*0.7486 - height*0.7347+1) + height*0.7347)
                 return [x, y]
             },
             ({x,y} = {x: 0, y: 0} , {width,height} = this.clientRect()) => {
                 x = Math.floor(Math.random()*(width*0.9487 - width*0.5200+1) + width*0.5200)
-                y = Math.floor(Math.random()*(height*0.8271 - height*0.7958+1) + height*0.7958)
+                y = Math.floor(Math.random()*(height*0.8111 - height*0.7972+1) + height*0.7972)
                 return [x, y]
             },
             ({x,y} = {x: 0, y: 0} , {width,height} = this.clientRect()) => {
                 x = Math.floor(Math.random()*(width*0.9487 - width*0.5200+1) + width*0.5200)
-                y = Math.floor(Math.random()*(height*0.8938 - height*0.8542+1) + height*0.8542)
+                y = Math.floor(Math.random()*(height*0.8764 - height*0.8625+1) + height*0.8625)
                 return [x, y]
             }
         ]
