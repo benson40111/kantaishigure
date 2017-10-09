@@ -2,7 +2,7 @@
 	<div class="tab-content">
 		<div class="flex-column robot">
             <div class="robot-enable">
-				<label class="btn btn-border" :class="{ 'btn-border-danger': !isEnabled }">
+				<label class="btn btn-border" v-tooltip.right="$t('Robot_enabled_info')" :class="{ 'btn-border-danger': !isEnabled }">
                 	<input type="checkbox" class="btn-radio" v-model="isEnabled">
 					<span v-if="isEnabled">{{ $t('Robot_enabled') }}</span>
 					<span v-else>{{ $t('Robot_disabled') }}</span>

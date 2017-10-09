@@ -13,6 +13,7 @@
 	"Game_Audio_Muted": "Game Audio Muted",
 	"Robot_enabled": "Robot Enabled",
 	"Robot_disabled": "Robot Disabled",
+	"Robot_enabled_info": "When you perform any manual operation, be sure to turn the robot off.",
 	"Auto_sortie_enabled": "Auto Sortie Enabled",
 	"Auto_sortie_disabled": "Auto Sortie Disabled",
 	"battle_rank": "Battle Rank",

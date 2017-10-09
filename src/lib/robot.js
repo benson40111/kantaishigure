@@ -148,7 +148,7 @@ class Robot extends EventEmitter {
 				}
 			})
 		}
-		// for robot auto script
+		// robot automate script
 		this.AutoRun = (target, num) => {
 			return new Promise ( async resolve => {
 				if(this.isReload || !this.isEnable()){
@@ -169,7 +169,7 @@ class Robot extends EventEmitter {
 							this.isReload = true
 							promise_resolve(true)
 						} else if(isWait){
-							// delay 2s , and exec callback
+							// exec callback and delay 2s then retry
 							await new Promise ( () => { callback(); setTimeout( async () => { promise_resolve(await wait(retries-1, callback))}, 2000 )})                        
 						} else {
 							promise_resolve(false)
@@ -324,7 +324,7 @@ class Robot extends EventEmitter {
 						}
 						this.isActive = false
 						await this.PromiseMoveClick(position.mainExpedition())
-						await delay(3000)
+						await delay()
 						resolve(true)
 						break
 					case 'clearFleet':
@@ -368,7 +368,7 @@ class Robot extends EventEmitter {
 						}
 						this.once('network.on.port', () => { isWait = false; port = true; })
 						this.once('network.on.sortieBattle', () => isWait = false)
-						if(await wait(30, () => this.PromiseMoveClick(position.SortieFormation[store.state.robot_cf.Formation](), 1000))) {
+						if(await wait(50, () => this.PromiseMoveClick(position.SortieFormation[store.state.robot_cf.Formation](), 1000))) {
 							this.isActive = false
 							this.removeAllListeners('network.on.port')
 							this.removeAllListeners('network.on.sortieBattle')
@@ -382,18 +382,19 @@ class Robot extends EventEmitter {
 							break
 						}
 						isWait = true
-						this.once('network.on.sortieMidnight', () => isWait = false)
+						var in_midnight = false
+						this.once('network.on.sortieMidnight', () => {isWait = false; in_midnight = true})
 						this.once('network.on.sortieResult', () => isWait = false)
 						var midnight = store.state.robot_cf.SortieMidnight ? 1 : 0
-						if(await wait(100, () => this.PromiseMoveClick(position.SortieLeftRight[midnight](), 1000))) {
-							this.isActive = false
-							this.removeAllListeners('network.on.sortieMidnight')
-							this.removeAllListeners('network.on.sortieResult')
-							resolve()
-							break
-						}
+						await wait(200, () => this.PromiseMoveClick(position.SortieLeftRight[midnight](), 1000))
 						this.removeAllListeners('network.on.sortieMidnight')
 						this.removeAllListeners('network.on.sortieResult')
+						if(in_midnight){
+							isWait = true
+							this.once('network.on.sortieResult', () => isWait = false)
+							await wait(100, () => this.PromiseMoveClick(position.SortieLeftRight[midnight](), 1000))
+							this.removeAllListeners('network.on.sortieResult')
+						}
 						this.isActive = false
 						resolve()
 						break
@@ -402,12 +403,8 @@ class Robot extends EventEmitter {
 						this.once('network.on.sortieNext', () => isWait = false)
 						var AtteckReturn = checkDamage(store.state.api.battleresult.fleet, store.state.robot_cf.returnPort)				
 						AtteckReturn = num >= store.state.robot_cf.sortieTimes ? 1 : AtteckReturn
-						if(await wait(20, () => this.PromiseMoveClick(position.SortieLeftRight[AtteckReturn](), 1000))){
-							this.isActive = false
+						if(await wait(50, () => this.PromiseMoveClick(position.SortieLeftRight[AtteckReturn](), 1000))){
 							this.removeAllListeners('network.on.port')
-							this.removeAllListeners('network.on.sortieNext')
-							resolve()
-							break
 						}
 						this.removeAllListeners('network.on.sortieNext')
 						this.isActive = false
@@ -542,7 +539,7 @@ class Robot extends EventEmitter {
 				}
 			}
 			const missionReturn = () => {
-				// check expedition return has the next one
+				// check expedition return if has the next one
 				return new Promise( async resolve => {
 					this.isActive = true
 					let hasNext = false
@@ -560,7 +557,7 @@ class Robot extends EventEmitter {
 				})
 			}
 			this.on('network.on.checkMission',async () => {
-				// check expedition
+				// check expedition and start
 				if(this.isEnable() && !this.isCheckMission){
 					this.isCheckMission = true
 					await this.waitActive()
@@ -636,7 +633,7 @@ class Robot extends EventEmitter {
 		})
 		this.base = () => {
 			this.startSortie = async () => {
-				// for run sortie script
+				// run sortie script
 				if(!this.isSortie && !this.isEnsei && !this.waitCond && !this.isActive){
 					this.isSortie = true
 					await this.waitActive()
@@ -679,7 +676,7 @@ class Robot extends EventEmitter {
 						await this.AutoRun('sortieResult', i+1)
 					}
 					this.removeAllListeners('network.on.port')
-					await delay()
+					await delay(6000)
 					this.PromiseMoveClick(position.mainExpedition(),1000)
 					await delay()
 					await this.waitActive()
@@ -692,7 +689,10 @@ class Robot extends EventEmitter {
 			this.docking = () => {
 				return new Promise( async resolve => {
 					// docking first fleet
-					let repair = checkRepair(store.state.api.battleresult.fleet, store.state.robot_cf.repair)
+					let fleet = store.state.api.battleresult.fleet
+					let repair_config = store.state.robot_cf.repair
+					let repair = checkRepair(fleet, repair_config)
+					// need repair
 					if(repair){
 						let needDock = false
 						let dock = checkNdock()
@@ -708,7 +708,23 @@ class Robot extends EventEmitter {
 						this.isSortie = false
 						resolve(true)
 					} else {
-						resolve(false)
+						// Is ship already in ndock 
+						let dock = checkNdock()
+						let fleet_id = fleet.map( ship => ship ? ship.api_id : undefined ).filter( x => x)
+						if(dock.includes(false)){
+							for(let i = 0; i < dock.length; i++){
+								if(!dock[i]){
+									if(fleet_id.includes(store.state.api.ndock[i].api_ship_id)){
+										resolve(true)
+										this.isSortie = false
+										return
+									}
+								}
+							}
+							resolve(false)
+						} else {
+							resolve(false)							
+						}
 					}
 				})
 			}

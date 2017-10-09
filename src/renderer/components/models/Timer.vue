@@ -1,7 +1,10 @@
 <template>
     <div>
-        <span :style="color" v-if="endtime != 0" v-tooltip.left="$t('Done') + ':' + (new Date(endtime)).toString().substr(16,8)">
+        <span :style="color" v-if="normalizedDate" v-tooltip.left="$t('Done') + ':' + (new Date(endtime)).toString().substr(16,8)">
             {{ hours | non_negtive | two_digits }}:{{ minutes | non_negtive | two_digits }}:{{ seconds | non_negtive | two_digits }}
+        </span>
+        <span style="color:aqua" v-else>
+            00:00:00
         </span>
     </div>
 </template>
@@ -13,14 +16,14 @@ export default {
     data() {
         return {
             now: Math.trunc((new Date()).getTime() / 1000),
-            active: false,
-            position: ""
+            diff: 0,
+            interval: null
         }
     },
-    mounted: function() {
-        window.setInterval(() => {
+    mounted() {
+        this.interval = setInterval(() => {
             this.now = Math.trunc((new Date()).getTime() / 1000)
-            },1000)
+        }, 1000)
     },
     filters: {
         two_digits: function (value) {
@@ -37,23 +40,32 @@ export default {
         }
     },
     computed: {
-        normalizedDate: function() {
+        normalizedDate() {
             return Math.trunc(Number(this.endtime) / 1000)
         },
         seconds() {
-        return (this.normalizedDate - this.now) % 60
+            return (this.normalizedDate - this.now) % 60
         },
         minutes() {
-        return Math.trunc((this.normalizedDate - this.now) / 60) % 60
+            return Math.trunc((this.normalizedDate - this.now) / 60) % 60
         },
         hours() {
-        return Math.trunc((this.normalizedDate - this.now) / 60 / 60)
+            return Math.trunc((this.normalizedDate - this.now) / 60 / 60)
         },
         color() {
             if((this.hours == 0 && this.minutes > 0 && this.minutes < 10) || (this.hours == 0 && this.minutes == 0 && this.seconds > 0)){
                 return "color:#ff5286"
             }
             return "color:aqua"
+        }
+    },
+    watch: {
+        now(value){
+            this.diff = this.normalizedDate - this.now;
+            if(this.diff <= 0){
+                this.diff = 0;
+                clearInterval(this.interval);
+            }
         }
     }
 }
