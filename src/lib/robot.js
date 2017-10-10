@@ -634,7 +634,7 @@ class Robot extends EventEmitter {
 		this.base = () => {
 			this.startSortie = async () => {
 				// run sortie script
-				if(!this.isSortie && !this.isEnsei && !this.waitCond && !this.isActive){
+				if(!this.isSortie && !this.isEnsei && !this.waitCond && !this.isActive && this.isSortieEnable() && this.isEnable()){
 					this.isSortie = true
 					await this.waitActive()
 					if(this.sortieFleetStatus()){
