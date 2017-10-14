@@ -11,8 +11,8 @@
 * Scheduled sleeping of script
 * Random variations could help you to avoid bot detection
 
-*Many line of code are copied from poi*<br >
-*If you don't need automate sortie or expedition just go to use poi*
+*Lots of code is copied from poi*<br >
+*If you don't need automative sortie or expedition, just go to use poi*
 
 ## Build Setup
 
