@@ -125,12 +125,12 @@ class Position {
         ]
         this.RowExpedition = [
             ({x,y} = {x: 0, y: 0} , {width,height} = this.clientRect()) => {
-                x = Math.floor(Math.random()*(width*0.195 - width*0.141+1) + width*0.141)
+                x = Math.floor(Math.random()*(width*0.1800 - width*0.1487+1) + width*0.1487)
                 y = Math.floor(Math.random()*(height*0.931 - height*0.868+1) + height*0.868)
                 return [x, y]
             },
             ({x,y} = {x: 0, y: 0} , {width,height} = this.clientRect()) => {
-                x = Math.floor(Math.random()*(width*0.27 - width*0.219+1) + width*0.219)
+                x = Math.floor(Math.random()*(width*0.2687 - width*0.2412+1) + width*0.2412)
                 y = Math.floor(Math.random()*(height*0.931 - height*0.868+1) + height*0.868)
                 return [x, y]
             },
