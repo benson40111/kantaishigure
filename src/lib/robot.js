@@ -3,6 +3,10 @@ import EventEmitter from 'events'
 import store from '../renderer/store/index.js'
 import position from './position.js'
 
+if(process.env.NODE_ENV == 'development'){
+    global.position = position
+}
+
 const delay = (time = 3000) => {
 	return new Promise( resolve => {
 		setTimeout( () => { resolve()} , time)
