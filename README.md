@@ -1,6 +1,10 @@
 # kantaishigure [![Build Status](https://api.travis-ci.org/Sean2525/kantaishigure.svg?branch=master)](https://github.com/Sean2525/kantaishigure)
 > An electron project for kancolle automate
 
+## Release Download
+
+[Github release](https://github.com/Sean2525/kantaishigure/releases)
+
 ## Features
 * Basic view &mdash; resources, fleets, quest, expeditions, docking, construction
 * Normal battle prophet
