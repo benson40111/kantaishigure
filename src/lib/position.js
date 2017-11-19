@@ -267,12 +267,17 @@ class Position {
                 return [x, y]
             },
             ({x,y} = {x: 0, y: 0} , {width,height} = this.clientRect()) => {
-                x = Math.floor(Math.random()*(width*0.7000 - width*0.5850+1) + width*0.5850)
+                x = Math.floor(Math.random()*(width*0.6150 - width*0.4988+1) + width*0.4988)
                 y = Math.floor(Math.random()*(height*0.7333 - height*0.6937+1) + height*0.6937)
                 return [x, y]
             },
             ({x,y} = {x: 0, y: 0} , {width,height} = this.clientRect()) => {
-                x = Math.floor(Math.random()*(width*0.8625 - width*0.7512+1) + width*0.7512)
+                x = Math.floor(Math.random()*(width*0.7762 - width*0.6625+1) + width*0.6625)
+                y = Math.floor(Math.random()*(height*0.7333 - height*0.6937+1) + height*0.6937)
+                return [x, y]
+            },
+            ({x,y} = {x: 0, y: 0} , {width,height} = this.clientRect()) => {
+                x = Math.floor(Math.random()*(width*0.9437 - width*0.8313+1) + width*0.8313)
                 y = Math.floor(Math.random()*(height*0.7333 - height*0.6937+1) + height*0.6937)
                 return [x, y]
             }

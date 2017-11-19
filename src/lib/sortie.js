@@ -7,26 +7,33 @@ class sortie{
 	}
 	load = () => {
 		this.battle = ({ api_data }) => {  // for normal battle
-			let { api_maxhps, api_nowhps } = api_data
-			let api_onDamageHps = [...api_nowhps] 
-			let api_countDamage = Array(api_maxhps.length).fill(0)
+			let { api_e_maxhps , api_e_nowhps , api_f_maxhps , api_f_nowhps } = api_data
+			let api_e_onDamageHps = [...api_e_nowhps]
+			let api_f_onDamageHps = [...api_f_nowhps]
+			let api_e_countDamage = Array(api_e_maxhps.length).fill(0)
+			let api_f_countDamage = Array(api_f_maxhps.length).fill(0)
 			// compute Kouku damage
 			const onDamageKouku = ({api_edam, api_fdam}) => {
-				for(let i = 1 ; i < api_fdam.length ; i++){
-					api_onDamageHps[i] -= Math.round(api_fdam[i])
-					api_onDamageHps[6+i] -= Math.round(api_edam[i])					
+				for(let i = 0 ; i < api_fdam.length ; i++){
+					api_f_onDamageHps[i] -= Math.round(api_fdam[i])
+					api_e_onDamageHps[i] -= Math.round(api_edam[i])
 				}
 			}
 			// compute Hougeki damage
-			const onDamageHougeki = ({ api_at_list , api_df_list , api_damage }) => {
+			const onDamageHougeki = ({ api_at_eflag, api_at_list, api_df_list, api_damage }) => {
 				let hougeki  = []
-				for(let i = 1 ; i < api_at_list.length ; i++){
-					hougeki.push({'attacker' : api_at_list[i] , 'defender': api_df_list[i] , 'damage': api_damage[i] })
+				for(let i = 0 ; i < api_at_list.length ; i++){
+					hougeki.push({ 'eflag': api_at_eflag[i] ,'attacker': api_at_list[i] , 'defender': api_df_list[i] , 'damage': api_damage[i] })
 				}
 				hougeki.map( kogeki => {
 					for(let x = 0 ; x < kogeki.defender.length ; x++){
-						api_onDamageHps[kogeki.defender[x]] -= Math.round(kogeki.damage[x])
-						api_countDamage[kogeki.attacker] += Math.round(kogeki.damage[x])
+						if(kogeki.eflag){  // 0 => f , 1 => enemys attack
+							api_f_onDamageHps[kogeki.defender[x]] -= Math.round(kogeki.damage[x])
+							api_e_countDamage[kogeki.attacker] += Math.round(kogeki.damage[x])
+						} else {
+							api_e_onDamageHps[kogeki.defender[x]] -= Math.round(kogeki.damage[x])
+							api_f_countDamage[kogeki.attacker] += Math.round(kogeki.damage[x])
+						}
 					}
 				})
 			}
@@ -34,10 +41,10 @@ class sortie{
 			// compute Raigeki damage
 			const onDamageRaigeki = ({ api_fydam , api_fdam , api_eydam , api_edam}) => {
 				for(let i = 1 ; i < api_fydam.length; i++){
-					api_onDamageHps[i] -= Math.round(api_fdam[i])
-					api_countDamage[i] += Math.round(api_fydam[i])
-					api_onDamageHps[6+i] -= Math.round(api_edam[i])
-					api_countDamage[6+i] += Math.round(api_eydam[i])
+					api_f_onDamageHps[i-1] -= Math.round(api_fdam[i])
+					api_f_countDamage[i-1] += Math.round(api_fydam[i])
+					api_e_onDamageHps[i-1] -= Math.round(api_edam[i])
+					api_e_countDamage[i-1] += Math.round(api_eydam[i])
 				}
 			}
 			// hougeki
@@ -54,26 +61,26 @@ class sortie{
 			if(api_data['api_kouku'] && api_data['api_kouku']['api_stage3']){
 				onDamageKouku(api_data.api_kouku.api_stage3)
 			}
-			let fleet = store.getters.getFleet(Number(api_data.api_dock_id)-1)
+			let fleet = store.getters.getFleet(Number(api_data.api_deck_id)-1)
 			let nowFleet = []
 			for(let i = 0 ; i < fleet.length ; i++){
 				if(fleet[i] != undefined){
 					nowFleet.push(Object.assign({}, fleet[i], { 
-						'api_nowhp': api_onDamageHps[i+1],
-						'api_originhp': api_nowhps[i+1],
-						'api_damage': api_countDamage[i+1]
+						'api_nowhp': api_f_onDamageHps[i],
+						'api_originhp': api_f_nowhps[i],
+						'api_damage': api_f_countDamage[i]
 					}))
 				}
 			}
 			let nowenemy = []
-			for(let i = 1; i < api_data.api_ship_ke.length; i++){
+			for(let i = 0; i < api_data.api_ship_ke.length; i++){
 				if(api_data.api_ship_ke[i] != -1 && api_data.api_ship_ke[i] !=0 ){
 					nowenemy.push(Object.assign({},{ 
 						'api_name': store.getters.find_mst_ship(api_data.api_ship_ke[i]).api_name,
-						'api_maxhp': api_maxhps[6+i],
-						'api_nowhp': api_onDamageHps[6+i],
-						'api_originhp': api_nowhps[6+i],
-						'api_damage': api_countDamage[6+i],
+						'api_maxhp': api_e_maxhps[i],
+						'api_nowhp': api_e_onDamageHps[i],
+						'api_originhp': api_e_nowhps[i],
+						'api_damage': api_e_countDamage[i],
 						'api_lv': api_data.api_ship_lv[i]
 					}))
 				}
