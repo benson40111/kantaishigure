@@ -68,5 +68,7 @@
 	"sortiefleetStatus-start": "更換編成啟用",
 	"sortiefleetStatus-stop": "更換編成停止",
 	"sortiefleetStatus-start-info": "下次出擊會自動展開設定艦隊, 然後切換成停用",
-	"sortiefleetStatus-stop-info": "當遊戲重啟, 刷新, 更改機器人編成設定, 休眠時間, 將會自動切換成啟用"
+	"sortiefleetStatus-stop-info": "當遊戲重啟, 刷新, 更改機器人編成設定, 休眠時間, 將會自動切換成啟用",
+	"neverChange-start": "永不更換艦隊啟動",
+	"neverChange-stop": "永不更換艦隊關閉"
 }

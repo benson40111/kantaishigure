@@ -28,10 +28,14 @@ const state = {
     fastRepair: false,
     sortieSleepClear: true, // 休眠時間是否將艦隊清除剩一隻
     sortieFleet: 0, // 要展開第幾個編成紀錄
-    sortieFleetStatus: true // status
+    sortieFleetStatus: true, // status
+    neverChange: false // never change fleet
 }
 
 const mutations = {
+    UPDATE_NEVERCHANGE(state, res){
+        state.neverChange = res
+    },
     UPDATE_SORTIESLEEPCLEAR(state, res){
         state.sortieSleepClear = res
     },

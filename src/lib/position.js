@@ -267,20 +267,31 @@ class Position {
                 return [x, y]
             },
             ({x,y} = {x: 0, y: 0} , {width,height} = this.clientRect()) => {
-                x = Math.floor(Math.random()*(width*0.6150 - width*0.4988+1) + width*0.4988)
-                y = Math.floor(Math.random()*(height*0.7333 - height*0.6937+1) + height*0.6937)
+                /**
+                 * x = Math.floor(Math.random()*(width*0.6150 - width*0.4988+1) + width*0.4988)
+                 * 警戒陣 disappearance
+                 */ 
+                x = Math.floor(Math.random()*(width*0.7000 - width*0.5850+1) + width*0.5850)                
+                 y = Math.floor(Math.random()*(height*0.7333 - height*0.6937+1) + height*0.6937)
                 return [x, y]
             },
             ({x,y} = {x: 0, y: 0} , {width,height} = this.clientRect()) => {
-                x = Math.floor(Math.random()*(width*0.7762 - width*0.6625+1) + width*0.6625)
+                /**
+                 * x = Math.floor(Math.random()*(width*0.7762 - width*0.6625+1) + width*0.6625)
+                 * same
+                 */
+                x = Math.floor(Math.random()*(width*0.8625 - width*0.7512+1) + width*0.7512)
                 y = Math.floor(Math.random()*(height*0.7333 - height*0.6937+1) + height*0.6937)
                 return [x, y]
             },
+
+/*
             ({x,y} = {x: 0, y: 0} , {width,height} = this.clientRect()) => {
                 x = Math.floor(Math.random()*(width*0.9437 - width*0.8313+1) + width*0.8313)
                 y = Math.floor(Math.random()*(height*0.7333 - height*0.6937+1) + height*0.6937)
                 return [x, y]
             }
+*/
         ]
         this.Dock = ({x,y} = {x: 0, y: 0} , {width,height} = this.clientRect()) => {
             x = Math.floor(Math.random()*(width*0.1850 - width*0.1138+1) + width*0.1138)

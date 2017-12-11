@@ -31,6 +31,13 @@
 						    <span v-else>{{ $t('sortiefleetStatus-stop') }}</span>
 				        </label>
                     </span>
+                    <span>
+                    	<label class="btn btn-border" :class="{ 'btn-border-danger': !neverChange }">
+                	        <input type="checkbox" class="btn-radio" v-model="neverChange">
+						    <span v-if="neverChange">{{ $t('neverChange-start') }}</span>
+						    <span v-else>{{ $t('neverChange-stop') }}</span>
+                        </label>
+                    </span>
                 </div>
                 <div class="sortie-Area" style="margin-top:10px">
                     <select class="custom-select" v-model.number="sortieArea1">
@@ -261,12 +268,16 @@ export default {
             get() { return this.$store.state.robot_cf.repair },
             set(value) { this.$store.commit('UPDATE_REPAIR', value) }
         },
+        neverChange: {
+            get() { return this.$store.state.robot_cf.neverChange } ,
+            set(value) { this.$store.commit('UPDATE_NEVERCHANGE', value) }
+        },
         sleepTime() {
             return this.$store.state.robot_cf.sleepTime
         },
         sleepEnd() {
             return this.$store.state.robot_cf.sleepEnd
-        }
+        },
     },
     methods: {
         onChangeExpedition() {

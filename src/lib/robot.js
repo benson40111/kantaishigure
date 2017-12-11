@@ -76,6 +76,7 @@ class Robot extends EventEmitter {
 		this.isReload = true
 		this.isCheckMission = false
 		this.needRefreshPort = false
+		this.neverChange = () => store.state.robot_cf.neverChange
 		this.sortieFleetStatus = () => store.state.robot_cf.sortieFleetStatus		
 		this.isEnable = () => store.state.robot_cf.isEnabled
 		this.isSortieEnable = () => store.state.robot_cf.Sortie
@@ -122,7 +123,12 @@ class Robot extends EventEmitter {
 				if(!store.state.robot_cf.sortieFleetStatus){
 					store.commit('UPDATE_SORTIEFLEETSTATUS', true)					
 				}
-				if(this.isEnable() && this.isSortieEnable() && store.state.robot_cf.sortieSleepClear && store.state.api.battleresult.fleet[1] && this.isStart){
+				if(this.isEnable() && 
+				this.isSortieEnable() && 
+				!this.neverChange() &&
+				store.state.robot_cf.sortieSleepClear && 
+				store.state.api.battleresult.fleet[1] &&
+				this.isStart){
 					this.isStart = false
 					await this.waitActive()
 					await this.waitSortie()
@@ -641,7 +647,7 @@ class Robot extends EventEmitter {
 				if(!this.isSortie && !this.isEnsei && !this.waitCond && !this.isActive && this.isSortieEnable() && this.isEnable()){
 					this.isSortie = true
 					await this.waitActive()
-					if(this.sortieFleetStatus()){
+					if(this.sortieFleetStatus() && !this.neverChange()){
 						if(await this.AutoRun('sortieFleet')){
 							store.commit('UPDATE_SORTIEFLEETSTATUS', false)
 							await this.waitActive()
