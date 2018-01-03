@@ -6,6 +6,7 @@
   "license": "MIT",
   "main": "./dist/electron/main.js",
   "scripts": {
+    "onlyBuild": "electron-builder install-app-deps && build",
     "build": "node .electron-vue/build.js && build",
     "build:dir": "node .electron-vue/build.js && build --dir",
     "build:clean": "cross-env BUILD_TARGET=clean node .electron-vue/build.js",
@@ -94,7 +95,7 @@
     "del": "^2.2.1",
     "devtron": "^1.1.0",
     "electron": "^1.8.1",
-    "electron-builder": "^18.1.0",
+    "electron-builder": "^19.5.0",
     "electron-debug": "^1.2.0",
     "electron-devtools-installer": "^2.0.1",
     "electron-rebuild": "^1.1.3",
