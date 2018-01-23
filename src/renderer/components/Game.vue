@@ -5,6 +5,7 @@
             <button @click="capture" class="fa fa-camera-retro main-btn" aria-hidden="true"></button>
             <button @click="opendir" class="fa fa-folder-open-o main-btn" aria-hidden="true"></button>
 			<button @click="toggleGameAudio" :class="volumeClass" aria-hidden="true"></button>
+			<button @click="createTray">Smaller</button>
         </div>
 	</div>
 </template>
@@ -13,6 +14,8 @@
 <script>
 import fs from 'fs'
 import path from 'path'
+import tray from '../../lib/tray.js'
+
 export default {
 	name: 'game',
 	computed: {
@@ -52,6 +55,9 @@ export default {
 		toggleGameAudio() {
 			document.querySelector('webview').setAudioMuted(!this.gameAudioMuted)
 			this.$store.commit('UPDATE_GAMEAUDIOMUTED', !this.gameAudioMuted)
+		},
+		createTray() {
+			tray.createTray()	
 		}
 	}
 }

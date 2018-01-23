@@ -1,5 +1,4 @@
-import { app, BrowserWindow } from 'electron'
-
+import { app, BrowserWindow, ipcMain } from 'electron'
 /**
  * Set `__static` path to static files in production
  * https://simulatedgreg.gitbooks.io/electron-vue/content/en/using-static-assets.html
@@ -26,7 +25,7 @@ function createWindow () {
 	mainWindow = new BrowserWindow({
 		height: 600,
 		useContentSize: true,
-		width: 800
+		width: 800,
 	})
 
 	mainWindow.loadURL(winURL)
@@ -50,6 +49,14 @@ app.on('activate', () => {
 	if (mainWindow === null) {
 		createWindow()
 	}
+})
+
+ipcMain.on('close-window', () =>{
+	mainWindow.hide()
+})
+
+ipcMain.on('open-window', () =>{
+	mainWindow.show()
 })
 
 /**
