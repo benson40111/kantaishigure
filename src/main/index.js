@@ -18,6 +18,7 @@ const winURL = process.env.NODE_ENV === 'development'
 	? 'http://localhost:9080'
 	: `file://${__dirname}/index.html`
 
+
 function createWindow () {
 	/**
 	 * Initial window options
@@ -26,6 +27,7 @@ function createWindow () {
 		height: 600,
 		useContentSize: true,
 		width: 800,
+		show: false
 	})
 
 	mainWindow.loadURL(winURL)
@@ -35,6 +37,7 @@ function createWindow () {
 	})
 	global.mainWindow = mainWindow
 	require('../lib/data-resolver.es')
+	require('../lib/tray.js').createTray()
 }
 
 app.on('ready', createWindow)

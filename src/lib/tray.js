@@ -1,15 +1,10 @@
-const { Tray, Menu } = require('electron').remote
+const Tray = require('electron').Tray
 const ipcRenderer = require('electron').ipcRenderer
 
-let clickBool = false
+let clickBool = true
 
 const createTray = () => {
 	let tray = new Tray('logo.png')
-	const trayTemplate = [
-		{ label: 'Exit', click(){ tray.destroy() }}
-	]
-	let trayMenu = new Menu.buildFromTemplate(trayTemplate)
-	tray.setContextMenu(trayMenu)
 	
 	tray.on('right-click', () =>{
 		if (clickBool) {
